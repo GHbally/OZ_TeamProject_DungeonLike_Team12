@@ -1,4 +1,4 @@
-//플레이어 이동 관리 클래스
+//[플레이어 이동 관리 클래스]
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("이동속도")]
     [SerializeField] private float moveSpeed = 5.0f; //이동 속도
 
-    //외부에서 내 MoveSpeed를 수정할 수 있게 열기
+    //[읽기, 쓰기] 외부에서 내 MoveSpeed를 수정할 수 있게 열기
+    //이동 속도는 외부적인 스펙업을 통해 바뀔 여지가 있으므로 읽기+쓰기
     public float MoveSpeed
     {
         get { return moveSpeed; }
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     //현재 캐릭터가 움직이고 있는지 확인하기 위해 이동 벡터 길이를 제곱한 값을 넘겨주는 프로퍼티
     //멈추면 0, 움직이면 0보다 큼
     public float CurrentSpeed => moveVec.sqrMagnitude;
+
+    public bool IsInvincible => isDashing;  //대쉬중 무적 판정 해줄 프로퍼티
 
     void Start()
     {
@@ -95,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //대쉬 코루틴
+    //[대쉬 코루틴]
     private System.Collections.IEnumerator DashCo()
     {
         canDash = false;    //대쉬 썼으니 쿨타임 상태로

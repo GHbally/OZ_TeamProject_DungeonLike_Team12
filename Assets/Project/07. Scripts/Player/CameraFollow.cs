@@ -1,4 +1,4 @@
-//카메라 플레이어 추적
+//[카메라 플레이어 추적]
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
