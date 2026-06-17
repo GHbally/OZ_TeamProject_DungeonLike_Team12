@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         //애니메이터 컴포넌트가 잘 있다면
         if (animator != null)
         {
-            //애니메이터 창에 Speed 파라미터에 이동벡터 전달(0이면 Idle, 0보다 크면 Walk)
+            //애니메이터 창에 Speed 파라미터에 이동벡터 전달(0이면 Idle, 0보다 크면 Run)
             animator.SetFloat("Speed", moveVec.sqrMagnitude);
         }
 
@@ -107,16 +107,22 @@ public class PlayerMovement : MonoBehaviour
         //대쉬 도중 방향 고정
         dashDirection = moveVec;
 
-        // 대쉬 시작 하면 애니메이터의 대쉬 트리거 끄기
-        if (animator != null)
-        {
-            animator.SetTrigger("Dash");
-        }
-
         //dashDuration 대쉬 지속시간 동안 잠깐 대기 시키며 대쉬 속도 유지
         yield return new WaitForSeconds(dashDuration);
 
         isDashing = false;  //대쉬 중 끄기
+
+        //대쉬가 끝났을때 물리속도를 순간적으로 0으로 만들어 미끄러짐을 방지해줌
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+        }
 
         //대쉬 쿨타임
         yield return new WaitForSeconds(dashCooldown);

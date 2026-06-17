@@ -18,6 +18,7 @@ public class PlayerBase : MonoBehaviour
     //플레이어 움직임이랑 애니메이터 조작을 위해 가져올 컴포넌트 변수들
     private PlayerMovement movement;
     private Animator animator;
+    private SpriteRenderer spriteRenderer; //피격시 잠깐동안 캐릭터를 빨갛게 만들어줄것
 
     //상속받을 자식(직업)들이 Override할 수 있게 protected
     protected virtual void Start()
@@ -29,7 +30,8 @@ public class PlayerBase : MonoBehaviour
         Transform visual = transform.Find("Visual");    //자식 Visual 찾기
         if (visual != null)
         {
-            animator = visual.GetComponent<Animator>(); //Visual 있으면 애니메이터 컴포넌트 빼옴
+            animator = visual.GetComponent<Animator>(); //Visual에서 애니메이터 컴포넌트 빼옴
+            spriteRenderer = visual.GetComponent<SpriteRenderer>(); //Visual에서 SpriteRenderer 빼옴
         }
     }
 
@@ -51,30 +53,42 @@ public class PlayerBase : MonoBehaviour
         //Clamp(현재 HP, 최소값0, 최대값 최대HP)
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        if (animator != null)
+        if (spriteRenderer != null)
         {
-            //피격 애니메이션 재생용
-            animator.SetTrigger("Hurt");
+            //중복 피격 시 색상 꼬임 방지
+            StopAllCoroutines();
+            //피격시 빨갛게 되는 효과
+            StartCoroutine(HurtFlashCo());
         }
 
         if (currentHp <= 0)
         {
             //체력 0이하 사망
-            Die();
+            Death();
         }
     }
 
+    private System.Collections.IEnumerator HurtFlashCo()
+    {
+        spriteRenderer.color = Color.red;       //캐릭터 색상 빨간색으로
+        yield return new WaitForSeconds(0.1f);  //0.1초 동안 유지
+        spriteRenderer.color = Color.white;     //기본색상(흰색X 원본색으로 복귀시켜줌)
+    }
+
     //[사망 메서드]
-    protected virtual void Die()
+    protected virtual void Death()
     {
         if (IsDead) return; //중복 사망 방지
 
         IsDead = true;
 
+        //사망하면 빨갛게 변했던 색을 원래대로 돌린 후 애니메이션 재생
+        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+
         if (animator != null)
         {
             //사망 애니메이션 재생용
-            animator.SetTrigger("Die");
+            animator.SetTrigger("Death");
         }
 
         if(movement != null)
