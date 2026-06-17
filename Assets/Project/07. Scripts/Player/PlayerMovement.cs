@@ -1,4 +1,4 @@
-//플레이어 이동 관리 클래스
+//[플레이어 이동 관리 클래스]
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("이동속도")]
     [SerializeField] private float moveSpeed = 5.0f; //이동 속도
 
-    //외부에서 내 MoveSpeed를 수정할 수 있게 열기
+    //[읽기, 쓰기] 외부에서 내 MoveSpeed를 수정할 수 있게 열기
+    //이동 속도는 외부적인 스펙업을 통해 바뀔 여지가 있으므로 읽기+쓰기
     public float MoveSpeed
     {
         get { return moveSpeed; }
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     //현재 캐릭터가 움직이고 있는지 확인하기 위해 이동 벡터 길이를 제곱한 값을 넘겨주는 프로퍼티
     //멈추면 0, 움직이면 0보다 큼
     public float CurrentSpeed => moveVec.sqrMagnitude;
+
+    public bool IsInvincible => isDashing;  //대쉬중 무적 판정 해줄 프로퍼티
 
     void Start()
     {
@@ -69,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         //애니메이터 컴포넌트가 잘 있다면
         if (animator != null)
         {
-            //애니메이터 창에 Speed 파라미터에 이동벡터 전달(0이면 Idle, 0보다 크면 Walk)
+            //애니메이터 창에 Speed 파라미터에 이동벡터 전달(0이면 Idle, 0보다 크면 Run)
             animator.SetFloat("Speed", moveVec.sqrMagnitude);
         }
 
@@ -95,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //대쉬 코루틴
+    //[대쉬 코루틴]
     private System.Collections.IEnumerator DashCo()
     {
         canDash = false;    //대쉬 썼으니 쿨타임 상태로
@@ -104,16 +107,22 @@ public class PlayerMovement : MonoBehaviour
         //대쉬 도중 방향 고정
         dashDirection = moveVec;
 
-        // 대쉬 시작 하면 애니메이터의 대쉬 트리거 끄기
-        if (animator != null)
-        {
-            animator.SetTrigger("Dash");
-        }
-
         //dashDuration 대쉬 지속시간 동안 잠깐 대기 시키며 대쉬 속도 유지
         yield return new WaitForSeconds(dashDuration);
 
         isDashing = false;  //대쉬 중 끄기
+
+        //대쉬가 끝났을때 물리속도를 순간적으로 0으로 만들어 미끄러짐을 방지해줌
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+        }
 
         //대쉬 쿨타임
         yield return new WaitForSeconds(dashCooldown);
