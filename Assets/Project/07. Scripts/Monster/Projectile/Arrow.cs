@@ -18,7 +18,7 @@ public class Arrow : MonoBehaviour
 
     private void Update()
     {
-        transform.position += (Vector3)(dir * speed * Time.deltaTime);
+        transform.position += (Vector3)(direction * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
