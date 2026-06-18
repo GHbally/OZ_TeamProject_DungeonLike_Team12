@@ -46,6 +46,8 @@ public class PlayerBase : MonoBehaviour
         {
             return; //데미지 계산X -> 무적
         }
+
+        Debug.Log("플레이어 피격됨");
         //위가 아니면 데미지만큼 현재 체력 감소
         currentHp -= damage;
 

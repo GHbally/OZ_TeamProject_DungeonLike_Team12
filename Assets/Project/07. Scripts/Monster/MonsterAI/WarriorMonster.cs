@@ -3,46 +3,62 @@ using UnityEngine;
 public class WarriorMonster : MonsterBase
 {
     [Header("근접 공격")]
-    public int damage = 10; //공격력
-    public float damageInterval = 1f; //1초마다 데미지 들어감
+    public float damage = 10.0f;        //공격력
+    public float damageInterval = 1.0f; //1초마다 데미지 들어감
+    private float damageTimer;          //공격 타이머
 
-    private float damageTimer;
-
-    protected override void Chase()
+    //오브젝트 풀에서 몬스터가 스폰될때 발동
+    protected override void OnEnable()
     {
-        if (player == null)
-            return;
-        //플레이어 방향 계산
-        Vector2 dir = ((Vector2)player.position - rb.position).normalized;
-        //플레이어 추적
-        rb.MovePosition(rb.position + dir * moveSpeed * Time.deltaTime);
-    }
-    protected override void Attack()
-    {
-
+        //부모의 체력, 플레이어 추적 받아오기
+        base.OnEnable();
+        //비비는 데미지값 받아오기
+        damageTimer = damageInterval;
     }
 
+    //캐릭터 거리 두고 상태 전환
+    protected override void UpdateState()
+    {
+        //워리어는 비벼서 공격하므로 비워둠
+    }
+
+    //매 프레임마다 원거리 공격 시간
+    protected override void AttackLogic()
+    {
+        //워리어는 필요없음
+    }
+
+    //비벼지는 동안
     private void OnTriggerStay2D(Collider2D other)
     {
-        if(!other.CompareTag("Player")) return;
+        //대상이 플레이어가 아니면 무시
+        if (!other.CompareTag("Player")) return;
 
         damageTimer += Time.deltaTime;
 
         //1초마다 데미지
         if (damageTimer >= damageInterval)
         {
+            //타이머 0으로 리셋
             damageTimer = 0f;
-            Debug.Log("플레이어 피격");
-
             
-            //.TakeDamage(damage);
+            //PlayerBase.cs 불러오기 
+            PlayerBase playerCore = other.GetComponent<PlayerBase>();
+
+            if (playerCore != null)
+            {
+                //플레이어의 피격 함수에 전달
+                playerCore.TakeDamage(damage);
+            }         
         }
     }
 
+    //플레이어가 몬스터 비비기 영역 탈출시
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        damageTimer = 0f;
+
+        damageTimer = damageInterval; //타이머 충전
 
     }
 }
