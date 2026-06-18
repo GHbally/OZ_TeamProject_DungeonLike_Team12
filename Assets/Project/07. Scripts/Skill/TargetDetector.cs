@@ -34,7 +34,7 @@ public class TargetDetector : MonoBehaviour
         enemyFilter.SetLayerMask(enemyLayer);
         enemyFilter.useTriggers = true;
     }
-    public Transform FindNearertTarget(float range)
+    public Transform FindNearestTarget(float range)
     {
         int count = Physics2D.OverlapCircle(transform.position, range, enemyFilter, results);
         Transform nearestTarget = null;
@@ -66,6 +66,11 @@ public class TargetDetector : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
+        if(attackstats == null)
+        {
+            return;
+        }
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackstats.AttackRange);
     }

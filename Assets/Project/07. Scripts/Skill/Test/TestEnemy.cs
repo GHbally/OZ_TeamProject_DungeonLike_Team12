@@ -5,6 +5,7 @@ public class DummyEnemy : MonoBehaviour, IDamageable1
     [SerializeField] private float maxHealth = 100f;
 
     private float currentHealth;
+    private bool isDead;
 
     private void Awake()
     {
@@ -13,6 +14,10 @@ public class DummyEnemy : MonoBehaviour, IDamageable1
 
     public void TakeDamage(DamageInfo1 damageInfo)
     {
+        if (isDead)
+        {
+            return;
+        }
         currentHealth -= damageInfo.Damage;
 
         Debug.Log(
@@ -28,7 +33,12 @@ public class DummyEnemy : MonoBehaviour, IDamageable1
     }
 
     private void Die()
-    {
+    { 
+        if (isDead)
+        {
+            return;
+        }
+        isDead = true;
         Debug.Log($"{name} »ç¸Á");
         Destroy(gameObject);
     }
