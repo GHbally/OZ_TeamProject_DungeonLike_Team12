@@ -2,15 +2,30 @@ using UnityEngine;
 
 public class TargetDetector : MonoBehaviour
 {
-    private AttackStats attackstats;
+    [SerializeField]private AttackStats attackstats;
     [SerializeField] private LayerMask enemyLayer;
-    private readonly Collider2D[] results = new Collider2D[32];
+    private int maximumDetectionCount = 32;
+    private Collider2D[] results;
 
     private ContactFilter2D enemyFilter;
 
     private void Awake()
     {
+        CacheReferences();
+        InitializeResults();
         SetupContactFilter();
+    }
+    
+    private void CacheReferences()
+    {
+        if(attackstats == null)
+        {
+            attackstats = GetComponent<AttackStats>();
+        }
+    }
+    private void InitializeResults()
+    {
+        results = new Collider2D[Mathf.Max(1, maximumDetectionCount)];
     }
 
     private void SetupContactFilter()
@@ -32,7 +47,8 @@ public class TargetDetector : MonoBehaviour
             {
                 continue;
             }
-            if(!targetCollider.TryGetComponent<IDamageable1>(out IDamageable1 damageable))
+
+            if (!targetCollider.TryGetComponent<IDamageable1>(out IDamageable1 damageable))
             {
                 continue;
             }
@@ -48,13 +64,9 @@ public class TargetDetector : MonoBehaviour
         }
         return nearestTarget;
     }
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if(attackstats == null)
-        {
-            return;
-        }
-
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackstats.AttackRange);
     }
 }
