@@ -1,40 +1,52 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq; // 랜덤 추출을 위해 추가
+using System.Linq;
 
 public class LevelUpManager : MonoBehaviour
 {
     public GameObject levelUpPanel;
     public GameObject skillButtonPrefab;
     public Transform skillContainer;
-    public List<SkillData> skillDatabase; // 인스펙터에서 스킬 데이터들을 드래그해서 넣으세요
+    public List<SkillData> skillDatabase;
 
     public void OpenLevelUp()
     {
+        if (levelUpPanel == null || skillContainer == null) return;
+
         Time.timeScale = 0f; // 게임 멈춤
         levelUpPanel.SetActive(true);
 
-        // 기존에 생성된 버튼 삭제
-        foreach (Transform child in skillContainer) Destroy(child.gameObject);
+        // 자식 오브젝트 정리 (즉시 삭제)
+        foreach (Transform child in skillContainer)
+        {
+            Destroy(child.gameObject);
+        }
 
-        // 랜덤하게 3개 추출 (중복 방지)
-        List<SkillData> randomSkills = skillDatabase.OrderBy(x => Random.value).Take(3).ToList();
+        // 스킬이 3개 미만일 경우 에러 방지
+        int count = Mathf.Min(3, skillDatabase.Count);
+        List<SkillData> randomSkills = skillDatabase.OrderBy(x => Random.value).Take(count).ToList();
 
-        // 버튼 생성 및 데이터 전달
         foreach (SkillData skill in randomSkills)
         {
             GameObject newButton = Instantiate(skillButtonPrefab, skillContainer);
-            newButton.GetComponent<SkillButtonUI>().Setup(skill);
+            var ui = newButton.GetComponent<SkillButtonUI>();
 
-            // 버튼 클릭 시 수행할 동작 연결
-            newButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => SelectSkill(skill));
+            if (ui != null) ui.Setup(skill);
+
+            var btn = newButton.GetComponent<UnityEngine.UI.Button>();
+            if (btn != null)
+            {
+                btn.onClick.RemoveAllListeners(); // 기존 리스너 초기화
+                btn.onClick.AddListener(() => SelectSkill(skill));
+            }
         }
     }
 
     public void SelectSkill(SkillData skill)
     {
-        Debug.Log(skill.skillName + " 선택됨!");
-        // 여기서 실제 캐릭터 스킬 강화 로직 호출
+        // 여기서 캐릭터 로직 수행
+        Debug.Log($"{skill.skillName} 선택됨!");
+
         CloseLevelUp();
     }
 
