@@ -90,7 +90,7 @@ public abstract class MonsterBase : MonoBehaviour
             //힐 구슬
             if (Random.value < 0.1f)
             {
-                DropManager.Instance.DropHealOrb(transform.position); //힐 구슬 구현 예정
+                //DropManager.Instance.DropHealOrb(transform.position); //힐 구슬 구현 예정
             }
         }
 
