@@ -3,11 +3,38 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    public MonsterSpawner spawner;
+    
     private int currentWave; // 현재 웨이브 번호
-    private int aliveMonsters; //살아있는 몬스터 수
+    private int aliveMonster; //살아있는 몬스터 수
 
     public WaveData[] waves;
+
+    void CreateStageData(int chapter, int stage)
+    {
+        if (chapter == 1 && stage == 1)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData()
+            {
+                warriorCount = 3,
+                archerCount = 0
+            },
+
+            new WaveData()
+            {
+                warriorCount = 5,
+                archerCount = 1
+            },
+
+            new WaveData()
+            {
+                warriorCount = 7,
+                archerCount = 2
+            }
+            };
+        }
+    }
 
     public void StartStage(int chapter, int stage)
     {
@@ -21,15 +48,15 @@ public class WaveManager : MonoBehaviour
 
         aliveMonster = data.warriorCount + data.archerCount;
 
-        spawner.SpawnWave(data);
+        
         yield return null;
 
     }
     public void MonsterDead()
     {
-        aliveMonsters--;
+        aliveMonster--;
 
-        if (aliveMonsters <= 0)
+        if (aliveMonster <= 0)
         {
             Debug.Log("스테이지 클리어");
             FindFirstObjectByType<StageManager>().ClearStage();
