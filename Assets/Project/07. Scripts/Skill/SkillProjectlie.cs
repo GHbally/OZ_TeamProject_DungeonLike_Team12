@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkillProjectlie : MonoBehaviour
+public class Projectlie : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float lifeTime = 3f;
