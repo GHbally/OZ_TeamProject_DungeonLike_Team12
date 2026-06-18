@@ -34,6 +34,12 @@ public abstract class MonsterBase : MonoBehaviour
     {
         if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
 
+        /////////////////////////////테스트 공격/////////////////////////////////
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Death();
+        }
+
         //거리를 재서 Chase나 Attack으로 상태 바꿔주는 애 (자식이 구현)
         UpdateState();
 
@@ -90,7 +96,7 @@ public abstract class MonsterBase : MonoBehaviour
             //힐 구슬
             if (Random.value < 0.1f)
             {
-                //DropManager.Instance.DropHealOrb(transform.position); //힐 구슬 구현 예정
+                DropManager.Instance.DropHealOrb(transform.position); //힐 구슬 구현 예정
             }
         }
 
