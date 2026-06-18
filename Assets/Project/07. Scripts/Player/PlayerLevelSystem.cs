@@ -56,8 +56,10 @@ public class PlayerLevelSystem : MonoBehaviour
     {
         if (currentLevel == 1)
         {
+            //1레벨땐 100으로 시작
             maxExp = 100.0f;
         }
+        //1레벨 아니면 이후부턴
         else
         {
             //경험치 요구량을 1.2배로 늘린후 Mathf.Round로 반올림 처리
