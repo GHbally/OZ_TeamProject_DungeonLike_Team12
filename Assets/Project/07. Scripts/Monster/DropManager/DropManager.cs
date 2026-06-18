@@ -23,4 +23,14 @@ public class DropManager : MonoBehaviour
 
         Debug.Log("경험치 드랍");
     }
+    public void DropHealOrb(Vector2 position)
+    {
+        GameObject healOrb = PoolManager.Instance.GetHealOrb();
+
+        if(healOrb == null) return;
+
+        healOrb.transform.position = position;
+
+        Debug.Log("체력 구슬 드랍");
+    }
 }

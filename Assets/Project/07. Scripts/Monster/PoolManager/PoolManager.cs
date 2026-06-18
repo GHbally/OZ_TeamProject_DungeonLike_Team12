@@ -11,6 +11,7 @@ public class PoolManager : MonoBehaviour
 
     public GameObject arrowPrefab;
     public GameObject expOrbPrefab;
+    public GameObject healOrbPrefab;
     public GameObject warriorMonsterPrefab;
     public GameObject archerMonsterPrefab;
 
@@ -18,12 +19,14 @@ public class PoolManager : MonoBehaviour
 
     public int arrowPoolSize = 30; //화살 개수 미리 생성
     public int expPoolSize = 50; //경험치 개수 미리 생성
+    public int healOrbPoolSize = 20;
     public int warriorPoolSize = 20; //몬스터 수
     public int archerPoolSize = 20;
 
     
     private Queue<GameObject> arrowPool = new Queue<GameObject>();
     private Queue<GameObject>expPool = new Queue<GameObject>();
+    private Queue<GameObject>healOrbPool = new Queue<GameObject>();
     private Queue<GameObject> warriorPool = new Queue<GameObject>();
     private Queue<GameObject> archerPool = new Queue<GameObject>();
 
@@ -36,6 +39,7 @@ public class PoolManager : MonoBehaviour
         //게임 시작 시 미리 생성
         CreateArrowPool();
         CreateExpPool();
+        CreateHealOrbPool();
         CreateWarriorPool();
         CreateArcherPool();
     }
@@ -56,15 +60,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    void CreateExpPool()
-    {
-        for (int i = 0; i < expPoolSize; i++)
-        {
-            GameObject obj = Instantiate(expOrbPrefab);
-            obj.SetActive(false);
-            expPool.Enqueue(obj);
-        }
-    }
+    
 
     //화살 꺼내기
     public GameObject GetArrow()
@@ -89,6 +85,15 @@ public class PoolManager : MonoBehaviour
 
         //다시 큐에 저장
         arrowPool.Enqueue(obj);
+    }
+    void CreateExpPool()
+    {
+        for (int i = 0; i < expPoolSize; i++)
+        {
+            GameObject obj = Instantiate(expOrbPrefab);
+            obj.SetActive(false);
+            expPool.Enqueue(obj);
+        }
     }
 
     //경험치 구슬 꺼내기
@@ -171,4 +176,36 @@ public class PoolManager : MonoBehaviour
             archerPool.Enqueue(monster);
         }
     }
+
+    //힐 풀 생성
+    void CreateHealOrbPool()
+    {
+        for (int i = 0; i < healOrbPoolSize; i++)
+        {
+            GameObject obj = Instantiate(healOrbPrefab);
+            obj.SetActive(false);
+            healOrbPool.Enqueue(obj);
+        }
+        
+    }
+
+    //꺼내기
+    public GameObject GetHealOrb()
+    {
+        if(healOrbPool.Count == 0)
+            return null;
+
+        GameObject obj = healOrbPool.Dequeue();
+
+        obj.SetActive(true);
+        return obj;
+    }
+
+    //반환
+    public void ReturnHealOrb(GameObject obj)
+    {
+        obj.SetActive(false);
+        healOrbPool.Enqueue(obj);
+    }
+
 }
