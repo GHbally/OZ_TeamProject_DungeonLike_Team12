@@ -186,7 +186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &393598470
 RectTransform:
   m_ObjectHideFlags: 0
@@ -323,12 +323,7 @@ MonoBehaviour:
   levelUpPanel: {fileID: 393598469}
   skillButtonPrefab: {fileID: 9020728203351036899, guid: 2cb6ca3f7a7f9c440888fa5b6fc6601c, type: 3}
   skillContainer: {fileID: 1960107169}
-  skillDatabase:
-  - {fileID: 11400000, guid: a41f459f81f1f8349a4f1023942454fe, type: 2}
-  - {fileID: 11400000, guid: 8ccc80969832b024db1370568aadf4cb, type: 2}
-  - {fileID: 11400000, guid: 2a4731e28094041489b725943eba4206, type: 2}
-  - {fileID: 11400000, guid: 3973846279f31794b8c24e50d6bf2ffd, type: 2}
-  - {fileID: 0}
+  skillDatabase: []
 --- !u!4 &1043236568
 Transform:
   m_ObjectHideFlags: 0
@@ -11304,6 +11299,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1727352681999942456, guid: 9d11c075b63d49f479a8d3e45f43cc1c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1043236566}
     - target: {fileID: 1727352681999942456, guid: 9d11c075b63d49f479a8d3e45f43cc1c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
