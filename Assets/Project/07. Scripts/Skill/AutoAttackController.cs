@@ -4,30 +4,24 @@ public class AutoAttackController : MonoBehaviour
 {
     [SerializeField] private AttackStats attackStats;
     [SerializeField] private TargetDetector targetDetector;
-    [SerializeField] private Projectlie projectilePrefab;
+    [SerializeField]private TestSkillProjectilePool projectilePool;
+    //[SerializeField] private SkillProjectileBase projectilePrefab;
     [SerializeField] private Transform firePoint;
 
     private float attackTimer;
     private bool isDead;
-
+    private bool isAttackEnabled = true;
 
     private void Awake()
     {
-        if (attackStats == null)
-        {
-            attackStats = GetComponent<AttackStats>();
-        }
-        if(targetDetector == null)
-        {
-            targetDetector = GetComponent<TargetDetector>();
-        }
+        CacheReferences();
     }
     private void Update()
     {
-        if (isDead)
+        if (!isAttackEnabled || isDead)
         {
             return;
-        } 
+        }
         attackTimer -= Time.deltaTime;
 
         if(attackTimer > 0f)
@@ -36,9 +30,23 @@ public class AutoAttackController : MonoBehaviour
         }
         TryAttack();
     }
+
+    // 컴포넌트 자동 참조
+    private void CacheReferences()
+    {
+        if (attackStats == null)
+        {
+            attackStats = GetComponent<AttackStats>();
+        }
+
+        if (targetDetector == null)
+        {
+            targetDetector = GetComponent<TargetDetector>();
+        }
+    }
     private void TryAttack()
     {
-        Transform target = targetDetector.FindNearertTarget(attackStats.AttackRange);
+        Transform target = targetDetector.FindNearestTarget(attackStats.AttackRange);
         if(target == null)
         {
             return;
@@ -49,17 +57,47 @@ public class AutoAttackController : MonoBehaviour
     }
     private void FireProjectile(Transform target)
     {
+        if (target == null)
+        {
+            return;
+        }
         Vector2 direction = (target.position - firePoint.position).normalized;
 
-        Projectlie projectlie = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        Debug.Log(
+        $"[AutoAttack] 사용하는 풀: " +
+        $"{(projectilePool == null ? "NULL" : projectilePool.gameObject.name)}",
+        gameObject
+    );
 
         DamageInfo1 damageInfo = attackStats.CreateDamageInfo(gameObject);
 
-        projectlie.Initialize(direction, damageInfo);
+        projectilePool.Spawn(
+            firePoint.position,
+            direction.normalized,
+            damageInfo
+        );
     }
+    public void SetAttackEnabled(bool enabled)
+    {
+        isAttackEnabled = enabled;
+
+        // 다시 활성화되면 바로 공격할 수 있도록 타이머 초기화
+        if (enabled)
+        {
+            attackTimer = 0f;
+        }
+    }
+    public void StopAttack()
+    {
+        SetAttackEnabled(false);
+    }
+    public void ResumeAttack()
+    {
+        SetAttackEnabled(true);
+    }
+
     public void SetDead(bool dead)
     {
         isDead = dead;
     }   
-
 }
