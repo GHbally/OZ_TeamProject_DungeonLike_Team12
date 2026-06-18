@@ -17,7 +17,7 @@ public class PlayerLevelSystem : MonoBehaviour
     void Start()
     {
         playerBase = GetComponent<PlayerBase>();
-        //현재 경험치(1레벨 경험치 부터 시작)
+        //시작시 필요 경험치
         CalculateMaxExp();
     }
 
@@ -44,7 +44,7 @@ public class PlayerLevelSystem : MonoBehaviour
         currentExp -= maxExp;
         currentLevel++; //레벨 1 올리기
 
-        //현재 경험치 불러오기
+        //필요 경험치 불러오기
         CalculateMaxExp();
 
         //레벨업 시 스킬 찍는 선택지
