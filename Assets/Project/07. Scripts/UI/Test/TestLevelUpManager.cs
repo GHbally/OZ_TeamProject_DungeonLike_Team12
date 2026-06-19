@@ -1,58 +1,64 @@
-using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+using TMPro; // TMP를 사용하므로 필수!
 
 public class LevelUpManager : MonoBehaviour
 {
-    public GameObject levelUpPanel;
-    public GameObject skillButtonPrefab;
-    public Transform skillContainer;
-    public List<SkillData> skillDatabase;
+    [Header("UI 구성요소")]
+    [SerializeField] private GameObject levelUpPanel;
+    [SerializeField] private List<GameObject> skillButtons; // 버튼 오브젝트들을 담는 리스트
 
-    public void OpenLevelUp()
+    [Header("데이터")]
+    [SerializeField] private List<SkillData> allAvailableSkills; // 등록할 스킬 데이터 파일들
+
+    private void Start()
     {
-        if (levelUpPanel == null || skillContainer == null) return;
+        // 시작할 때 패널이 켜져 있다면 꺼줌
+        if (levelUpPanel.activeSelf)
+        {
+            levelUpPanel.SetActive(false);
+        }
+    }
 
-        Time.timeScale = 0f; // 게임 멈춤
+    public void OpenLevelUpUI()
+    {
         levelUpPanel.SetActive(true);
-
-        // 자식 오브젝트 정리 (즉시 삭제)
-        foreach (Transform child in skillContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // 스킬이 3개 미만일 경우 에러 방지
-        int count = Mathf.Min(3, skillDatabase.Count);
-        List<SkillData> randomSkills = skillDatabase.OrderBy(x => Random.value).Take(count).ToList();
-
-        foreach (SkillData skill in randomSkills)
-        {
-            GameObject newButton = Instantiate(skillButtonPrefab, skillContainer);
-            var ui = newButton.GetComponent<SkillButtonUI>();
-
-            if (ui != null) ui.Setup(skill);
-
-            var btn = newButton.GetComponent<UnityEngine.UI.Button>();
-            if (btn != null)
-            {
-                btn.onClick.RemoveAllListeners(); // 기존 리스너 초기화
-                btn.onClick.AddListener(() => SelectSkill(skill));
-            }
-        }
+        Time.timeScale = 0f; // 게임 일시정지
+        RerollSkills(); // 창을 열 때 자동으로 스킬 생성
     }
 
-    public void SelectSkill(SkillData skill)
+    public void RerollSkills()
     {
-        // 여기서 캐릭터 로직 수행
-        Debug.Log($"{skill.skillName} 선택됨!");
+        // 1. 디버그 로그 추가 (버튼 클릭 확인용)
+        Debug.Log("리롤 시작!");
 
-        CloseLevelUp();
+        // 2. 사용 가능한 스킬 리스트 복사본 생성 (원본 유지)
+        List<SkillData> pool = new List<SkillData>(allAvailableSkills);
+
+        // 3. 버튼 개수만큼 랜덤하게 뽑기
+        for (int i = 0; i < skillButtons.Count; i++)
+        {
+            if (pool.Count == 0) break; // 스킬이 부족하면 중단
+
+            int randomIndex = Random.Range(0, pool.Count);
+            SkillData selected = pool[randomIndex];
+
+            // 4. 버튼의 텍스트(TMP) 변경
+            // 주의: 버튼 하위에 있는 Text (TMP) 컴포넌트를 찾습니다.
+            TextMeshProUGUI buttonText = skillButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+            if (buttonText != null)
+            {
+                buttonText.text = selected.SkillName;
+            }
+
+            // 5. 뽑은 스킬은 풀에서 제거 (중복 방지)
+            pool.RemoveAt(randomIndex);
+        }
     }
 
-    public void CloseLevelUp()
+    public void CloseLevelUpUI()
     {
         levelUpPanel.SetActive(false);
-        Time.timeScale = 1f; // 게임 재개
+        Time.timeScale = 1f; // 게임 다시 시작
     }
 }
