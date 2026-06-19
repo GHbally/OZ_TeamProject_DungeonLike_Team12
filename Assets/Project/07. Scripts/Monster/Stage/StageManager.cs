@@ -20,6 +20,7 @@ public class StageManager : MonoBehaviour
             chapter++;
             stage = 1;
         }
+
         waveManager.StartStage(chapter, stage);
     }
 }
