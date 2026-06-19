@@ -4,43 +4,37 @@ using System.Collections;
 /************************
  중간보스 클래스
 플레이어 추적 -> 돌진 -> 대기 반복
+접촉시 데미지
 
  **************************/
 public class MidBossMonster : MonsterBase
 {
     [Header("보스 설정")]
 
-    //플레이어가 범위 안으로 들어오면 돌진 시작
-    public float detectRange = 8f;
-    //돌진 속도
-    public float dashSpeed = 10f;
-    //돌진 지속시간
-    public float dashDuration = 0.5f;
-    //돌진 후 정지 시간
-    public float waitTime = 2f;
-    //돌진 데미지
-    public float damage = 30f;
-    //현재 돌진중인지 확인
-    private bool isDashing;
-    //현재 대기 중인지 확인
-    private bool isWaiting;
+    public float detectRange = 8f; //공격 시작 거리
+    public float dashSpeed = 10f; //돌진 속도
+    public float dashDuration = 0.5f; //돌진 지속시간
+    public float waitTime = 2f; //돌진 후 대기 시간
+    public float damage = 30f; //돌진 데미지
+    private bool isDashing; //현재 돌진중인지 확인
+    private bool isWaiting; //현재 대기 중인지 확인
 
     [Header("접촉 데미지")]
-    public float touchDamage = 15f;
-    public float damageInterval = 1f;
+    public float touchDamage = 20f; //접촉하고 있을대 데미지
+    public float damageInterval = 1f; // 1초마다 데미지
 
     private float damageTimer;
 
+
+    //몬스터 활성화
     protected override void OnEnable()
     {
-        base.OnEnable();
+        base.OnEnable(); //부모 클래스 초기화
 
-        damageTimer = damageInterval;
+        damageTimer = damageInterval; //접촉 데미지 타이머 초기화
     }
 
-
-
-    protected override void UpdateState()
+    protected override void UpdateState() //추적 상태인지 공격상태인지
     {
         //플레이어가 없으면 종료
         if(player == null)return;
@@ -64,8 +58,8 @@ public class MidBossMonster : MonsterBase
             currentState = MonsterState.Chase;
         }
     }
-
-    protected override void AttackLogic()
+   
+    protected override void AttackLogic() // 공격 상태
     {
         // 돌진 또는 대기 중이 아닐 때만 실행
         if (!isDashing && !isWaiting)
@@ -74,7 +68,7 @@ public class MidBossMonster : MonsterBase
         }
     }
 
-    IEnumerator DashPattern()
+    IEnumerator DashPattern() //돌진패턴
     {
         // 돌진 시작
         isDashing = true;
@@ -124,6 +118,35 @@ public class MidBossMonster : MonsterBase
 
             Debug.Log("중간보스 돌진 공격 적중");
         }
+    }
+
+    //플레이어와 접촉중
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        damageTimer += Time.deltaTime;
+
+        //일정 시간마다 데미지
+        if (damageTimer >= damageInterval)
+        {
+            damageTimer = 0f;
+
+            PlayerBase playerbase = other.GetComponent<PlayerBase>();
+
+            if (playerbase != null)
+            {
+                playerbase.TakeDamage(touchDamage);
+                Debug.Log("중간보스 접촉 데미지");
+            }
+        }
+    }
+
+    //플레이어가 벗어나면 타이머 초기하ㅓ
+    private void OnTriggerExit2D(Collider2D other)
+    {
+       if(!other.CompareTag("Player")) return;
+        damageTimer = damageInterval;
     }
 
     protected override void Death()
