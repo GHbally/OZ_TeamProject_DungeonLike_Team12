@@ -12,9 +12,13 @@ public class PlayerLevelSystem : MonoBehaviour
     public float CurrentExp => currentExp;
     public float MaxExp => maxExp;
 
-    LevelUpManager uiManager = FindFirstObjectByType<LevelUpManager>();
+    private LevelUpManager uiManager;
     //플레이어 상태 알 수 있게 코어 연결
     private PlayerBase playerBase;
+    private void Awake()
+    {
+        uiManager = FindFirstObjectByType<LevelUpManager>();
+    }
     void Start()
     {
         playerBase = GetComponent<PlayerBase>();
