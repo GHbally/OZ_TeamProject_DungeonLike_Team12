@@ -32,37 +32,73 @@ public class WaveManager : MonoBehaviour
     [Header("스폰 위치")]
     public Transform[] spawnPoints;
 
+    [Header("보스 프리팹")]
+    public GameObject midBossPrefab;
+    public GameObject lastBossPrefab;
+
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
     {
-        // 챕터1 스테이지 1
+        // 1-1
         if (chapter == 1 && stage == 1)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 3, archerCount = 0 },
+            new WaveData(){ warriorCount = 5, archerCount = 1 },
+            new WaveData(){ warriorCount = 7, archerCount = 2 }
+            };
+        }
+
+        // 1-2
+        else if (chapter == 1 && stage == 2)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 5, archerCount = 1 },
+            new WaveData(){ warriorCount = 7, archerCount = 2 },
+            new WaveData(){ warriorCount = 10, archerCount = 3 }
+            };
+        }
+
+        // 1-3
+        else if (chapter == 1 && stage == 3)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 8, archerCount = 2 },
+            new WaveData(){ warriorCount = 10, archerCount = 3 },
+            new WaveData(){ warriorCount = 12, archerCount = 4 }
+            };
+        }
+
+        // 1-4
+        else if (chapter == 1 && stage == 4)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 10, archerCount = 3 },
+            new WaveData(){ warriorCount = 12, archerCount = 4 },
+            new WaveData(){ warriorCount = 15, archerCount = 5 }
+            };
+        }
+
+        // 1-5 (보스)
+        else if (chapter == 1 && stage == 5)
         {
             waves = new WaveData[]
             {
             new WaveData()
             {
-                warriorCount = 3,
+                warriorCount = 0,
                 archerCount = 0
-            },
-
-            new WaveData()
-            {
-                warriorCount = 5,
-                archerCount = 1
-            },
-
-            new WaveData()
-            {
-                warriorCount = 7,
-                archerCount = 2
             }
             };
         }
     }
 
 
-    
+
     // 스테이지 시작
     public void StartStage(int chapter, int stage)
     {
