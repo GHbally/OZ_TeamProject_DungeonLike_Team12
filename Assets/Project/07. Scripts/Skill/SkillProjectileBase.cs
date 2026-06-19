@@ -1,3 +1,4 @@
+//[★투사체 부모 클래스 - 오브젝트 풀링]
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,52 +7,54 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 
+//관통/장판형 투사체 부모 클래스
 public abstract class SkillProjectileBase : MonoBehaviour
 {
-    [SerializeField] protected float moveSpeed = 10f;
-    protected bool rotateToDirection = true;
+    [SerializeField] protected float moveSpeed = 10f;   //날아가는 속도
+    protected bool rotateToDirection = true;            //방향회전 기능 사용 여부
 
-    [SerializeField] protected float lifeTime = 1f;
-    protected float remainingLifeTime;
+    [SerializeField] protected float lifeTime = 1f;     //투사체 수명
+    protected float remainingLifeTime;                  //수명 카운터
 
-    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask enemyLayer;      //적 레이어 인식
 
-    protected Vector2 moveDirection;
+    protected Vector2 moveDirection;                    //이동 방향
 
-    protected DamageInfo1 damageInfo;
+    protected DamageInfo1 damageInfo;                   //데미지 정보
     
-    protected GameObject owner;     // 투사체를 발사한 대상
+    protected GameObject owner;                         //투사체를 발사한 대상
 
-    protected int maxHitCount = 100;  // 최대 타격할 수 있는 적의 수
-    protected int currentHitCount;  // 타격한 적의 수
+    protected int maxHitCount = 100;                    //최대 타격할 수 있는 적의 수
+    protected int currentHitCount;                      //타격한 적의 수(관통 카운트)
 
-    protected bool isInitialized;
+    protected bool isInitialized;                       //준비 됐는지
 
-    protected bool isReleased;      // 이미 제거가 되었는 지 여부
+    protected bool isReleased;                          //이미 제거가 되었는 지 여부
 
     private Action<SkillProjectileBase> releaseAction;          // 풀로 변환하는 함수
 
     private readonly HashSet<IDamageable1> hitTargets = new();  // 중복 피해를 받지 않게 함
 
+    //투사체를 스폰할때 초기화 함수
     public virtual void Initialize(
         Vector2 direction, 
         DamageInfo1 newDamageInfo, 
         Action<SkillProjectileBase> newReleaseAction)
     {
 
-        moveDirection = direction.normalized;
+        moveDirection = direction.normalized;   //방향 세팅
 
-        damageInfo = newDamageInfo;
-        owner = newDamageInfo.Attacker;
-        releaseAction = newReleaseAction;
+        damageInfo = newDamageInfo;             //데미지 정보 상자
+        owner = newDamageInfo.Attacker;         //발사한 대상
+        releaseAction = newReleaseAction;       //되돌아갈 풀 주소 등록
 
-        remainingLifeTime = lifeTime;
-        currentHitCount = 0;
+        remainingLifeTime = lifeTime;           //투사체 수명 최대로
+        currentHitCount = 0;                    //관통 카운트 0으로 리셋
 
-        isInitialized = true;
-        isReleased = false;
+        isInitialized = true;                   //가동 스위치 켬
+        isReleased = false;                     //반환 스위치 끔
 
-        hitTargets.Clear();
+        hitTargets.Clear();                     //
 
         // 풀에 있던 오브젝트 활성화
         gameObject.SetActive(true);
@@ -92,6 +95,7 @@ public abstract class SkillProjectileBase : MonoBehaviour
 
         if (remainingLifeTime <= 0f)
         {
+            //수명 다되면 반납(풀링)
             ReleaseProjectile();
         }
     }
@@ -102,6 +106,7 @@ public abstract class SkillProjectileBase : MonoBehaviour
         transform.position += (Vector3)(moveDirection * moveSpeed * Time.deltaTime);
     }
 
+    //날아가는 방향으로 스프라이트 회전 시키는 함수
     protected void RotateToMoveDirection()
     {
         if (moveDirection.sqrMagnitude <= 0f)
@@ -113,6 +118,8 @@ public abstract class SkillProjectileBase : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
+
+    //물리 충돌 감지 메서드 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (!isInitialized || isReleased)
