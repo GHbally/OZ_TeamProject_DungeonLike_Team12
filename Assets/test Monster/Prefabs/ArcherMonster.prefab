@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8289540266107429600}
   - component: {fileID: 6888885914851635076}
   - component: {fileID: 4404614093611046408}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ArcherMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
