@@ -692,6 +692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1172196920}
   - component: {fileID: 1172196919}
+  - component: {fileID: 1172196921}
   m_Layer: 0
   m_Name: ProjectilePool
   m_TagString: Untagged
@@ -711,7 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9951712375fa2549895ce7d540a4361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestSkillProjectilePool
-  projectilePrefab: {fileID: -2304798615771023848, guid: 36f8b6db53977a141bc3e2a31f858459, type: 3}
+  projectilePrefab: {fileID: 0}
   projectileContainer: {fileID: 1641865962}
   defaultCapacity: 10
   maxPoolSize: 100
@@ -731,6 +732,22 @@ Transform:
   - {fileID: 1641865962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1172196921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172196918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: 8142387622091552300, guid: 36f8b6db53977a141bc3e2a31f858459, type: 3}
+  projectileContainer: {fileID: 1641865962}
+  defaultCapacity: 10
+  maxPoolSize: 100
 --- !u!1 &1312935912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AutoAttackController
   attackStats: {fileID: 1328817145}
   targetDetector: {fileID: 1328817143}
-  projectilePool: {fileID: 1172196919}
+  projectilePool: {fileID: 1172196921}
   firePoint: {fileID: 205416929}
 --- !u!114 &1328817145
 MonoBehaviour:
@@ -1037,9 +1054,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1328817140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb50b008d9d95e44b87974a9d4c76dd1, type: 3}
+  m_Script: {fileID: 11500000, guid: abe9fa82707d0364cbb93493a9f18d81, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestAttackReinforce
+  m_EditorClassIdentifier: Assembly-CSharp::AttackReinforce
   attackStats: {fileID: 1328817145}
 --- !u!1 &1641865961
 GameObject:

@@ -1,16 +1,18 @@
 //[몬스터 부모 클래스]
 using UnityEngine;
 
-public abstract class MonsterBase : MonoBehaviour
+public abstract class MonsterBase : MonoBehaviour, IDamageable1
 {
     [Header("몬스터 능력치")]
     public MonsterType monsterType;
-    public int maxHp = 100;             //최대 체력
-    protected int currentHp;            //현재 체력
+    public float maxHp = 100;             //최대 체력
+    protected float currentHp;            //현재 체력
     public float moveSpeed = 3f;        //이동속도
     public Transform player;            //플레이어 위치
     public MonsterState currentState;   //현재 몬스터 상태
     protected Rigidbody2D rb;
+
+    protected bool isDead;                //몬스터 죽은 상태
 
     protected virtual void Awake()
     {
@@ -74,14 +76,36 @@ public abstract class MonsterBase : MonoBehaviour
     protected abstract void AttackLogic();  //어느 타이밍에 원거리 공격할지 (원거리몹 수행)
 
     //[피격 메서드]
-    public virtual void TakeDamage(int damage)
+    //public virtual void TakeDamage1(int damage)
+    //{
+    //    currentHp -= damage;
+    //    if (currentHp <= 0)
+    //    {
+    //        Death();
+    //    }
+    //}
+
+    //[피격 메서드]
+    public virtual void TakeDamage(DamageInfo1 damageInfo)
     {
-        currentHp -= damage;
-        if (currentHp <= 0)
+        if (isDead)
+        {
+            return;
+        }
+        currentHp -= damageInfo.Damage;
+
+        Debug.Log(
+            $"{name} 피해: {damageInfo.Damage}, " +
+            $"치명타: {damageInfo.IsCritical}, " +
+            $"남은 체력: {currentHp}"
+        );
+
+        if (currentHp <= 0f)
         {
             Death();
         }
     }
+
 
     //사망
     protected virtual void Death()

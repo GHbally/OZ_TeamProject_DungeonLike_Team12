@@ -4,6 +4,7 @@ public class AttackReinforce : MonoBehaviour
 {
     [SerializeField]
     private AttackStats attackStats;
+    private AutoAttackController controller;
 
     private void Awake()
     {
@@ -53,6 +54,11 @@ public class AttackReinforce : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             attackStats.IncreaseCriticalMultiplier(0.15f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            controller.StopAttack();
         }
     }
 }
