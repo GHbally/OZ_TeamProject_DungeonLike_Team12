@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7293688219679810237}
   - component: {fileID: -5266915894571722235}
   - component: {fileID: 7000037412746811126}
-  - component: {fileID: -2304798615771023848}
+  - component: {fileID: 8142387622091552300}
   m_Layer: 0
   m_Name: TestBasicSkillProjectile
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1628635342464039482}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.15917, y: 2.43168, z: 0}
+  m_LocalPosition: {x: 1.15917, y: 2.437, z: 0}
   m_LocalScale: {x: 0.15, y: 0.67, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -157,7 +157,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-2304798615771023848
+--- !u!114 &8142387622091552300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,9 +166,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1628635342464039482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8cbd03e9c54fb4eabceb5848567951, type: 3}
+  m_Script: {fileID: 11500000, guid: 54eea543f600fbd4eb20319ebe5fe1ad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestBasicSkillProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::BasicSkillProjectile
   moveSpeed: 10
   lifeTime: 1
   enemyLayer:

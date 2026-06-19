@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestAttackReinforce : MonoBehaviour
+public class AttackReinforce : MonoBehaviour
 {
     [SerializeField]
     private AttackStats attackStats;

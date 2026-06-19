@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class TestSkillProjectilePool : MonoBehaviour
+public class SkillProjectilePool : MonoBehaviour
 {
     [SerializeField] private SkillProjectileBase projectilePrefab;
 

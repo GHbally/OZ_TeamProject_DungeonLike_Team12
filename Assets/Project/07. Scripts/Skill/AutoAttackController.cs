@@ -4,7 +4,7 @@ public class AutoAttackController : MonoBehaviour
 {
     [SerializeField] private AttackStats attackStats;
     [SerializeField] private TargetDetector targetDetector;
-    [SerializeField]private TestSkillProjectilePool projectilePool;
+    [SerializeField] private SkillProjectilePool projectilePool;
     //[SerializeField] private SkillProjectileBase projectilePrefab;
     [SerializeField] private Transform firePoint;
 

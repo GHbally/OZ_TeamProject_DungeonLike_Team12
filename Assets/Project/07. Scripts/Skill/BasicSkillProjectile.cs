@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestBasicSkillProjectile : SkillProjectileBase
+public class BasicSkillProjectile : SkillProjectileBase
 {
     protected override void OnInitialized()
     {
