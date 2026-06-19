@@ -29,7 +29,7 @@ public class PlayerLevelSystem : MonoBehaviour
         if (playerBase != null && playerBase.IsDead) return;
 
         currentExp += amount; //경험치 누적
-
+        
         //현재경험치가 요구경험치 이상이면 
         while (currentExp >= maxExp)
         {
@@ -84,4 +84,4 @@ public class PlayerLevelSystem : MonoBehaviour
             uiManager.CloseLevelUpUI();
         }
     }
-}
+}//
