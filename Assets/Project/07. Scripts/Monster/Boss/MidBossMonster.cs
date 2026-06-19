@@ -25,6 +25,20 @@ public class MidBossMonster : MonsterBase
     //현재 대기 중인지 확인
     private bool isWaiting;
 
+    [Header("접촉 데미지")]
+    public float touchDamage = 15f;
+    public float damageInterval = 1f;
+
+    private float damageTimer;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        damageTimer = damageInterval;
+    }
+
+
 
     protected override void UpdateState()
     {
