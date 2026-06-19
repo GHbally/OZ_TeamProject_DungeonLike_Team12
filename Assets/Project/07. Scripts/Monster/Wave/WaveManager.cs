@@ -83,7 +83,7 @@ public class WaveManager : MonoBehaviour
             };
         }
 
-        // 1-5 (보스)
+        // 1-5 (중간 보스)
         else if (chapter == 1 && stage == 5)
         {
             waves = new WaveData[]
@@ -112,14 +112,35 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(StartWave());
     }
 
+
+    /********************
+    1-1 ~ 1-4 -> 일반 웨이브 진행
+    1-5 -> 중간보스 생성
+    aliveMonster = 1
+    보스 처치 -> aliveMonster = 0 -> 스테이지 클리어
+     **********************/
     //웨이브 시작
     IEnumerator StartWave()
     {
+        StageManager stageManager = FindFirstObjectByType<StageManager>();
+
+        // 1-5 보스 스테이지
+        if (stageManager.chapter == 1 && stageManager.stage == 5)
+        {
+            SpawnMidBoss();
+
+            // 보스 1마리 살아있음
+            aliveMonster = 1;
+
+            yield break;
+        }
+
         // 현재 웨이브의 정보를 가져오기
         WaveData data = waves[currentWave];
         // 살아있는 몬스터의 수를 계산
         aliveMonster = data.warriorCount + data.archerCount;
 
+        //전사 몬스터 생성
         for (int i = 0; i < data.warriorCount; i++)
         {
             SpawnWarrior();
@@ -160,6 +181,15 @@ public class WaveManager : MonoBehaviour
         monster.transform.position = GetRandomSpawnPosition();
     }
 
+    //중간 보스 생성
+    void SpawnMidBoss()
+    {
+        if (midBossPrefab == null) return;
+
+        Instantiate(midBossPrefab,GetRandomSpawnPosition(), Quaternion.identity);
+
+        Debug.Log("중간보스 등장");
+    }
 
     // 랜덤 스폰 위치 반환
     Vector3 GetRandomSpawnPosition()
@@ -169,36 +199,34 @@ public class WaveManager : MonoBehaviour
         return spawnPoints[index].position;
     }
 
+
+
+    /******************
+    몬스터 사망 -> aliveMonster 감소
+    0이 되면 -> 다음 웨이브 
+    마지막 웨이브면 -> 스테이지 클리어
+     *******************/
     //몬스터 사망시 호출
     public void MonsterDead()
     {
-        //몬스터 감소
         aliveMonster--;
 
-        if (aliveMonster <= 0)
+        // 아직 몬스터 남아있음
+        if (aliveMonster > 0)
+            return;
+
+        // 다음 웨이브
+        currentWave++;
+
+        // 모든 웨이브 클리어
+        if (currentWave >= waves.Length)
         {
-            currentWave++;
-
-            // 아직 몬스터가 남아 있다면 리턴
-            if (aliveMonster > 0)
-                return;
-
-            // 다음 웨이브 이동
-            currentWave++;
-
-            // 모든 웨이브 클리어
-            if (currentWave >= waves.Length)
-            {
-                Debug.Log("스테이지 클리어");
-
-                FindFirstObjectByType<StageManager>()
-                    .ClearStage();
-
-                return;
-            }
-
-            // 다음 웨이브 시작
-            StartCoroutine(StartWave());
+            Debug.Log("스테이지 클리어");
+            FindFirstObjectByType<StageManager>().ClearStage();
+            return;
         }
+
+        StartCoroutine(StartWave());
     }
 }
+
