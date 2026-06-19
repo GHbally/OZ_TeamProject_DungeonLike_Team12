@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
   m_Name: AttackSpeed
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: 
+  skillName: AttackSpeed
   description: 
   icon: {fileID: 1161726484, guid: da6c3b981468ad94ea33cdb83f6ad28d, type: 3}
-  level: 0

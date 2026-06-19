@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
   m_Name: Fire
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: 
+  skillName: Fire
   description: 
   icon: {fileID: 0}

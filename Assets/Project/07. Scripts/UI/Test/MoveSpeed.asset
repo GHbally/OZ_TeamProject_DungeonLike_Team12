@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
   m_Name: MoveSpeed
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: 
+  skillName: MoveSpeed
   description: 
   icon: {fileID: -1342740005, guid: fe9391198f08bc14489e06d1fdb3759e, type: 3}
-  level: 0

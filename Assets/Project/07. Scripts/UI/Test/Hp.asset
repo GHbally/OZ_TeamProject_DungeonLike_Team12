@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
   m_Name: Hp
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: 
+  skillName: Hp
   description: 
   icon: {fileID: -2068708885, guid: 80d1f9d7e7551d64aa801e4ef5adae29, type: 3}
-  level: 0
