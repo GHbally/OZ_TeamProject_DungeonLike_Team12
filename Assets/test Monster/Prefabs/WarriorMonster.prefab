@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3001260928535277275}
   - component: {fileID: 1548235498030670434}
   - component: {fileID: 1551547544791858265}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: WarriorMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
