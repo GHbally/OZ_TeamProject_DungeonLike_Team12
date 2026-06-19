@@ -12,6 +12,7 @@ public class PlayerLevelSystem : MonoBehaviour
     public float CurrentExp => currentExp;
     public float MaxExp => maxExp;
 
+    LevelUpManager uiManager = FindFirstObjectByType<LevelUpManager>();
     //플레이어 상태 알 수 있게 코어 연결
     private PlayerBase playerBase;
     void Start()
@@ -28,7 +29,7 @@ public class PlayerLevelSystem : MonoBehaviour
         if (playerBase != null && playerBase.IsDead) return;
 
         currentExp += amount; //경험치 누적
-
+        
         //현재경험치가 요구경험치 이상이면 
         while (currentExp >= maxExp)
         {
@@ -69,8 +70,18 @@ public class PlayerLevelSystem : MonoBehaviour
 
     //스킬 선택 UI불러와줄 메서드
     private void TriggerSkillSelectionWindow()
-    {
-        //Time.timeScale = 0f;로 게임 프레임 일시정지 후 UI연동
+    {   
+        if (uiManager != null)
+        {
+            uiManager.OpenLevelUpUI();
+        }
     }
-    
-}
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            uiManager.CloseLevelUpUI();
+        }
+    }
+}//
