@@ -106,5 +106,12 @@ public class PlayerBase : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
         }
+
+        AutoAttackController autoAttack = GetComponent<AutoAttackController>();
+        if (autoAttack != null)
+        {
+            //사망 시 자동 공격 정지
+            autoAttack.StopAttack();
+        }
     }
 }

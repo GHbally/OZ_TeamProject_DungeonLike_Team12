@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerWarrior : PlayerBase
 {
     [Header("전사 스킬 레벨")]
-    [Range(1,5)]
+    [Range(1, 5)]
     public int skillLevel = 1;  //전사 베기 스킬 기본 1부터 시작
 
     [Header("전사 스킬 프리팹")]
