@@ -11,6 +11,8 @@ public class LevelUpManager : MonoBehaviour
     [Header("데이터")]
     [SerializeField] private List<SkillData> allAvailableSkills; // 등록할 스킬 데이터 파일들
 
+    [SerializeField] private List<SkillData> currentDisplayedSkills; // 현재 화면에 출력된 스킬들
+
     private void Start()
     {
         // 시작할 때 패널이 켜져 있다면 꺼줌
@@ -54,6 +56,14 @@ public class LevelUpManager : MonoBehaviour
             // 5. 뽑은 스킬은 풀에서 제거 (중복 방지)
             pool.RemoveAt(randomIndex);
         }
+    }
+    public void OnSkillSelected(int index)
+    {
+        SkillData selected = currentDisplayedSkills[index];
+        Debug.Log(selected.SkillName + " 선택됨!");
+
+        // 여기에 실제로 스탯을 올리는 로직을 넣으세요.
+        CloseLevelUpUI();
     }
 
     public void CloseLevelUpUI()

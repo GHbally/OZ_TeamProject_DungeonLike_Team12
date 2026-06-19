@@ -4,6 +4,8 @@ using TMPro;
 
 public class SkillButtonUI : MonoBehaviour
 {
+    [SerializeField] private int buttonIndex;
+    [SerializeField] private LevelUpManager manager;
     public Image iconImage;
     public TMP_Text nameText;
     public TMP_Text descText;
@@ -19,6 +21,6 @@ public class SkillButtonUI : MonoBehaviour
 
     public void OnClickButton()
     {
-        Debug.Log(mySkill.SkillName + " º±≈√µ !");
+        manager.OnSkillSelected(buttonIndex);
     }
 }
