@@ -53,6 +53,15 @@ public class AutoAttackController : MonoBehaviour
         {
             return;
         }
+        float distanceSqr = (target.position - transform.position).sqrMagnitude;
+
+        // 공격 범위의 제곱
+        float attackRangeSqr = attackStats.AttackRange * attackStats.AttackRange;
+        if (distanceSqr > attackRangeSqr)
+        {
+            return;
+        }
+
         FireProjectile(target);
 
         attackTimer = attackStats.GetAttackInterval();
