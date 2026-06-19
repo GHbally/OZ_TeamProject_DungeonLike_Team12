@@ -10,6 +10,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     public float moveSpeed = 3f;        //이동속도
     public Transform player;            //플레이어 위치
     public MonsterState currentState;   //현재 몬스터 상태
+
     protected Rigidbody2D rb;
 
     protected bool isDead;                //몬스터 죽은 상태
@@ -63,11 +64,13 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         }
     }
 
-    //[몬스터 이동 메서드]
+    ///////////////////플레이어 추적 이동////////////////////////
     private void MoveTowardsPlayer()
     {
-        Vector2 dir = ((Vector2)player.position - rb.position).normalized; //방향 계산
-        //부드러운 이동
+        //방향 계산
+        Vector2 dir = ((Vector2)player.position - rb.position).normalized;
+        
+        //최종 방향으로 이동
         rb.MovePosition(rb.position + dir * moveSpeed * Time.fixedDeltaTime);
     }
 

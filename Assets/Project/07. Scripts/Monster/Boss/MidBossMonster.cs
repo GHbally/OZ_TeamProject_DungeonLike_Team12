@@ -1,12 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-/************************
- 중간보스 클래스
-플레이어 추적 -> 돌진 -> 대기 반복
-접촉시 데미지
+/************************************************
+ * MidBossMonster
+ *
+ * 플레이어를 추적하다가 공격 범위에 진입하면
+ * 돌진 공격을 수행하는 중간보스
+ *
+ * 기능
+ * - 플레이어 추적
+ * - 돌진 공격
+ * - 접촉 데미지
+ * - 대기 패턴
+ * - 사망 처리
+ ************************************************/
 
- **************************/
+
 public class MidBossMonster : MonsterBase
 {
     [Header("보스 설정")]
@@ -26,7 +35,7 @@ public class MidBossMonster : MonsterBase
     private float damageTimer;
 
 
-    //몬스터 활성화
+    ///////////////////////몬스터 활성화//////////////////////
     protected override void OnEnable()
     {
         base.OnEnable(); //부모 클래스 초기화
@@ -34,6 +43,11 @@ public class MidBossMonster : MonsterBase
         damageTimer = damageInterval; //접촉 데미지 타이머 초기화
     }
 
+
+    /*******************
+    플레이어 존재 확인 -> 돌진?대기? -> (예스 -> 종료)아니요-> 거리 계산 -> detectRange안
+    -> Attack -> detectRange 밖 -> Chase
+     ********************/
     protected override void UpdateState() //추적 상태인지 공격상태인지
     {
         //플레이어가 없으면 종료
@@ -149,11 +163,30 @@ public class MidBossMonster : MonsterBase
         damageTimer = damageInterval;
     }
 
+
+    /***********************
+    상태를 Dead로 변경 -> 돌진 코루틴 정지 -> 경험치 드랍
+    -> WaveManager에 사망 알림 -> 오브젝트 제거
+     ************************/
     protected override void Death()
     {
+        currentState = MonsterState.Dead;
+
+        // 돌진 코루틴 정지
+        StopAllCoroutines();
+
         Debug.Log("중간보스 처치");
 
-        // 부모 클래스 사망 처리
-        base.Death();
+        // 경험치 드랍
+        if (DropManager.Instance != null)
+        {
+            DropManager.Instance.DropExp(transform.position);
+        }
+
+        // WaveManager에 보스 사망 알림
+        FindFirstObjectByType<WaveManager>() ?.MonsterDead();
+
+        // 보스 제거
+        Destroy(gameObject);
     }
 }
