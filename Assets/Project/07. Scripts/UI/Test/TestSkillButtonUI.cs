@@ -12,13 +12,13 @@ public class SkillButtonUI : MonoBehaviour
     public void Setup(SkillData data)
     {
         mySkill = data;
-        iconImage.sprite = data.icon;
-        nameText.text = data.skillName;
-        descText.text = data.description;
+        iconImage.sprite = data.Icon;
+        nameText.text = data.SkillName;
+        descText.text = data.Description;
     }
 
     public void OnClickButton()
     {
-        Debug.Log(mySkill.skillName + " º±≈√µ !");
+        Debug.Log(mySkill.SkillName + " º±≈√µ !");
     }
 }
