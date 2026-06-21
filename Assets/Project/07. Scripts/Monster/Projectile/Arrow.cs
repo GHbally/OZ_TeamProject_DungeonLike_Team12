@@ -25,6 +25,11 @@ public class Arrow : MonoBehaviour
     {
         if(!other.CompareTag("Player")) return;
         Debug.Log("플레이어 피격");
+        PlayerBase player = other.GetComponent<PlayerBase>();
+        if (player != null)
+        {
+            player.TakeDamage(damage);
+        }
         ReturnPool();
     }
     void ReturnPool()

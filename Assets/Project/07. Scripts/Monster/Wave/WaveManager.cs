@@ -29,8 +29,16 @@ public class WaveManager : MonoBehaviour
 
     public WaveData[] waves; //웨이브 데이터 배열
 
-    [Header("스폰 위치")]
-    public Transform[] spawnPoints;
+    [Header("랜덤 스폰")]
+    public Transform player;        // 플레이어 위치
+
+    public float minSpawnRadius = 12f; // 최소 생성 거리
+    public float maxSpawnRadius = 18f; // 최대 생성 거리
+
+    [Header("생성 제한")]
+    public LayerMask spawnBlockLayer; // 장애물 + 몬스터
+
+    public float checkRadius = 0.7f;  // 생성 가능 여부 검사 반경
 
     [Header("보스 프리팹")]
     public GameObject midBossPrefab;
@@ -102,6 +110,11 @@ public class WaveManager : MonoBehaviour
     // 스테이지 시작
     public void StartStage(int chapter, int stage)
     {
+        if (player == null)
+        {
+            //플레이어 위치를 변수에 저장
+            player = GameObject.FindGameObjectWithTag("Player") .transform;
+        }
         //이전 코루틴 종료
         StopAllCoroutines();
         // 첫 웨이브 부터 시작
@@ -191,12 +204,38 @@ public class WaveManager : MonoBehaviour
         Debug.Log("중간보스 등장");
     }
 
-    // 랜덤 스폰 위치 반환
+    // 플레이어 주변 랜덤 위치 생성
     Vector3 GetRandomSpawnPosition()
     {
-        int index = Random.Range(0, spawnPoints.Length);
+        // 최대 20번 시도
+        for (int i = 0; i < 20; i++)
+        {
+            // 랜덤 방향
+            Vector2 randomDir = Random.insideUnitCircle.normalized;
 
-        return spawnPoints[index].position;
+            // 랜덤 거리
+            float distance =
+                Random.Range(minSpawnRadius,maxSpawnRadius);
+
+            // 최종 생성 위치
+            Vector2 spawnPos =(Vector2)player.position +randomDir * distance;
+
+            // 장애물 또는 몬스터 검사
+            bool blocked =Physics2D.OverlapCircle(
+                    spawnPos,
+                    checkRadius,
+                    spawnBlockLayer
+                );
+
+            // 비어있는 위치 발견
+            if (!blocked)
+            {
+                return spawnPos;
+            }
+        }
+
+        // 실패 시 플레이어 근처 반환
+        return player.position;
     }
 
 
