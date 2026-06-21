@@ -11,6 +11,12 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     public Transform player;            //플레이어 위치
     public MonsterState currentState;   //현재 몬스터 상태
 
+    [Header("몬스터 분리")]
+    
+    public float separationRadius = 1.2f; //주변 몬스터를 탐색할 범위
+    public float separationForce = 2f; //몬스터 끼리 밀어내는 힘
+
+
     protected Rigidbody2D rb;
 
     protected bool isDead;                //몬스터 죽은 상태
