@@ -815,11 +815,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves: []
-  spawnPoints:
-  - {fileID: 1101376494}
-  - {fileID: 1101376494}
-  - {fileID: 1282413051}
-  - {fileID: 884925747}
+  player: {fileID: 857179965}
+  minSpawnRadius: 12
+  maxSpawnRadius: 18
+  spawnBlockLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  checkRadius: 0.7
   midBossPrefab: {fileID: 0}
   lastBossPrefab: {fileID: 0}
 --- !u!114 &729312935

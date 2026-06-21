@@ -52,6 +52,8 @@ MonoBehaviour:
   moveSpeed: 2
   player: {fileID: 0}
   currentState: 0
+  separationRadius: 0.5
+  separationForce: 0.5
   attackRange: 7
   attackCooldown: 2
 --- !u!50 &8289540266107429600
