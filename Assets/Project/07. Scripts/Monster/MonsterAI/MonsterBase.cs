@@ -1,25 +1,25 @@
-//[¸ó½ºÅÍ ºÎ¸ğ Å¬·¡½º]
+//[ëª¬ìŠ¤í„° ë¶€ëª¨ í´ë˜ìŠ¤]
 using UnityEngine;
 
 public abstract class MonsterBase : MonoBehaviour, IDamageable1
 {
-    [Header("¸ó½ºÅÍ ´É·ÂÄ¡")]
+    [Header("ëª¬ìŠ¤í„° ëŠ¥ë ¥ì¹˜")]
     public MonsterType monsterType;
-    public float maxHp = 100;             //ÃÖ´ë Ã¼·Â
-    protected float currentHp;            //ÇöÀç Ã¼·Â
-    public float moveSpeed = 3f;        //ÀÌµ¿¼Óµµ
-    public Transform player;            //ÇÃ·¹ÀÌ¾î À§Ä¡
-    public MonsterState currentState;   //ÇöÀç ¸ó½ºÅÍ »óÅÂ
+    public float maxHp = 100;             //ìµœëŒ€ ì²´ë ¥
+    protected float currentHp;            //í˜„ì¬ ì²´ë ¥
+    public float moveSpeed = 3f;        //ì´ë™ì†ë„
+    public Transform player;            //í”Œë ˆì´ì–´ ìœ„ì¹˜
+    public MonsterState currentState;   //í˜„ì¬ ëª¬ìŠ¤í„° ìƒíƒœ
 
-    [Header("¸ó½ºÅÍ ºĞ¸®")]
-    // ÁÖº¯ ¸ó½ºÅÍ¸¦ Å½»öÇÒ ¹üÀ§
+    [Header("ëª¬ìŠ¤í„° ë¶„ë¦¬")]
+    // ì£¼ë³€ ëª¬ìŠ¤í„°ë¥¼ íƒìƒ‰í•  ë²”ìœ„
     public float separationRadius = 1.0f;
-    // ¸ó½ºÅÍ³¢¸® ¹Ğ¾î³»´Â Èû
+    // ëª¬ìŠ¤í„°ë¼ë¦¬ ë°€ì–´ë‚´ëŠ” í˜
     public float separationForce = 1.5f;
 
     protected Rigidbody2D rb;
 
-    protected bool isDead;                //¸ó½ºÅÍ Á×Àº »óÅÂ
+    protected bool isDead;                //ëª¬ìŠ¤í„° ì£½ì€ ìƒíƒœ
 
     protected virtual void Awake()
     {
@@ -28,31 +28,31 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
     protected virtual void OnEnable() 
     {
-        currentHp = maxHp;                  //Ã¼·Â ÃÊ±âÈ­
-        currentState = MonsterState.Chase;  //ÃßÀû½ÃÀÛ
+        currentHp = maxHp;                  //ì²´ë ¥ ì´ˆê¸°í™”
+        currentState = MonsterState.Chase;  //ì¶”ì ì‹œì‘
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObj != null)
         {
-            player = playerObj.transform;   //ÇÃ·¹ÀÌ¾î À§Ä¡ ¿¬°á
+            player = playerObj.transform;   //í”Œë ˆì´ì–´ ìœ„ì¹˜ ì—°ê²°
         }
     }
 
     protected virtual void Update()
     {
-        if (currentState == MonsterState.Dead) return; //Á×¾úÀ¸¸é ·ÎÁ÷ Á¤Áö
+        if (currentState == MonsterState.Dead) return; //ì£½ì—ˆìœ¼ë©´ ë¡œì§ ì •ì§€
 
-        /////////////////////////////Å×½ºÆ® °ø°İ/////////////////////////////////
+        /////////////////////////////í…ŒìŠ¤íŠ¸ ê³µê²©/////////////////////////////////
         if (Input.GetKeyDown(KeyCode.K))
         {
             Death();
         }
 
-        //°Å¸®¸¦ Àç¼­ Chase³ª AttackÀ¸·Î »óÅÂ ¹Ù²ãÁÖ´Â ¾Ö (ÀÚ½ÄÀÌ ±¸Çö)
+        //ê±°ë¦¬ë¥¼ ì¬ì„œ Chaseë‚˜ Attackìœ¼ë¡œ ìƒíƒœ ë°”ê¿”ì£¼ëŠ” ì•  (ìì‹ì´ êµ¬í˜„)
         UpdateState();
 
-        //¾ÆÃ³ È° ÄğÅ¸ÀÓ °°ÀÌ ½Ã°£ ¿¬»ê¸¸ ½ÇÇà (ÀÚ½ÄÀÌ ±¸Çö) +¸¶¹ı»ç¸÷ Ãß°¡ÇÏ¸é °°ÀÌ ½áµµ µÉµí
+        //ì•„ì²˜ í™œ ì¿¨íƒ€ì„ ê°™ì´ ì‹œê°„ ì—°ì‚°ë§Œ ì‹¤í–‰ (ìì‹ì´ êµ¬í˜„) +ë§ˆë²•ì‚¬ëª¹ ì¶”ê°€í•˜ë©´ ê°™ì´ ì¨ë„ ë ë“¯
         if(currentState == MonsterState.Attack)
         {
             AttackLogic();
@@ -61,66 +61,66 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
     protected virtual void FixedUpdate()
     {
-        if (currentState == MonsterState.Dead) return; //Á×¾úÀ¸¸é ·ÎÁ÷ Á¤Áö
+        if (currentState == MonsterState.Dead) return; //ì£½ì—ˆìœ¼ë©´ ë¡œì§ ì •ì§€
 
-        //ÃßÀû »óÅÂÀÏ ¶§¸¸ ÇÃ·¹ÀÌ¾î¸¦ ÂÑ¾Æ°¨
+        //ì¶”ì  ìƒíƒœì¼ ë•Œë§Œ í”Œë ˆì´ì–´ë¥¼ ì«“ì•„ê°
         if (currentState == MonsterState.Chase && player != null)
         {
             MoveTowardsPlayer();
         }
     }
 
-    ///////////////////ÇÃ·¹ÀÌ¾î ÃßÀû ÀÌµ¿////////////////////////
+    ///////////////////í”Œë ˆì´ì–´ ì¶”ì  ì´ë™////////////////////////
     private void MoveTowardsPlayer()
     {
-        //¹æÇâ °è»ê
+        //ë°©í–¥ ê³„ì‚°
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
 
-        ///////////////¸ó½ºÅÍ ºĞ¸®/////////////////
-        //ÁÖº¯ÀÇ ¸ğµç Äİ¶óÀÌ´õ¸¦ °Ë»ö
+        ///////////////ëª¬ìŠ¤í„° ë¶„ë¦¬/////////////////
+        //ì£¼ë³€ì˜ ëª¨ë“  ì½œë¼ì´ë”ë¥¼ ê²€ìƒ‰
         Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, separationRadius);
-        //¸ó½ºÅÍ¸¦ ¹Ğ¾î³»´Â ¹æÇâÀ» ÀúÀå
+        //ëª¬ìŠ¤í„°ë¥¼ ë°€ì–´ë‚´ëŠ” ë°©í–¥ì„ ì €ì¥
         Vector2 separation = Vector2.zero;
 
         foreach (Collider2D col in nearby)
         {
-            //ÀÚ±â ÀÚ½ÅÀº Á¦¿Ü
+            //ìê¸° ìì‹ ì€ ì œì™¸
             if(col.gameObject == gameObject) continue;
 
-            //¸ó½ºÅÍº£ÀÌ½º°¡ ºÙ¾îÀÖ´Â ¸ó½ºÅÍ¸¸ °Ë»ç
+            //ëª¬ìŠ¤í„°ë² ì´ìŠ¤ê°€ ë¶™ì–´ìˆëŠ” ëª¬ìŠ¤í„°ë§Œ ê²€ì‚¬
             MonsterBase monster = col.GetComponent<MonsterBase>();
 
             if (monster != null)
             {
-                //»ó´ë ¸ó½ºÅÍ ¹İ´ë ¹æÇâÀ» °è»ê
+                //ìƒëŒ€ ëª¬ìŠ¤í„° ë°˜ëŒ€ ë°©í–¥ì„ ê³„ì‚°
                 Vector2 away = (Vector2)(transform.position - col.transform.position);
                 float distance = away.magnitude;
 
                 /*******************
-                 ÇÊ¿äÇÑ ÀÌÀ¯
-                Àü»ç A     Àü»ç B
-                A¿Í BÀÇ °Å¸®°¡ ³Ê¹« °¡±î¿öÁü
-                ¼­·Î ¹İ´ë ¹æÇâÀ¸·Î »ìÂ¦ ÀÌµ¿ÇÏ·Á°í ÇÔ
-                ¿ÏÀüÈ÷ °ãÄ¡´Â Çö»ó °¨¼Ò
+                 í•„ìš”í•œ ì´ìœ 
+                ì „ì‚¬ A     ì „ì‚¬ B
+                Aì™€ Bì˜ ê±°ë¦¬ê°€ ë„ˆë¬´ ê°€ê¹Œì›Œì§
+                ì„œë¡œ ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ì‚´ì§ ì´ë™í•˜ë ¤ê³  í•¨
+                ì™„ì „íˆ ê²¹ì¹˜ëŠ” í˜„ìƒ ê°ì†Œ
                 *********************/
-                // ´Ù¸¥ ¸ó½ºÅÍ¿Í ³Ê¹« °¡±î¿î °æ¿ì
+                // ë‹¤ë¥¸ ëª¬ìŠ¤í„°ì™€ ë„ˆë¬´ ê°€ê¹Œìš´ ê²½ìš°
                 if (distance > 0.01f && distance < separationRadius)
                 {
-                    //»ó´ë ¸ó½ºÅÍ ¹İ´ë ¹æÇâÀ¸·Î ¹Ğ¾î³»±â
+                    //ìƒëŒ€ ëª¬ìŠ¤í„° ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë°€ì–´ë‚´ê¸°
                     Vector2 push = away.normalized * (separationRadius - distance);
-                    //¹Ğ¾î³»´Â ¹æÇâÀ» ´©Àû
+                    //ë°€ì–´ë‚´ëŠ” ë°©í–¥ì„ ëˆ„ì 
                     separation += push;
                 }
             }
 
         }
 
-        //ÇÃ·¹ÀÌ¾î ÃßÀû¹æÇâ°ú ¸ó½ºÅÍ ºĞ¸® ¹æÇâ
+        //í”Œë ˆì´ì–´ ì¶”ì ë°©í–¥ê³¼ ëª¬ìŠ¤í„° ë¶„ë¦¬ ë°©í–¥
         Vector2 finalDir = (dir + separation * separationForce).normalized;
 
-        // ÇÃ·¹ÀÌ¾î ±ÙÃ³±îÁö ¿À¸é ¸ØÃã
+        // í”Œë ˆì´ì–´ ê·¼ì²˜ê¹Œì§€ ì˜¤ë©´ ë©ˆì¶¤
         float stopDistance = 0.8f;
-        //ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸® °è»ê
+        //í”Œë ˆì´ì–´ì™€ì˜ ê±°ë¦¬ ê³„ì‚°
         float distanceToPlayer = Vector2.Distance(rb.position, player.position);
 
         if (distanceToPlayer > stopDistance)
@@ -133,11 +133,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         }
     }
 
-    //[ÀÚ½Ä Å¬·¡½º¿¡°Ô Åä½ºÇÒ ¸Ş¼­µå]
-    protected abstract void UpdateState();  //¾î´À »ç°Å¸®¿¡¼­ »óÅÂ¸¦ ÀüÈ¯ÇÒÁö (¿ø°Å¸®¸÷ ¼öÇà ¶Ç´Â º¸½º ÆĞÅÏ)
-    protected abstract void AttackLogic();  //¾î´À Å¸ÀÌ¹Ö¿¡ ¿ø°Å¸® °ø°İÇÒÁö (¿ø°Å¸®¸÷ ¼öÇà)
+    //[ìì‹ í´ë˜ìŠ¤ì—ê²Œ í† ìŠ¤í•  ë©”ì„œë“œ]
+    protected abstract void UpdateState();  //ì–´ëŠ ì‚¬ê±°ë¦¬ì—ì„œ ìƒíƒœë¥¼ ì „í™˜í• ì§€ (ì›ê±°ë¦¬ëª¹ ìˆ˜í–‰ ë˜ëŠ” ë³´ìŠ¤ íŒ¨í„´)
+    protected abstract void AttackLogic();  //ì–´ëŠ íƒ€ì´ë°ì— ì›ê±°ë¦¬ ê³µê²©í• ì§€ (ì›ê±°ë¦¬ëª¹ ìˆ˜í–‰)
 
-    //[ÇÇ°İ ¸Ş¼­µå]
+    //[í”¼ê²© ë©”ì„œë“œ]
     //public virtual void TakeDamage1(int damage)
     //{
     //    currentHp -= damage;
@@ -147,7 +147,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     //    }
     //}
 
-    //[ÇÇ°İ ¸Ş¼­µå]
+    //[í”¼ê²© ë©”ì„œë“œ]
     public virtual void TakeDamage(DamageInfo1 damageInfo)
     {
         if (isDead)
@@ -157,9 +157,9 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         currentHp -= damageInfo.Damage;
 
         Debug.Log(
-            $"{name} ÇÇÇØ: {damageInfo.Damage}, " +
-            $"Ä¡¸íÅ¸: {damageInfo.IsCritical}, " +
-            $"³²Àº Ã¼·Â: {currentHp}"
+            $"{name} í”¼í•´: {damageInfo.Damage}, " +
+            $"ì¹˜ëª…íƒ€: {damageInfo.IsCritical}, " +
+            $"ë‚¨ì€ ì²´ë ¥: {currentHp}"
         );
 
         if (currentHp <= 0f)
@@ -169,35 +169,35 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     }
 
 
-    //»ç¸Á
+    //ì‚¬ë§
     protected virtual void Death()
     {
-        currentState = MonsterState.Dead; //Á×Àº »óÅÂ·Î
+        currentState = MonsterState.Dead; //ì£½ì€ ìƒíƒœë¡œ
 
-        //°æÇèÄ¡ µå¶ø
+        //ê²½í—˜ì¹˜ ë“œë
         if (DropManager.Instance != null)
         {
             DropManager.Instance.DropExp(transform.position);
 
-            //Èú ±¸½½
+            //í êµ¬ìŠ¬
             if (Random.value < 0.1f)
             {
-                DropManager.Instance.DropHealOrb(transform.position); //Èú ±¸½½ ±¸Çö ¿¹Á¤
+                DropManager.Instance.DropHealOrb(transform.position); //í êµ¬ìŠ¬ êµ¬í˜„ ì˜ˆì •
             }
         }
 
-        //¿ÀºêÁ§Æ® Ç®¸µ ¿¬µ¿
+        //ì˜¤ë¸Œì íŠ¸ í’€ë§ ì—°ë™
         if (PoolManager.Instance != null)
         {
             PoolManager.Instance.ReturnMonster(gameObject);
         }
 
-        //½ºÅ×ÀÌÁö ¿şÀÌºê °ü¸®ÇÏ´Â ¸Å´ÏÀú Ã£¾Æ¼­
+        //ìŠ¤í…Œì´ì§€ ì›¨ì´ë¸Œ ê´€ë¦¬í•˜ëŠ” ë§¤ë‹ˆì € ì°¾ì•„ì„œ
         var waveManager = FindFirstObjectByType<WaveManager>();
 
         if (waveManager != null)
         {
-            //¸ó½ºÅÍ »ç¸ÁÇßÀ¸´Ï °³Ã¼¼ö 1 ÁÙÀÌ±â(¿şÀÌºê´ç ÃÑ ¸ó½ºÅÍ ¼ö¶û ¿¬µ¿)
+            //ëª¬ìŠ¤í„° ì‚¬ë§í–ˆìœ¼ë‹ˆ ê°œì²´ìˆ˜ 1 ì¤„ì´ê¸°(ì›¨ì´ë¸Œë‹¹ ì´ ëª¬ìŠ¤í„° ìˆ˜ë‘ ì—°ë™)
             waveManager.MonsterDead();
         }
     }
