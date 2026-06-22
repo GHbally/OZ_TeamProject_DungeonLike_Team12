@@ -23,12 +23,24 @@ public class PoolManager : MonoBehaviour
     public int warriorPoolSize = 20; //몬스터 수
     public int archerPoolSize = 20;
 
-    
+    [Header("보스 탄환")]
+
+    public GameObject bossBulletPrefab;     // 직진 탄환
+    public int bossBulletPoolSize = 40;
+
+    [Header("반사 탄환")]
+
+    public GameObject bounceBulletPrefab;    // 벽 반사 탄환
+    public int bounceBulletPoolSize = 30;
+
+
     private Queue<GameObject> arrowPool = new Queue<GameObject>();
     private Queue<GameObject>expPool = new Queue<GameObject>();
     private Queue<GameObject>healOrbPool = new Queue<GameObject>();
     private Queue<GameObject> warriorPool = new Queue<GameObject>();
     private Queue<GameObject> archerPool = new Queue<GameObject>();
+    private Queue<GameObject> bossBulletPool = new Queue<GameObject>();
+    private Queue<GameObject> bounceBulletPool = new Queue<GameObject>();
 
 
     private void Awake()
@@ -42,6 +54,8 @@ public class PoolManager : MonoBehaviour
         CreateHealOrbPool();
         CreateWarriorPool();
         CreateArcherPool();
+        CreateBossBulletPool();
+        CreateBounceBulletPool();
     }
 
     // 화살 풀 생성
@@ -208,4 +222,69 @@ public class PoolManager : MonoBehaviour
         healOrbPool.Enqueue(obj);
     }
 
+    // 보스 탄환 풀 생성
+    void CreateBossBulletPool()
+    {
+        for (int i = 0; i < bossBulletPoolSize; i++)
+        {
+            GameObject obj = Instantiate(bossBulletPrefab);
+
+            obj.SetActive(false);
+
+            bossBulletPool.Enqueue(obj);
+        }
+    }
+
+    // 반사 탄환 풀 생성
+    void CreateBounceBulletPool()
+    {
+        for (int i = 0; i < bounceBulletPoolSize; i++)
+        {
+            GameObject obj = Instantiate(bounceBulletPrefab);
+
+            obj.SetActive(false);
+
+            bounceBulletPool.Enqueue(obj);
+        }
+    }
+
+    // 보스 탄환 가져오기
+    public GameObject GetBossBullet()
+    {
+        if (bossBulletPool.Count == 0)return null;
+
+        GameObject obj = bossBulletPool.Dequeue();
+
+        obj.SetActive(true);
+
+        return obj;
+    }
+
+    // 반사 탄환 가져오기
+    public GameObject GetBounceBullet()
+    {
+        if (bounceBulletPool.Count == 0) return null;
+
+        GameObject obj = bounceBulletPool.Dequeue();
+
+        obj.SetActive(true);
+
+        return obj;
+    }
+
+    // 보스 탄환 반환
+    public void ReturnBossBullet(GameObject obj)
+    {
+        obj.SetActive(false);
+
+        bossBulletPool.Enqueue(obj);
+    }
+
+    // 반사 탄환 반환
+    public void ReturnBounceBullet(GameObject obj)
+    {
+        obj.SetActive(false);
+
+        bounceBulletPool.Enqueue(obj);
+    }
 }
