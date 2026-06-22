@@ -31,29 +31,30 @@ public class LevelUpManager : MonoBehaviour
 
     public void RerollSkills()
     {
-        // 1. 디버그 로그 추가 (버튼 클릭 확인용)
         Debug.Log("리롤 시작!");
 
-        // 2. 사용 가능한 스킬 리스트 복사본 생성 (원본 유지)
+        // 1. 현재 출력할 리스트 초기화
+        currentDisplayedSkills.Clear();
+
         List<SkillData> pool = new List<SkillData>(allAvailableSkills);
 
-        // 3. 버튼 개수만큼 랜덤하게 뽑기
         for (int i = 0; i < skillButtons.Count; i++)
         {
-            if (pool.Count == 0) break; // 스킬이 부족하면 중단
+            if (pool.Count == 0) break;
 
             int randomIndex = Random.Range(0, pool.Count);
             SkillData selected = pool[randomIndex];
 
-            // 4. 버튼의 텍스트(TMP) 변경
-            // 주의: 버튼 하위에 있는 Text (TMP) 컴포넌트를 찾습니다.
+            // 2. 중요: 현재 화면에 표시된 데이터 리스트에 저장
+            currentDisplayedSkills.Add(selected);
+
+            // 3. UI 업데이트 (기존 코드 유지)
             TextMeshProUGUI buttonText = skillButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
                 buttonText.text = selected.SkillName;
             }
 
-            // 5. 뽑은 스킬은 풀에서 제거 (중복 방지)
             pool.RemoveAt(randomIndex);
         }
     }
