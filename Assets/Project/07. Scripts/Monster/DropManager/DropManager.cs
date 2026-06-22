@@ -15,8 +15,7 @@ public class DropManager : MonoBehaviour
     {
         GameObject expOrb = PoolManager.Instance.GetExpOrb();
 
-        if (expOrb == null)
-            return;
+        if (expOrb == null) return;
 
         // 몬스터가 죽은 위치에 생성
         expOrb.transform.position = position;

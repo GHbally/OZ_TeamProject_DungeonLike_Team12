@@ -52,9 +52,9 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-            new WaveData(){ warriorCount = 3, archerCount = 0 },
-            new WaveData(){ warriorCount = 5, archerCount = 1 },
-            new WaveData(){ warriorCount = 7, archerCount = 2 }
+               new WaveData(){ warriorCount = 3, archerCount = 0 },
+                new WaveData(){ warriorCount = 5, archerCount = 1 },
+                new WaveData(){ warriorCount = 7, archerCount = 2 }
             };
         }
 
@@ -63,9 +63,9 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-            new WaveData(){ warriorCount = 5, archerCount = 1 },
-            new WaveData(){ warriorCount = 7, archerCount = 2 },
-            new WaveData(){ warriorCount = 10, archerCount = 3 }
+                new WaveData(){ warriorCount = 5, archerCount = 1 },
+                new WaveData(){ warriorCount = 7, archerCount = 2 },
+                new WaveData(){ warriorCount = 10, archerCount = 3 }
             };
         }
 
@@ -74,9 +74,9 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-            new WaveData(){ warriorCount = 8, archerCount = 2 },
-            new WaveData(){ warriorCount = 10, archerCount = 3 },
-            new WaveData(){ warriorCount = 12, archerCount = 4 }
+                new WaveData(){ warriorCount = 8, archerCount = 2 },
+                new WaveData(){ warriorCount = 10, archerCount = 3 },
+                new WaveData(){ warriorCount = 12, archerCount = 4 }
             };
         }
 
@@ -85,9 +85,9 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-            new WaveData(){ warriorCount = 10, archerCount = 3 },
-            new WaveData(){ warriorCount = 12, archerCount = 4 },
-            new WaveData(){ warriorCount = 15, archerCount = 5 }
+                new WaveData(){ warriorCount = 10, archerCount = 3 },
+                new WaveData(){ warriorCount = 12, archerCount = 4 },
+                new WaveData(){ warriorCount = 15, archerCount = 5 }
             };
         }
 
@@ -97,10 +97,67 @@ public class WaveManager : MonoBehaviour
             waves = new WaveData[]
             {
             new WaveData()
+                {
+                    warriorCount = 0,
+                    archerCount = 0
+                }
+            };
+        }
+
+        // 2-1
+        if (chapter == 2 && stage == 1)
+        {
+            waves = new WaveData[]
             {
-                warriorCount = 0,
-                archerCount = 0
-            }
+               new WaveData(){ warriorCount = 3, archerCount = 0 },
+                new WaveData(){ warriorCount = 5, archerCount = 1 },
+                new WaveData(){ warriorCount = 7, archerCount = 2 }
+            };
+        }
+
+        // 2-2
+        else if (chapter == 2 && stage == 2)
+        {
+            waves = new WaveData[]
+            {
+                new WaveData(){ warriorCount = 5, archerCount = 1 },
+                new WaveData(){ warriorCount = 7, archerCount = 2 },
+                new WaveData(){ warriorCount = 10, archerCount = 3 }
+            };
+        }
+
+        // 2-3
+        else if (chapter == 2 && stage == 3)
+        {
+            waves = new WaveData[]
+            {
+                new WaveData(){ warriorCount = 8, archerCount = 2 },
+                new WaveData(){ warriorCount = 10, archerCount = 3 },
+                new WaveData(){ warriorCount = 12, archerCount = 4 }
+            };
+        }
+
+        // 2-4
+        else if (chapter == 2 && stage == 4)
+        {
+            waves = new WaveData[]
+            {
+                new WaveData(){ warriorCount = 10, archerCount = 3 },
+                new WaveData(){ warriorCount = 12, archerCount = 4 },
+                new WaveData(){ warriorCount = 15, archerCount = 5 }
+            };
+        }
+
+        //2-5 최종 보스
+        else if (chapter == 2 && stage == 5)
+        {
+            waves = new WaveData[]
+            {
+                new WaveData()
+                { 
+                    warriorCount = 0,
+                    archerCount = 0
+                }
             };
         }
     }
@@ -110,6 +167,7 @@ public class WaveManager : MonoBehaviour
     // 스테이지 시작
     public void StartStage(int chapter, int stage)
     {
+        Debug.Log($"[STAGE START] {chapter}-{stage}");
         if (player == null)
         {
             //플레이어 위치를 변수에 저장
@@ -121,6 +179,22 @@ public class WaveManager : MonoBehaviour
         currentWave = 0;
         // 웨이브 데이터 생성
         CreateStageData(chapter, stage);
+
+        // 1-5 중간보스
+        if (chapter == 1 && stage == 5)
+        {
+            aliveMonster = 1;
+            SpawnMidBoss();
+            return;
+        }
+
+        // 2-5 최종보스
+        if (chapter == 2 && stage == 5)
+        {
+            aliveMonster = 1;
+            SpawnLastBoss();
+            return;
+        }
         //웨이브 시작
         StartCoroutine(StartWave());
     }
@@ -135,19 +209,6 @@ public class WaveManager : MonoBehaviour
     //웨이브 시작
     IEnumerator StartWave()
     {
-        StageManager stageManager = FindFirstObjectByType<StageManager>();
-
-        // 1-5 보스 스테이지
-        if (stageManager.chapter == 1 && stageManager.stage == 5)
-        {
-            SpawnMidBoss();
-
-            // 보스 1마리 살아있음
-            aliveMonster = 1;
-
-            yield break;
-        }
-
         // 현재 웨이브의 정보를 가져오기
         WaveData data = waves[currentWave];
         // 살아있는 몬스터의 수를 계산
@@ -195,13 +256,23 @@ public class WaveManager : MonoBehaviour
     }
 
     //중간 보스 생성
-    void SpawnMidBoss()
+    public void SpawnMidBoss()
     {
         if (midBossPrefab == null) return;
 
         Instantiate(midBossPrefab,GetRandomSpawnPosition(), Quaternion.identity);
 
         Debug.Log("중간보스 등장");
+    }
+
+    //최종 보스 생성
+    public void SpawnLastBoss()
+    {
+        if(lastBossPrefab == null) return;
+
+        Instantiate(lastBossPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+
+        Debug.Log("최종보스 등장");
     }
 
     // 플레이어 주변 랜덤 위치 생성
@@ -249,7 +320,7 @@ public class WaveManager : MonoBehaviour
     public void MonsterDead()
     {
         aliveMonster--;
-
+        Debug.Log("몬스터 죽음 / 남은 수: " + aliveMonster);
         // 아직 몬스터 남아있음
         if (aliveMonster > 0)
             return;

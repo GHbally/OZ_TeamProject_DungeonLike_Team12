@@ -36,6 +36,13 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         if (playerObj != null)
         {
             player = playerObj.transform;   //플레이어 위치 연결
+
+            Debug.Log("플레이어 찾음 : " + player.name);
+        }
+        else 
+        {
+            // 못 찾았을 때 콘솔 오류 출력
+            Debug.LogError("Player 태그를 가진 오브젝트를 찾지 못했습니다.");
         }
     }
 
@@ -119,7 +126,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         Vector2 finalDir = (dir + separation * separationForce).normalized;
 
         // 플레이어 근처까지 오면 멈춤
-        float stopDistance = 0.8f;
+        float stopDistance = 0.1f;
         //플레이어와의 거리 계산
         float distanceToPlayer = Vector2.Distance(rb.position, player.position);
 

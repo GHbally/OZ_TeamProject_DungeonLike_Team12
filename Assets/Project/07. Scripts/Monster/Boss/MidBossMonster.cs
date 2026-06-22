@@ -57,8 +57,21 @@ public class MidBossMonster : MonsterBase
         float distance = Vector2.Distance(transform.position, player.position);
 
         //돌진중도 아니고 대기중도 아닐때
-        if (!isDashing && !isWaiting) return;
-            currentState = distance <= detectRange ? MonsterState.Attack : MonsterState.Chase;
+        if (isDashing || isWaiting) return;
+        
+        /////////////////// 디버그 확인용//////////////////
+        Debug.Log("중간보스와 플레이어 거리: " + distance);
+
+        // 감지 범위 안이면 공격 상태
+        if (distance <= detectRange)
+        {
+            currentState = MonsterState.Attack;
+        }
+        // 감지 범위 밖이면 추적 상태
+        else
+        {
+            currentState = MonsterState.Chase;
+        }
     }
    
     protected override void AttackLogic() // 공격 상태
@@ -72,23 +85,34 @@ public class MidBossMonster : MonsterBase
 
     IEnumerator DashPattern() //돌진패턴
     {
+
+        Debug.Log("중간보스 돌진 시작");
+
         // 돌진 시작
         isDashing = true;
 
         // 돌진 시작 시점 플레이어 방향 저장
         Vector2 dir =((Vector2)player.position - (Vector2)transform.position).normalized;
 
+        //////////////////// 방향이 0이면 아래쪽으로 임시 돌진////////////////////////
+        if (dir == Vector2.zero)
+        {
+            dir = Vector2.down;
+        }
+
         float timer = 0f;
 
         // 설정된 시간 동안 돌진
         while (timer < dashDuration)
         {
-            rb.MovePosition(rb.position +dir * dashSpeed * Time.fixedDeltaTime);
+            rb.MovePosition( rb.position + dir * dashSpeed * Time.fixedDeltaTime);
 
             timer += Time.deltaTime;
 
             yield return null;
         }
+
+        Debug.Log("중간보스 돌진 종료");
 
         // 돌진 종료
         isDashing = false;
