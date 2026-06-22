@@ -57,20 +57,8 @@ public class MidBossMonster : MonsterBase
         float distance = Vector2.Distance(transform.position, player.position);
 
         //돌진중도 아니고 대기중도 아닐때
-        if (!isDashing && !isWaiting)
-        {
-            //플레이어가 감지 범위 안에 있으면 공격상태
-            if (distance <= detectRange)
-            {
-                currentState = MonsterState.Attack;
-            }
-        }
-
-        //아니면 추적상태
-        else 
-        {
-            currentState = MonsterState.Chase;
-        }
+        if (!isDashing && !isWaiting) return;
+            currentState = distance <= detectRange ? MonsterState.Attack : MonsterState.Chase;
     }
    
     protected override void AttackLogic() // 공격 상태
