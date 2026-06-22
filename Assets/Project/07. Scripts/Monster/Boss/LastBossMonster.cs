@@ -21,10 +21,19 @@ public class LastBossMonster : MonsterBase
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        StartCoroutine(InitBoss());
+    }
+
+    IEnumerator InitBoss()
+    {
+        while (PoolManager.Instance == null)
+            yield return null;
+
         currentPhase = BossPhase.Phase1;
 
-        // 기존 코루틴 정리
-        if (patternRoutine != null) StopCoroutine(patternRoutine);
+        if (patternRoutine != null)
+            StopCoroutine(patternRoutine);
 
         patternRoutine = StartCoroutine(PatternLoop());
     }
@@ -95,7 +104,11 @@ public class LastBossMonster : MonsterBase
             // 풀에서 탄환 가져오기
             GameObject bullet = PoolManager.Instance.GetBossBullet();
 
-            if (bullet == null) yield break; // 풀 비었으면 종료
+            if (bullet == null)
+            {
+                Debug.LogError("BossBullet 생성 실패 (Pool or Prefab 문제)");
+                yield break;
+            }
 
             bullet.transform.position = transform.position; // 생성 위치
 
