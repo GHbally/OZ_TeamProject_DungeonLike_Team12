@@ -4,7 +4,7 @@ using System.Collections;
 public class LastBossMonster : MonsterBase
 {
     [Header("보스 설정")]
-    public float patternDelay = 2f;     // 패턴 종료 후 다음 패턴까지 대기 시간
+    public float patternDelay = 1f;     // 패턴 종료 후 다음 패턴까지 대기 시간
 
     [Header("장판")]
     public GameObject warningPrefab;    // 경고 원 프리팹
@@ -13,8 +13,9 @@ public class LastBossMonster : MonsterBase
     [Header("궁극기")]
     public GameObject safeZonePrefab;       // 안전지대 프리팹
     public GameObject mapExplosionPrefab;   // 맵 전체 폭발 프리팹
+    public float ultimateCastTime = 5f; //궁극기 시전시간
 
-    
+
     [Header("접촉 데미지")] // 플레이어에게 줄 접촉 데미지
     public float touchDamage = 10f;
     public float touchDamageInterval = 1f;// 몇 초마다 데미지를 줄지
@@ -149,7 +150,7 @@ public class LastBossMonster : MonsterBase
                     yield return StartCoroutine(BounceBulletPattern()); //튕기는 탄환
                     break;
                 case BossPhase.Phase3:
-                    yield return StartCoroutine(AllDirectionPattern()); //전방위 탄환
+                    StartCoroutine(AllDirectionPattern()); //전방위 탄환
                     yield return StartCoroutine(UltimatePattern()); //궁극기
                     break;
             }
@@ -264,7 +265,7 @@ public class LastBossMonster : MonsterBase
             }
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
     }
 
     ///////////////////// 전방위 발사 탄환 ////////////////////////////
@@ -277,7 +278,11 @@ public class LastBossMonster : MonsterBase
         {
             GameObject bullet = PoolManager.Instance.GetBossBullet();
 
-            if (bullet == null) yield break;
+            if (bullet == null)
+            {
+                Debug.LogError("보스 탄환 풀이 비었습니다!");
+                yield break;
+            }
 
             bullet.transform.position = transform.position;
 
@@ -294,8 +299,8 @@ public class LastBossMonster : MonsterBase
                 bossBullet.Init(dir);
             }
         }
-
-        yield return new WaitForSeconds(2f);
+        
+        yield return new WaitForSeconds(1f);
     }
 
 
@@ -308,12 +313,19 @@ public class LastBossMonster : MonsterBase
         Debug.Log("궁극기 시전");
 
         Vector2 safePos = Random.insideUnitCircle * 5f; // 안전지대 위치
-
+        GameObject safeZone =
         Instantiate(safeZonePrefab, safePos, Quaternion.identity); // 안전지대 생성
 
-        yield return new WaitForSeconds(3f); // 회피 시간
+        yield return new WaitForSeconds(ultimateCastTime);
 
+        GameObject explosion =
         Instantiate(mapExplosionPrefab, Vector3.zero, Quaternion.identity); // 맵 폭발
+
+        yield return new WaitForSeconds(1f); // 폭발 데미지가 적용될 시간 동안 안전지대를 유지
+
+        Destroy(safeZone ); // 안전지대 제거
+
+        Destroy(explosion); // 폭발 이펙트 제거
     }
 
     //////////////////보스 사망/////////////////////

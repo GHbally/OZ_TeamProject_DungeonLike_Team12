@@ -17,9 +17,9 @@ TagManager:
   - Enemy
   - Bullet
   - Wall
-  - 
-  - 
-  - 
+  - BulletWall
+  - Player
+  - SafeZone
   - 
   - 
   - 

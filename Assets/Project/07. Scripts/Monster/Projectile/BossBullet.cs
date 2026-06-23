@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class BossBullet : MonoBehaviour
 {
-    public float speed = 5f;      // 탄속
-    public float damage = 20f;    // 데미지
-
+    public float speed = 5f; // 탄속
+    public float damage = 20f;// 데미지
+    public float lifeTime = 5f; // 5초 뒤 자동 반환
     private Vector2 moveDir; // 탄환 이동 방향
     private Rigidbody2D rb; // Rigidbody2D 저장
 
@@ -22,6 +22,11 @@ public class BossBullet : MonoBehaviour
     public void Init(Vector2 dir)
     {
         moveDir = dir.normalized;
+        
+        CancelInvoke(); // 이전 자동 반환 예약 취소
+
+       
+        Invoke(nameof(ReturnToPool), lifeTime); // lifeTime 후 풀로 반환
     }
 
     private void Update()
@@ -31,8 +36,6 @@ public class BossBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("보스 탄환 충돌 감지: " + other.name); // 충돌 확인용 로그
-
         if (!other.CompareTag("Player")) return;
 
         PlayerBase player = other.GetComponent<PlayerBase>();
@@ -40,9 +43,19 @@ public class BossBullet : MonoBehaviour
         if (player != null)
         {
             player.TakeDamage(damage);
-            Debug.Log("보스 탄환 데미지 적용"); // 데미지 확인용 로그
         }
 
-        Destroy(gameObject);
+        ReturnToPool(); // 맞으면 풀로 반환
+    }
+    private void ReturnToPool()
+    {
+        CancelInvoke(); // 중복 반환 방지
+
+        PoolManager.Instance.ReturnBossBullet(gameObject); // 풀로 반환
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke(); // 비활성화될 때 예약 제거
     }
 }
