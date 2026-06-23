@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         if (visualTransform != null)
         {
             //Visual이 가지고 있는 Animator컴포넌트를 가져와 animator에 할당
-            animator = visualTransform.GetComponent<Animator>();
+            animator = visualTransform.GetComponentInChildren<Animator>();
         }
     }
 
@@ -60,20 +60,28 @@ public class PlayerMovement : MonoBehaviour
         if (x > 0)
         {
             //오른쪽 보게 만들기
-            visualTransform.localScale = new Vector3(1, 1, 1);
+            visualTransform.localScale = new Vector3(-1, 1, 1);
         }
         //A 누를때
         else if (x < 0)
         {
             //왼쪽 보게 만들기
-            visualTransform.localScale = new Vector3(-1, 1, 1);
+            visualTransform.localScale = new Vector3(1, 1, 1);
         }
 
         //애니메이터 컴포넌트가 잘 있다면
         if (animator != null)
         {
-            //애니메이터 창에 Speed 파라미터에 이동벡터 전달(0이면 Idle, 0보다 크면 Run)
-            animator.SetFloat("Speed", moveVec.sqrMagnitude);
+            if (moveVec != Vector2.zero)
+            {
+                //움직이고 있다면 에셋 내부 변수인 "1_Move" 켜기
+                animator.SetBool("1_Move", true);
+            }
+            else
+            {
+                //멈췄다면 "1_Move"를 끄기
+                animator.SetBool("1_Move", false);
+            }
         }
 
         //대쉬키(스페이스바)를 누르고, 현재 멈춰있지 않고 움직이는 상태일 때 실행
@@ -121,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
         if (animator != null)
         {
-            animator.SetFloat("Speed", 0f);
+            animator.Play("IDLE");
         }
 
         //대쉬 쿨타임
