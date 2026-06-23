@@ -11,5 +11,10 @@ public class LevelUpTrigger : MonoBehaviour
         {
             levelUpManager.OpenLevelUpUI();
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            levelUpManager.CloseLevelUpUI();
+        }
     }
 }
