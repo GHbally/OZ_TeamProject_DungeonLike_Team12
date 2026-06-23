@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;         //현재 대쉬중인지
     private bool canDash = true;            //지금 대쉬 사용할 수 있는 상태인지
     private Vector2 dashDirection;          //대쉬 시작한 시점의 이동 방향 저장
+    private PlayerBase playerBase;
 
     //현재 캐릭터가 움직이고 있는지 확인하기 위해 이동 벡터 길이를 제곱한 값을 넘겨주는 프로퍼티
     //멈추면 0, 움직이면 0보다 큼
@@ -44,10 +45,14 @@ public class PlayerMovement : MonoBehaviour
             //Visual이 가지고 있는 Animator컴포넌트를 가져와 animator에 할당
             animator = visualTransform.GetComponentInChildren<Animator>();
         }
+        playerBase = GetComponent<PlayerBase>();
     }
 
     void Update()
     {
+        //플레이어가 죽은 상태라면 
+        if (playerBase != null && playerBase.IsDead) return;
+
         //대쉬중엔 조작 무시
         if (isDashing) return;
 
@@ -125,6 +130,9 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
         }
+
+        //대쉬 도중 이미 사망했으면 애니메이션 건드리지 않고 종료
+        if (playerBase != null && playerBase.IsDead) yield break;
 
         //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
         if (animator != null)
