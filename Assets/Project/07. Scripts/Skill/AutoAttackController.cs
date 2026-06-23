@@ -8,6 +8,13 @@ public class AutoAttackController : MonoBehaviour
     //[SerializeField] private SkillProjectileBase projectilePrefab;
     [SerializeField] private Transform firePoint;
 
+    [Header("전사 5레벨 검기")]
+    [SerializeField] private SkillManager skillManager;
+    [SerializeField] private SkillProjectilePool swordWavePool;
+    // 문자열 ID 대신 WarriorSlash SkillData 에셋을 직접 연결한다.
+    [SerializeField] private SkillData warriorSlashSkillData;
+    [SerializeField] private int swordWaveUnlockLevel = 5;
+
     private float attackTimer;
     private bool isDead;
     private bool isAttackEnabled = true;
@@ -15,6 +22,16 @@ public class AutoAttackController : MonoBehaviour
     private void Awake()
     {
         CacheReferences();
+
+        if (skillManager == null)
+        {
+            skillManager = FindFirstObjectByType<SkillManager>();
+        }
+
+        if (attackStats != null)
+        {
+            attackTimer = attackStats.GetAttackInterval();
+        }
     }
     private void Update()
     {
@@ -24,7 +41,7 @@ public class AutoAttackController : MonoBehaviour
         }
         attackTimer -= Time.deltaTime;
 
-        if(attackTimer > 0f)
+        if (attackTimer > 0f)
         {
             return;
         }
@@ -49,7 +66,7 @@ public class AutoAttackController : MonoBehaviour
     private void TryAttack()
     {
         Transform target = targetDetector.FindNearestTarget(attackStats.AttackRange);
-        if(target == null)
+        if (target == null)
         {
             return;
         }
@@ -78,11 +95,13 @@ public class AutoAttackController : MonoBehaviour
         //(적 위치 좌표 - 내 총구 위치 좌표) 계산해서 발사 방향 계산
         Vector2 direction = (target.position - firePoint.position).normalized;
 
-        Debug.Log(
-        $"[AutoAttack] 사용하는 풀: " +
-        $"{(projectilePool == null ? "NULL" : projectilePool.gameObject.name)}",
-        gameObject
-        );
+        if (direction.sqrMagnitude <= 0f)
+        {
+            return;
+        }
+
+        // 전사 검기를 위한 위치
+        Vector2 normalizedDirection = direction.normalized;
 
         DamageInfo1 damageInfo = attackStats.CreateDamageInfo(gameObject);
 
@@ -91,6 +110,11 @@ public class AutoAttackController : MonoBehaviour
             direction.normalized,
             damageInfo
         );
+
+        TryFireSwordWave(
+        normalizedDirection,
+        damageInfo
+    );
     }
     public void SetAttackEnabled(bool enabled)
     {
@@ -118,5 +142,35 @@ public class AutoAttackController : MonoBehaviour
     public void SetDead(bool dead)
     {
         isDead = dead;
-    }   
+    }
+    private void TryFireSwordWave(
+    Vector2 direction,
+    DamageInfo1 damageInfo)
+    {
+        if (skillManager == null)
+        {
+            return;
+        }
+
+        if (swordWavePool == null)
+        {
+            return;
+        }
+
+        int warriorSlashLevel = skillManager.GetCurrentLevel(warriorSlashSkillData);
+
+
+        if (warriorSlashLevel < swordWaveUnlockLevel)
+        {
+            return;
+        }
+
+        Debug.Log("전사 5레벨 검기 발사");
+
+        swordWavePool.Spawn(
+            firePoint.position,
+            direction,
+            damageInfo
+        );
+    }
 }

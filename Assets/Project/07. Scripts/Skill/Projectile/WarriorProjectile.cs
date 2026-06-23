@@ -3,8 +3,8 @@ using UnityEngine;
 public class WarriorProjectile : SkillProjectileBase
 {
     [Header("전사 베기 설정")]
-    [SerializeField] private float slashOffset = 0.8f;
-    [SerializeField] private float slashAngleOffset = -90f;
+    [SerializeField] private float slashOffset = 1f;
+    [SerializeField] private float slashAngleOffset = 90f;
 
     protected override void OnInitialized()
     {
@@ -20,7 +20,7 @@ public class WarriorProjectile : SkillProjectileBase
             transform.position = owner.transform.position + (Vector3)(moveDirection.normalized * slashOffset);
         }
 
-        RotateSlashToDirection();
+        //RotateSlashToDirection();
     }
 
     protected override void UpdateMovement()
