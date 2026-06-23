@@ -1790,14 +1790,8 @@ MonoBehaviour:
   - {fileID: 1418745205}
   - {fileID: 1126971053}
   - {fileID: 184957448}
-  allAvailableSkills:
-  - {fileID: 11400000, guid: a41f459f81f1f8349a4f1023942454fe, type: 2}
-  - {fileID: 11400000, guid: 2a4731e28094041489b725943eba4206, type: 2}
-  - {fileID: 11400000, guid: 4456bee171ca3384191c1bd0e3d71581, type: 2}
-  - {fileID: 11400000, guid: 167ab2c5eba133c47997078620306e1e, type: 2}
-  - {fileID: 11400000, guid: 3973846279f31794b8c24e50d6bf2ffd, type: 2}
-  - {fileID: 11400000, guid: 8ccc80969832b024db1370568aadf4cb, type: 2}
-  currentDisplayedSkills: []
+  skillManager: {fileID: 0}
+  displayCardCount: 3
 --- !u!4 &1038356807
 Transform:
   m_ObjectHideFlags: 0
@@ -2039,7 +2033,7 @@ GameObject:
   - component: {fileID: 1243031656}
   m_Layer: 8
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2158,7 +2152,7 @@ Transform:
   m_GameObject: {fileID: 1243031655}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.8, y: 175.6, z: 0}
+  m_LocalPosition: {x: 20, y: 166.4, z: 0}
   m_LocalScale: {x: 5, y: 53, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2998,8 +2992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f18ecb22ca53e4d9b70db397f75230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
-  chapter: 1
-  stage: 1
+  chapter: 2
+  stage: 5
   waveManager: {fileID: 1950872907}
 --- !u!1001 &1973521355
 PrefabInstance:
