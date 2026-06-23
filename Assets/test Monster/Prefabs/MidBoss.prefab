@@ -108,8 +108,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_AngularDamping: 10
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -120,7 +120,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &6481409474788271121
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -151,7 +151,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -176,10 +176,10 @@ MonoBehaviour:
   currentState: 0
   separationRadius: 1
   separationForce: 1.5
-  detectRange: 8
-  dashSpeed: 10
-  dashDuration: 0.5
+  detectRange: 6
+  dashSpeed: 14
+  dashDuration: 0.8
   waitTime: 2
-  damage: 30
+  damage: 40
   touchDamage: 20
   damageInterval: 1

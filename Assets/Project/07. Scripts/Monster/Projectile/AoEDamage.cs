@@ -4,7 +4,7 @@ public class AoEDamage : MonoBehaviour
 {
     public float damage = 25f;
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         //플레이어가 아니면 무시
         if (!other.CompareTag("Player")) return;
