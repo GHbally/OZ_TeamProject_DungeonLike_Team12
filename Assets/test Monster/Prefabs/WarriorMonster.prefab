@@ -178,3 +178,4 @@ MonoBehaviour:
   separationForce: 2
   damage: 10
   damageInterval: 1
+  attackRange: 0.8

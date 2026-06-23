@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06dd02d2fb2634048ab56458e50cd350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyEnemy
-  maxHealth: 100
+  maxHealth: 1000000
 --- !u!212 &284215585
 SpriteRenderer:
   serializedVersion: 2
@@ -483,6 +483,55 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &291688407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 291688409}
+  - component: {fileID: 291688408}
+  m_Layer: 0
+  m_Name: WarriorSlashPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &291688408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291688407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: -7377499441424308140, guid: 659766b493cf80d4ca353f6fd00f716a, type: 3}
+  projectileContainer: {fileID: 1541574135}
+  defaultCapacity: 10
+  maxPoolSize: 100
+--- !u!4 &291688409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291688407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.2305, y: 0.77489, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1541574135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484638845
@@ -1811,6 +1860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1172196920}
+  - component: {fileID: 1172196921}
   m_Layer: 0
   m_Name: ProjectilePool
   m_TagString: Untagged
@@ -1834,6 +1884,22 @@ Transform:
   - {fileID: 1641865962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1172196921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172196918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: 1395776086254871875, guid: 3ce29642ab4761043928b308bfdf7ba3, type: 3}
+  projectileContainer: {fileID: 1641865962}
+  defaultCapacity: 10
+  maxPoolSize: 100
 --- !u!1 &1190465179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,6 +1936,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d09912cf98f52e5408d2890a3cf4d071, type: 2}
   - {fileID: 11400000, guid: ec63618d10b7fbe49a0a7cefbe035402, type: 2}
   - {fileID: 11400000, guid: 5cc482cc2fecbaf46a8d25c9fd5c6835, type: 2}
+  - {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
 --- !u!4 &1190465181
 Transform:
   m_ObjectHideFlags: 0
@@ -2162,8 +2229,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AutoAttackController
   attackStats: {fileID: 1328817145}
   targetDetector: {fileID: 1328817143}
-  projectilePool: {fileID: 0}
+  projectilePool: {fileID: 1172196921}
   firePoint: {fileID: 205416929}
+  skillManager: {fileID: 1190465180}
+  swordWavePool: {fileID: 291688408}
+  warriorSlashSkillData: {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
+  swordWaveUnlockLevel: 5
 --- !u!114 &1328817145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2256,6 +2327,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1541574134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1541574135}
+  m_Layer: 0
+  m_Name: PoolContatiner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1541574135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541574134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 291688409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1641865961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2863,6 +2965,7 @@ SceneRoots:
   - {fileID: 284215586}
   - {fileID: 763521455}
   - {fileID: 1172196920}
+  - {fileID: 291688409}
   - {fileID: 2120767015}
   - {fileID: 285164343}
   - {fileID: 1826718615}
