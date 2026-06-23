@@ -2188,6 +2188,83 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraWall
   wallThickness: 0.5
   padding: 0.4
+--- !u!1001 &1108154660
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 547086948015469114, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[36].m_Data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 547086948015469114, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[37].m_Data
+      value: 
+      objectReference: {fileID: 21300832, guid: bae98cccbeaa147719d0db15c5d488cd, type: 3}
+    - target: {fileID: 547086948015469114, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[36].m_RefCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 547086948015469114, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[37].m_RefCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 547086948015469114, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_Tiles.Array.data[4].second.m_TileSpriteIndex
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 728653649829061728, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1977186657312483781, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_Name
+      value: Stage_Pasture
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
 --- !u!1 &1224666984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,3 +2957,4 @@ SceneRoots:
   - {fileID: 1482305159}
   - {fileID: 260668996}
   - {fileID: 280008412}
+  - {fileID: 1108154660}
