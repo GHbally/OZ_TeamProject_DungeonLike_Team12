@@ -105,16 +105,18 @@ public class AutoAttackController : MonoBehaviour
 
         DamageInfo1 damageInfo = attackStats.CreateDamageInfo(gameObject);
 
+        // 기본 전사 공격 : 근접 베기
         projectilePool.Spawn(
             firePoint.position,
             direction.normalized,
             damageInfo
         );
 
+        // 전사 검기 공격 : 기본 전사 공격스킬이 5레벨 이상이면 검기 추가 발사
         TryFireSwordWave(
-        normalizedDirection,
-        damageInfo
-    );
+            normalizedDirection,
+            damageInfo
+        );
     }
     public void SetAttackEnabled(bool enabled)
     {
@@ -156,9 +158,12 @@ public class AutoAttackController : MonoBehaviour
         {
             return;
         }
+        if (warriorSlashSkillData == null)
+        {
+            return;
+        }
 
         int warriorSlashLevel = skillManager.GetCurrentLevel(warriorSlashSkillData);
-
 
         if (warriorSlashLevel < swordWaveUnlockLevel)
         {
