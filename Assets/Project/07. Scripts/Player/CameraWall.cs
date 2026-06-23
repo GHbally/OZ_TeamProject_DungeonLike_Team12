@@ -47,6 +47,9 @@ public class CameraWall : MonoBehaviour
         // 벽 태그 설정
         wall.tag = "Wall";
 
+        wall.layer = LayerMask.NameToLayer("BulletWall");
+
+
         // BoxCollider2D 추가
         BoxCollider2D col = wall.AddComponent<BoxCollider2D>();
 
