@@ -30,8 +30,8 @@ public class PlayerBase : MonoBehaviour
         Transform visual = transform.Find("Visual");    //자식 Visual 찾기
         if (visual != null)
         {
-            animator = visual.GetComponent<Animator>(); //Visual에서 애니메이터 컴포넌트 빼옴
-            spriteRenderer = visual.GetComponent<SpriteRenderer>(); //Visual에서 SpriteRenderer 빼옴
+            animator = visual.GetComponentInChildren<Animator>(); ; //애니메이터 빼옴
+            spriteRenderer = visual.GetComponentInChildren<SpriteRenderer>(); //SpriteRenderer 빼옴
         }
     }
 
@@ -84,13 +84,16 @@ public class PlayerBase : MonoBehaviour
 
         IsDead = true;
 
+        Debug.Log($"캐릭터 사망");
+
         //사망하면 빨갛게 변했던 색을 원래대로 돌린 후 애니메이션 재생
         if (spriteRenderer != null) spriteRenderer.color = Color.white;
 
         if (animator != null)
         {
-            //사망 애니메이션 재생용
-            animator.SetTrigger("Death");
+            animator.SetBool("1_Move", false);
+            //사망 애니메이션 재생
+            animator.SetBool("4_Death", true);
         }
 
         if(movement != null)
@@ -104,8 +107,19 @@ public class PlayerBase : MonoBehaviour
             {
                 //물리적 이동 즉시 0으로 처리해서 제자리 고정
                 rb.linearVelocity = Vector2.zero;
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
             }
         }
+
+        Collider2D col = GetComponent<Collider2D>();
+        {
+            if (col != null)
+            {
+                col.enabled = false;
+                Debug.Log("시체 충돌 비활성화");
+            }
+        }
+
 
         AutoAttackController autoAttack = GetComponent<AutoAttackController>();
         if (autoAttack != null)
@@ -113,5 +127,12 @@ public class PlayerBase : MonoBehaviour
             //사망 시 자동 공격 정지
             autoAttack.StopAttack();
         }
+    }
+
+    [ContextMenu("강제 사망 테스트")]
+    public void TestDeathButton()
+    {
+        // 내 체력을 0으로 만들고 사망 메서드를 직접 실행
+        TakeDamage(maxHp);
     }
 }
