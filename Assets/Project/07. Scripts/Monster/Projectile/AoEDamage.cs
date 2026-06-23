@@ -9,8 +9,10 @@ public class AoEDamage : MonoBehaviour
         //플레이어가 아니면 무시
         if (!other.CompareTag("Player")) return;
 
+        Collider2D safeZone = Physics2D.OverlapPoint(other.transform.position,
+            LayerMask.GetMask("SafeZone"));
         //안전지대 체크
-        if (other.GetComponent<SafeZone>() != null)
+        if (safeZone != null)
         {
             return; // 안전지대 안이면 데미지 안 받음
         }

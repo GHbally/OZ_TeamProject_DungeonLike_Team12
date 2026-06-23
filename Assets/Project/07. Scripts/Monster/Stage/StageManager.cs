@@ -13,6 +13,11 @@ public class StageManager : MonoBehaviour
     }
     public void ClearStage()
     {
+        if (chapter == 2 && stage == 5)
+        {
+            Debug.Log("게임 클리어");
+            return;
+        }
         stage++;
 
         if (stage > 5)

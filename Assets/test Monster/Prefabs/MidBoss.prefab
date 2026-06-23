@@ -183,3 +183,6 @@ MonoBehaviour:
   damage: 40
   touchDamage: 20
   damageInterval: 1
+  dashWarningPrefab: {fileID: 7736153897394345412, guid: 2968cd9de111cb4418c10960d8e79d21, type: 3}
+  warningTime: 0.7
+  dashWarningWidth: 0.6

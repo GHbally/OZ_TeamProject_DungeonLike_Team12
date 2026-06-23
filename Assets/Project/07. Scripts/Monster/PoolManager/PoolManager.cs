@@ -26,7 +26,7 @@ public class PoolManager : MonoBehaviour
     [Header("º¸½º ÅºÈ¯")]
 
     public GameObject bossBulletPrefab;     // Á÷Áø ÅºÈ¯
-    public int bossBulletPoolSize = 40;
+    public int bossBulletPoolSize = 120;
 
     [Header("¹Ý»ç ÅºÈ¯")]
 

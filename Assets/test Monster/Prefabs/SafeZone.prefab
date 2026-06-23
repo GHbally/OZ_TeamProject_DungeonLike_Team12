@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3893066188672737627}
   - component: {fileID: 3447123829304890796}
   - component: {fileID: 8043276160087779164}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SafeZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
