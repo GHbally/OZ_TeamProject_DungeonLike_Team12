@@ -137,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
         //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
         if (animator != null)
         {
-            animator.Play("IDLE");
+            animator.SetBool("1_Move", false);
         }
 
         //대쉬 쿨타임

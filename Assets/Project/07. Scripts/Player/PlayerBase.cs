@@ -89,11 +89,17 @@ public class PlayerBase : MonoBehaviour
         //사망하면 빨갛게 변했던 색을 원래대로 돌린 후 애니메이션 재생
         if (spriteRenderer != null) spriteRenderer.color = Color.white;
 
+        if (movement != null)
+        {
+            movement.StopAllCoroutines();
+            movement.enabled = false;
+        }
+
         if (animator != null)
         {
             animator.SetBool("1_Move", false);
             //사망 애니메이션 재생
-            animator.SetBool("4_Death", true);
+            animator.SetTrigger("4_Death");
         }
 
         if(movement != null)
