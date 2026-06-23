@@ -20,9 +20,9 @@ public class MidBossMonster : MonsterBase
 {
     [Header("보스 설정")]
 
-    public float detectRange = 8f; //공격 시작 거리
-    public float dashSpeed = 10f; //돌진 속도
-    public float dashDuration = 0.5f; //돌진 지속시간
+    public float detectRange = 6f; //공격 시작 거리
+    public float dashSpeed = 14f; //돌진 속도
+    public float dashDuration = 0.8f; //돌진 지속시간
     public float waitTime = 2f; //돌진 후 대기 시간
     public float damage = 30f; //돌진 데미지
     private bool isDashing; //현재 돌진중인지 확인
@@ -128,6 +128,7 @@ public class MidBossMonster : MonsterBase
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("중간보스 충돌 감지: " + other.name);
         // 돌진 중일 때만 공격 판정
         if (!isDashing) return;
 

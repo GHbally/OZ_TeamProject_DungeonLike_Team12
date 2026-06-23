@@ -14,6 +14,12 @@ public class LastBossMonster : MonsterBase
     public GameObject safeZonePrefab;       // 안전지대 프리팹
     public GameObject mapExplosionPrefab;   // 맵 전체 폭발 프리팹
 
+    
+    [Header("접촉 데미지")] // 플레이어에게 줄 접촉 데미지
+    public float touchDamage = 10f;
+    public float touchDamageInterval = 1f;// 몇 초마다 데미지를 줄지
+    private float touchDamageTimer;// 데미지 시간을 계산할 타이머
+
     private BossPhase currentPhase;     // 현재 보스 페이즈 저장
 
     private Coroutine patternRoutine;
@@ -22,7 +28,62 @@ public class LastBossMonster : MonsterBase
     {
         base.OnEnable();
 
+        // 맵 중앙에 보스 배치
+        transform.position = Vector3.zero;
+        currentState = MonsterState.Attack;
+        // Rigidbody가 존재하면
+        if (rb != null)
+        {
+            // 이동 속도 제거
+            rb.linearVelocity = Vector2.zero;
+
+            // 회전 속도 제거
+            rb.angularVelocity = 0f;
+
+            // 물리 힘을 받지 않도록
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        // 바로 데미지를 줄 수 있도록 타이머 초기화
+        touchDamageTimer = touchDamageInterval;
         StartCoroutine(InitBoss());
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        // 플레이어가 아니면 종료
+        if (!other.CompareTag("Player"))
+            return;
+
+        // 시간을 계속 누적
+        touchDamageTimer += Time.deltaTime;
+
+        // 설정한 시간이 지나면
+        if (touchDamageTimer >= touchDamageInterval)
+        {
+            //0초부터 시작
+            touchDamageTimer = 0f;
+
+            // PlayerBase 가져오기
+            PlayerBase playerBase = other.GetComponent<PlayerBase>();
+
+            if (playerBase != null)// 플레이어가 존재하면
+            {
+                // 플레이어에게 데미지 주기
+                playerBase.TakeDamage(touchDamage);
+
+                Debug.Log("최종보스 접촉 데미지");
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // 플레이어가 아니면 종료
+        if (!other.CompareTag("Player"))
+            return;
+
+        // 타이머 초기화
+        touchDamageTimer = touchDamageInterval;
     }
 
     IEnumerator InitBoss()
@@ -43,6 +104,12 @@ public class LastBossMonster : MonsterBase
         base.Update(); // 부모 Update 실행
 
         CheckPhase(); // 체력에 따라 페이즈 변경
+    }
+
+    // 최종보스는 움직이지 않게 FixedUpdate를 막음
+    protected override void FixedUpdate()
+    {
+       
     }
     protected override void UpdateState() { }
 
@@ -120,7 +187,7 @@ public class LastBossMonster : MonsterBase
                 bossBullet.Init(dir); // 방향 전달
             }
 
-            yield return new WaitForSeconds(0.3f); // 발사 간격
+            yield return new WaitForSeconds(0.15f); // 발사 간격
         }
     }
 
@@ -133,9 +200,11 @@ public class LastBossMonster : MonsterBase
 
         Vector3 targetPos = player.position; // 현재 플레이어 위치 저장
 
+        GameObject warning =
         Instantiate(warningPrefab, targetPos, Quaternion.identity); // 경고 생성
 
         yield return new WaitForSeconds(2f); // 피할 시간 제공
+        
 
         Instantiate(explosionPrefab, targetPos, Quaternion.identity); // 폭발
     }
@@ -268,4 +337,5 @@ public class LastBossMonster : MonsterBase
 
         Destroy(gameObject);              // 보스 제거
     }
+
 }
