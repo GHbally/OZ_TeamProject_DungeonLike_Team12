@@ -61,17 +61,19 @@ public class PlayerMovement : MonoBehaviour
 
         moveVec = new Vector2(x, y).normalized;     //대각선이동 1로 고정시키기
 
+        float characterScale = 1.5f;                //캐릭터 크기
+
         //D 누를때
         if (x > 0)
         {
             //오른쪽 보게 만들기
-            visualTransform.localScale = new Vector3(-1, 1, 1);
+            visualTransform.localScale = new Vector3(-characterScale, characterScale, 1);
         }
         //A 누를때
         else if (x < 0)
         {
             //왼쪽 보게 만들기
-            visualTransform.localScale = new Vector3(1, 1, 1);
+            visualTransform.localScale = new Vector3(characterScale, characterScale, 1);
         }
 
         //애니메이터 컴포넌트가 잘 있다면
