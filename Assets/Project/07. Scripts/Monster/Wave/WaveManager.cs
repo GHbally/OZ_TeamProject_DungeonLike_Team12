@@ -29,11 +29,16 @@ public class WaveManager : MonoBehaviour
 
     public WaveData[] waves; //웨이브 데이터 배열
 
-    [Header("랜덤 스폰")]
+    [Header("맵 안 스폰 범위")]
+    public Vector2 spawnMin = new Vector2(2f, 2f); // 잔디 영역 왼쪽 아래
+    public Vector2 spawnMax = new Vector2(28f, 28f);   // 잔디 영역 오른쪽 위
     public Transform player;        // 플레이어 위치
 
-    public float minSpawnRadius = 12f; // 최소 생성 거리
-    public float maxSpawnRadius = 18f; // 최대 생성 거리
+    //[Header("랜덤 스폰")]
+    //public Transform player;        // 플레이어 위치
+
+    //public float minSpawnRadius = 12f; // 최소 생성 거리
+    //public float maxSpawnRadius = 18f; // 최대 생성 거리
 
     [Header("생성 제한")]
     public LayerMask spawnBlockLayer; // 장애물 + 몬스터
@@ -275,39 +280,80 @@ public class WaveManager : MonoBehaviour
         Debug.Log("최종보스 등장");
     }
 
-    // 플레이어 주변 랜덤 위치 생성
     Vector3 GetRandomSpawnPosition()
     {
-        // 최대 20번 시도
-        for (int i = 0; i < 20; i++)
+        Camera cam = Camera.main;
+
+        for (int i = 0; i < 100; i++)
         {
-            // 랜덤 방향
-            Vector2 randomDir = Random.insideUnitCircle.normalized;
+            float randomX = Random.Range(spawnMin.x, spawnMax.x);
+            float randomY = Random.Range(spawnMin.y, spawnMax.y);
 
-            // 랜덤 거리
-            float distance =
-                Random.Range(minSpawnRadius,maxSpawnRadius);
+            Vector2 spawnPos = new Vector2(randomX, randomY);
 
-            // 최종 생성 위치
-            Vector2 spawnPos =(Vector2)player.position +randomDir * distance;
+            if (cam != null)
+            {
+                Vector3 viewPos = cam.WorldToViewportPoint(spawnPos);
 
-            // 장애물 또는 몬스터 검사
-            bool blocked =Physics2D.OverlapCircle(
-                    spawnPos,
-                    checkRadius,
-                    spawnBlockLayer
-                );
+                bool isInCamera =
+                    viewPos.x >= 0f && viewPos.x <= 1f &&
+                    viewPos.y >= 0f && viewPos.y <= 1f &&
+                    viewPos.z > 0f;
 
-            // 비어있는 위치 발견
+                if (isInCamera)
+                    continue;
+            }
+
+            bool blocked = Physics2D.OverlapCircle(
+                spawnPos,
+                checkRadius,
+                spawnBlockLayer
+            );
+
             if (!blocked)
             {
                 return spawnPos;
             }
         }
 
-        // 실패 시 플레이어 근처 반환
-        return player.position;
+        Debug.LogWarning("카메라 밖 스폰 위치를 찾지 못했습니다.");
+
+        return player.position + Vector3.right * 10f;
     }
+
+    // 플레이어 주변 랜덤 위치 생성
+    //Vector3 GetRandomSpawnPosition()
+    //{
+    //    // 최대 20번 시도
+    //    for (int i = 0; i < 20; i++)
+    //    {
+    //        // 랜덤 방향
+    //        Vector2 randomDir = Random.insideUnitCircle.normalized;
+
+    //        // 랜덤 거리
+    //        float distance =
+    //            Random.Range(minSpawnRadius,maxSpawnRadius);
+
+    //        // 최종 생성 위치
+    //        Vector2 spawnPos =(Vector2)player.position +randomDir * distance;
+
+    //        // 장애물 또는 몬스터 검사
+    //        bool blocked =Physics2D.OverlapCircle(
+    //                spawnPos,
+    //                checkRadius,
+    //                spawnBlockLayer
+    //            );
+
+    //        // 비어있는 위치 발견
+    //        if (!blocked)
+    //        {
+    //            return spawnPos;
+    //        }
+    //    }
+
+    //    // 실패 시 플레이어 근처 반환
+    //    return player.position;
+    //}
 
 
 
