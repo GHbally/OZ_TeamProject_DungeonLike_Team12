@@ -7,9 +7,9 @@ public class AutoAttackController : MonoBehaviour
     [SerializeField] private SkillProjectilePool projectilePool;
     //[SerializeField] private SkillProjectileBase projectilePrefab;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private SkillManager skillManager;
 
     [Header("전사 5레벨 검기")]
-    [SerializeField] private SkillManager skillManager;
     [SerializeField] private SkillProjectilePool swordWavePool;
     // 문자열 ID 대신 WarriorSlash SkillData 에셋을 직접 연결한다.
     [SerializeField] private SkillData warriorSlashSkillData;
