@@ -65,16 +65,30 @@ public class AutoAttackController : MonoBehaviour
     //공격
     private void TryAttack()
     {
+        if (!isAttackEnabled)
+        {
+            return;
+        }
+
+        if (attackStats == null)
+        {
+            return;
+        }
+
+        if (targetDetector == null)
+        {
+            return;
+        }
         Transform target = targetDetector.FindNearestTarget(attackStats.AttackRange);
+
         if (target == null)
         {
             return;
         }
-        float distanceSqr = (target.position - transform.position).sqrMagnitude;
 
-        // 공격 범위의 제곱
-        float attackRangeSqr = attackStats.AttackRange * attackStats.AttackRange;
-        if (distanceSqr > attackRangeSqr)
+        bool isTargetInRange = targetDetector.IsTargetInRange(target, attackStats.AttackRange);
+
+        if (!isTargetInRange)
         {
             return;
         }

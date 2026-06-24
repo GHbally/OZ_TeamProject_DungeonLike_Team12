@@ -3,8 +3,7 @@ using UnityEngine;
 public class WarriorProjectile : SkillProjectileBase
 {
     [Header("전사 베기 설정")]
-    [SerializeField] private float slashOffset = 1f;
-    [SerializeField] private float slashAngleOffset = 90f;
+    [SerializeField] private float slashOffset = 2f;
 
     protected override void OnInitialized()
     {
@@ -28,22 +27,4 @@ public class WarriorProjectile : SkillProjectileBase
         // 전사 베기는 이동 X
         // 투사체 수명 처리만 사용
     }
-
-    private void RotateSlashToDirection()
-    {
-        if(moveDirection.sqrMagnitude <= 0f)
-        {
-            return;
-        }
-
-        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x * Mathf.Rad2Deg);
-
-        transform.rotation = Quaternion.Euler(0f, 0f, angle + slashAngleOffset);
-    }
-
-    protected override void OnHitTarget(IDamageable1 damageable, Collider2D hitCollider)
-    {
-        Debug.Log($"전사 베기 적중: {hitCollider.name}");
-    }
-
 }
