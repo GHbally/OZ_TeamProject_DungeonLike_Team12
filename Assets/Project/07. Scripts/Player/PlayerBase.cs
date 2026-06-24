@@ -22,7 +22,8 @@ public class PlayerBase : MonoBehaviour
     //플레이어 움직임이랑 애니메이터 조작을 위해 가져올 컴포넌트 변수들
     private PlayerMovement movement;
     private Animator animator;
-    private SpriteRenderer spriteRenderer; //피격시 잠깐동안 캐릭터를 빨갛게 만들어줄것
+
+    private SpriteRenderer[] childRenderers; //스켈레탈 파츠 자식들을 다 담아줄 배열
 
     //상속받을 자식(직업)들이 Override할 수 있게 protected
     protected virtual void Start()
@@ -40,8 +41,9 @@ public class PlayerBase : MonoBehaviour
         Transform visual = transform.Find("Visual");    //자식 Visual 찾기
         if (visual != null)
         {
-            animator = visual.GetComponentInChildren<Animator>(); ; //애니메이터 빼옴
-            spriteRenderer = visual.GetComponentInChildren<SpriteRenderer>(); //SpriteRenderer 빼옴
+            animator = visual.GetComponentInChildren<Animator>(); ;         //애니메이터 빼옴
+
+            childRenderers = visual.GetComponentsInChildren<SpriteRenderer>();
         }
     }
 
@@ -71,7 +73,8 @@ public class PlayerBase : MonoBehaviour
             hpSlider.value = currentHp;
         }
 
-        if (spriteRenderer != null)
+        //묶어 놓은 자식 스프라이트들이 존재하면 피격 코루틴
+        if (childRenderers != null && childRenderers.Length > 0)
         {
             //중복 피격 시 색상 꼬임 방지
             StopAllCoroutines();
@@ -88,9 +91,19 @@ public class PlayerBase : MonoBehaviour
 
     private System.Collections.IEnumerator HurtFlashCo()
     {
-        spriteRenderer.color = Color.red;       //캐릭터 색상 빨간색으로
+        //쪼개져있는 스프라이트들 전부 빨간색으로
+        foreach (SpriteRenderer sr in childRenderers)
+        {
+            if (sr != null) sr.color = Color.red;
+        }
+ 
         yield return new WaitForSeconds(0.1f);  //0.1초 동안 유지
-        spriteRenderer.color = Color.white;     //기본색상(흰색X 원본색으로 복귀시켜줌)
+
+        //원래색상 복귀
+        foreach (SpriteRenderer sr in childRenderers)
+        {
+            if (sr != null) sr.color = Color.white;
+        }
     }
 
     //[사망 메서드]
@@ -103,7 +116,13 @@ public class PlayerBase : MonoBehaviour
         Debug.Log($"캐릭터 사망");
 
         //사망하면 빨갛게 변했던 색을 원래대로 돌린 후 애니메이션 재생
-        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+        if (childRenderers != null)
+        {
+            foreach (SpriteRenderer sr in childRenderers)
+            {
+                if (sr != null) sr.color = Color.white;
+            }
+        }
 
         if (movement != null)
         {
