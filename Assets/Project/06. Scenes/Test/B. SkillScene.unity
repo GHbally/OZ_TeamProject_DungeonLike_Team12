@@ -496,7 +496,7 @@ Transform:
   m_GameObject: {fileID: 291688407}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.89527, y: -3.11903, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -735,6 +735,7 @@ GameObject:
   - component: {fileID: 518272275}
   - component: {fileID: 518272274}
   - component: {fileID: 518272273}
+  - component: {fileID: 518272283}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -935,6 +936,31 @@ Transform:
   - {fileID: 825304692}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &518272283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518272272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356f50a7b6ec7fb4aa431acc270a1e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballSkillController
+  skillManager: {fileID: 1190465180}
+  targetDetector: {fileID: 518272276}
+  attackStats: {fileID: 518272275}
+  firePoint: {fileID: 825304692}
+  fireballSkillData: {fileID: 11400000, guid: 7807054e2a35b9d4594e435c86b6187c, type: 2}
+  fireballPool: {fileID: 1559136453}
+  fireballRange: 6
+  baseCooldown: 3
+  fireballDamageMultiplier: 1.2
+  fireTrailPool: {fileID: 1058773097}
+  baseSizeMultiplier: 1
+  sizeIncreasePerLevel: 0.2
+  maxSizeMultiplier: 2
 --- !u!1 &551878094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,6 +1745,54 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1058773095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1058773096}
+  - component: {fileID: 1058773097}
+  m_Layer: 0
+  m_Name: FireTrailPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1058773096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058773095}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2041638715}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1058773097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058773095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: 518151244000516084, guid: 178f348d059953640a8d051832f7496c, type: 3}
+  projectileContainer: {fileID: 1541574135}
+  defaultCapacity: 10
+  maxPoolSize: 100
 --- !u!1 &1085120467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,7 +2168,7 @@ Transform:
   m_GameObject: {fileID: 1172196918}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.89527, y: -3.11903, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2149,10 +2223,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 96f87c0bbd8dd8145b30de1f4976d581, type: 2}
   - {fileID: 11400000, guid: c5668704d88020644b47e84f652645c9, type: 2}
   - {fileID: 11400000, guid: 67182b464315a7441ae270bbbca684a2, type: 2}
-  - {fileID: 11400000, guid: d09912cf98f52e5408d2890a3cf4d071, type: 2}
   - {fileID: 11400000, guid: ec63618d10b7fbe49a0a7cefbe035402, type: 2}
-  - {fileID: 11400000, guid: 5cc482cc2fecbaf46a8d25c9fd5c6835, type: 2}
   - {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
+  - {fileID: 11400000, guid: 7807054e2a35b9d4594e435c86b6187c, type: 2}
 --- !u!4 &1190465181
 Transform:
   m_ObjectHideFlags: 0
@@ -2425,12 +2498,60 @@ Transform:
   m_GameObject: {fileID: 1541574134}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.89527, y: -3.11903, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2041638715}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1559136451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1559136452}
+  - component: {fileID: 1559136453}
+  m_Layer: 0
+  m_Name: FireballPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1559136452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559136451}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2041638715}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1559136453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559136451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: 1038063749817791853, guid: b220ddf3098d24f43be012322ee3f108, type: 3}
+  projectileContainer: {fileID: 1541574135}
+  defaultCapacity: 10
+  maxPoolSize: 100
 --- !u!1 &1826220156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,13 +2938,15 @@ Transform:
   m_GameObject: {fileID: 2041638714}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.89527, y: 3.11903, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1541574135}
   - {fileID: 1172196920}
   - {fileID: 291688409}
+  - {fileID: 1559136452}
+  - {fileID: 1058773096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2106208363

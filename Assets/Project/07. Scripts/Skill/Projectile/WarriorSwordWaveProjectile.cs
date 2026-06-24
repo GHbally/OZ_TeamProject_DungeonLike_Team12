@@ -6,7 +6,7 @@ using UnityEngine;
 public class WarriorSwordWaveProjectile : SkillProjectileBase
 {
     [Header("검기 설정")]
-    [SerializeField] private int maxPierceCount = 999;
+    [SerializeField] private int maxPierceCount = 100;
 
     protected override void OnInitialized()
     {
