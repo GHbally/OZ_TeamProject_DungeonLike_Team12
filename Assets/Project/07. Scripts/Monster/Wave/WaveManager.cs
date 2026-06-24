@@ -57,9 +57,12 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-               new WaveData(){ warriorCount = 3, archerCount = 0 },
-                new WaveData(){ warriorCount = 5, archerCount = 1 },
-                new WaveData(){ warriorCount = 7, archerCount = 2 }
+            new WaveData(){ warriorCount = 3, archerCount = 0, 
+                hpMultiplier = 1f, speedMultiplier = 1f },
+            new WaveData(){ warriorCount = 5, archerCount = 1, 
+                hpMultiplier = 1.05f, speedMultiplier = 1f },
+            new WaveData(){ warriorCount = 7, archerCount = 2, 
+                hpMultiplier = 1.1f, speedMultiplier = 1.05f }
             };
         }
 
@@ -68,9 +71,12 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 5, archerCount = 1 },
-                new WaveData(){ warriorCount = 7, archerCount = 2 },
-                new WaveData(){ warriorCount = 10, archerCount = 3 }
+            new WaveData(){ warriorCount = 5, archerCount = 1, 
+                hpMultiplier = 1.1f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 7, archerCount = 2,
+                hpMultiplier = 1.15f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.2f, speedMultiplier = 1.1f }
             };
         }
 
@@ -79,9 +85,12 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 8, archerCount = 2 },
-                new WaveData(){ warriorCount = 10, archerCount = 3 },
-                new WaveData(){ warriorCount = 12, archerCount = 4 }
+            new WaveData(){ warriorCount = 8, archerCount = 2, 
+                hpMultiplier = 1.2f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.25f, speedMultiplier = 1.1f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.3f, speedMultiplier = 1.1f }
             };
         }
 
@@ -90,33 +99,35 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 10, archerCount = 3 },
-                new WaveData(){ warriorCount = 12, archerCount = 4 },
-                new WaveData(){ warriorCount = 15, archerCount = 5 }
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.3f, speedMultiplier = 1.1f },
+            new WaveData(){ warriorCount = 12, archerCount = 4,
+                hpMultiplier = 1.35f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 15, archerCount = 5,
+                hpMultiplier = 1.4f, speedMultiplier = 1.15f }
             };
         }
 
-        // 1-5 (중간 보스)
+        // 1-5 중간보스
         else if (chapter == 1 && stage == 5)
         {
             waves = new WaveData[]
             {
-            new WaveData()
-                {
-                    warriorCount = 0,
-                    archerCount = 0
-                }
+            new WaveData(){ warriorCount = 0, archerCount = 0,}
             };
         }
 
         // 2-1
-        if (chapter == 2 && stage == 1)
+        else if (chapter == 2 && stage == 1)
         {
             waves = new WaveData[]
             {
-               new WaveData(){ warriorCount = 3, archerCount = 0 },
-                new WaveData(){ warriorCount = 5, archerCount = 1 },
-                new WaveData(){ warriorCount = 7, archerCount = 2 }
+            new WaveData(){ warriorCount = 8, archerCount = 2, 
+                hpMultiplier = 1.4f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 10, archerCount = 3,
+                hpMultiplier = 1.45f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.5f, speedMultiplier = 1.2f }
             };
         }
 
@@ -125,9 +136,12 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 5, archerCount = 1 },
-                new WaveData(){ warriorCount = 7, archerCount = 2 },
-                new WaveData(){ warriorCount = 10, archerCount = 3 }
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.5f, speedMultiplier = 1.2f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.6f, speedMultiplier = 1.2f },
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.7f, speedMultiplier = 1.25f }
             };
         }
 
@@ -136,9 +150,12 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 8, archerCount = 2 },
-                new WaveData(){ warriorCount = 10, archerCount = 3 },
-                new WaveData(){ warriorCount = 12, archerCount = 4 }
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.7f, speedMultiplier = 1.25f },
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.8f, speedMultiplier = 1.25f },
+            new WaveData(){ warriorCount = 16, archerCount = 6, 
+                hpMultiplier = 1.9f, speedMultiplier = 1.3f }
             };
         }
 
@@ -147,22 +164,21 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 10, archerCount = 3 },
-                new WaveData(){ warriorCount = 12, archerCount = 4 },
-                new WaveData(){ warriorCount = 15, archerCount = 5 }
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.9f, speedMultiplier = 1.3f },
+            new WaveData(){ warriorCount = 16, archerCount = 6, 
+                hpMultiplier = 2f, speedMultiplier = 1.3f },
+            new WaveData(){ warriorCount = 18, archerCount = 7, 
+                hpMultiplier = 2.1f, speedMultiplier = 1.35f }
             };
         }
 
-        //2-5 최종 보스
+        // 2-5 최종보스
         else if (chapter == 2 && stage == 5)
         {
             waves = new WaveData[]
             {
-                new WaveData()
-                { 
-                    warriorCount = 0,
-                    archerCount = 0
-                }
+            new WaveData(){ warriorCount = 0, archerCount = 0,}
             };
         }
     }
@@ -222,7 +238,7 @@ public class WaveManager : MonoBehaviour
         //전사 몬스터 생성
         for (int i = 0; i < data.warriorCount; i++)
         {
-            SpawnWarrior();
+            SpawnWarrior(data);
 
             yield return new WaitForSeconds(0.2f);
         }
@@ -231,14 +247,14 @@ public class WaveManager : MonoBehaviour
         // 궁수 몬스터 생성
         for (int i = 0; i < data.archerCount; i++)
         {
-            SpawnArcher();
+            SpawnArcher(data);
 
             yield return new WaitForSeconds(0.2f);
         }
     }
 
     //전사 생성
-    void SpawnWarrior()
+    void SpawnWarrior(WaveData data)
     {
         GameObject monster = PoolManager.Instance.GetWarriorMonster();
 
@@ -246,11 +262,22 @@ public class WaveManager : MonoBehaviour
             return;
 
         monster.transform.position = GetRandomSpawnPosition();
+
+        MonsterBase monsterBase = monster.GetComponent<MonsterBase>();
+
+        if (monsterBase != null)
+        {
+            monsterBase.ApplyStageMultiplier
+            (
+                data.hpMultiplier,
+                data.speedMultiplier
+            );
+        }
     }
 
 
     // 궁수 생성
-    void SpawnArcher()
+    void SpawnArcher(WaveData data)
     {
         GameObject monster = PoolManager.Instance.GetArcherMonster();
 
@@ -258,6 +285,18 @@ public class WaveManager : MonoBehaviour
             return;
 
         monster.transform.position = GetRandomSpawnPosition();
+
+        MonsterBase monsterBase =
+        monster.GetComponent<MonsterBase>();
+
+        if (monsterBase != null)
+        {
+            monsterBase.ApplyStageMultiplier
+            (
+                data.hpMultiplier,
+                data.speedMultiplier
+            );
+        }
     }
 
     //중간 보스 생성
