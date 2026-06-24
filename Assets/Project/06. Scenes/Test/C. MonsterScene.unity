@@ -1537,6 +1537,10 @@ MonoBehaviour:
   targetDetector: {fileID: 1013975082}
   projectilePool: {fileID: 67785586}
   firePoint: {fileID: 229791791}
+  skillManager: {fileID: 0}
+  swordWavePool: {fileID: 0}
+  warriorSlashSkillData: {fileID: 0}
+  swordWaveUnlockLevel: 5
 --- !u!114 &1013975084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3176,8 +3180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f18ecb22ca53e4d9b70db397f75230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
-  chapter: 1
-  stage: 1
+  chapter: 2
+  stage: 5
   waveManager: {fileID: 1950872907}
 --- !u!1001 &1973521355
 PrefabInstance:
