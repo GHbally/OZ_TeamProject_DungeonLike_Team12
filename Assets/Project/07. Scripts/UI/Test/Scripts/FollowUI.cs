@@ -6,7 +6,7 @@ public class FollowUI : MonoBehaviour
     [SerializeField] private Transform target; // 플레이어의 Transform을 드래그하세요
 
     [Header("위치 보정")]
-    [SerializeField] private Vector2 offset = new Vector2(0, -0.5f); // 발 아래 오프셋 값
+    [SerializeField] private Vector2 offset = new Vector2(0, 130f); // 머리 위 오프셋 값
 
     private Canvas parentCanvas;
 
