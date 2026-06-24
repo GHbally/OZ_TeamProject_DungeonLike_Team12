@@ -1,8 +1,12 @@
 //[플레이어 코어 부모 클래스]
 using UnityEngine;
+using UnityEngine.UI; // UI 사용을 위해 추가(김영웅 수정)
 
 public class PlayerBase : MonoBehaviour
 {
+    [Header("UI 연결")]
+    [SerializeField] private Slider hpSlider; // 인스펙터에서 드래그할 슬라이더(김영웅 수정)
+
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHp = 100.0f;  //최대 HP
     private float currentHp;                        //현재 체력
@@ -24,6 +28,12 @@ public class PlayerBase : MonoBehaviour
     protected virtual void Start()
     {
         currentHp = maxHp;                          //게임시작 후 현재체력 최대로
+
+        if (hpSlider != null)//슬라이더 초기 값 설정(김영웅 수정)
+        {
+            hpSlider.maxValue = maxHp;
+            hpSlider.value = currentHp;
+        }
 
         movement = GetComponent<PlayerMovement>();  //PlayerMovement 스크립트 연결
 
@@ -54,6 +64,12 @@ public class PlayerBase : MonoBehaviour
         //체력 계산 도중 현재HP 범위 제한(0 ~ maxHp)
         //Clamp(현재 HP, 최소값0, 최대값 최대HP)
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+
+        // [추가] 슬라이더 값 갱신(김영웅 수정)
+        if (hpSlider != null)
+        {
+            hpSlider.value = currentHp;
+        }
 
         if (spriteRenderer != null)
         {
