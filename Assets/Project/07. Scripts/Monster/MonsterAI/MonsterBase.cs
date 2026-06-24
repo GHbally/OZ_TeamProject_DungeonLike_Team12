@@ -45,6 +45,21 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         currentHp = maxHp;                  //체력 초기화
         currentState = MonsterState.Chase;  //추적시작
 
+        isDead = false; // 사망 상태 초기화
+
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        Collider2D col = GetComponent<Collider2D>();
+
+        if (col != null)
+        {
+            col.enabled = true;
+        }
+
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObj != null)
@@ -223,6 +238,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     //[사망 메서드]
     protected virtual void Death()
     {
+        isDead = true;
         if (currentState == MonsterState.Dead) return;
         currentState = MonsterState.Dead; //죽은 상태로
 

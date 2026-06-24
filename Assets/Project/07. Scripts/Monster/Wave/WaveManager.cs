@@ -30,8 +30,8 @@ public class WaveManager : MonoBehaviour
     public WaveData[] waves; //웨이브 데이터 배열
 
     [Header("맵 안 스폰 범위")]
-    public Vector2 spawnMin = new Vector2(2f, 2f); // 잔디 영역 왼쪽 아래
-    public Vector2 spawnMax = new Vector2(28f, 28f);   // 잔디 영역 오른쪽 위
+    public Vector2 spawnMin = new Vector2(-18f, -24f); // 잔디 영역 왼쪽 아래
+    public Vector2 spawnMax = new Vector2(10f, 3f);   // 잔디 영역 오른쪽 위
     public Transform player;        // 플레이어 위치
 
     //[Header("랜덤 스폰")]
@@ -282,13 +282,14 @@ public class WaveManager : MonoBehaviour
 
     Vector3 GetRandomSpawnPosition()
     {
+        Debug.Log("Player Pos : " + player.position);
         Camera cam = Camera.main;
 
         for (int i = 0; i < 100; i++)
         {
             float randomX = Random.Range(spawnMin.x, spawnMax.x);
             float randomY = Random.Range(spawnMin.y, spawnMax.y);
-
+            Debug.Log($"Spawn Test : {randomX}, {randomY}");
             Vector2 spawnPos = new Vector2(randomX, randomY);
 
             if (cam != null)
