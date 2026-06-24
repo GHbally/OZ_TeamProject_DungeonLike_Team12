@@ -5,11 +5,17 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 {
     [Header("몬스터 능력치")]
     public MonsterType monsterType;
-    public float maxHp = 100;             //최대 체력
-    protected float currentHp;            //현재 체력
-    public float moveSpeed = 3f;        //이동속도
-    public Transform player;            //플레이어 위치
-    public MonsterState currentState;   //현재 몬스터 상태
+    public float maxHp = 100;                   //최대 체력
+    protected float currentHp;                  //현재 체력
+    public float moveSpeed = 3f;                //이동속도
+    public Transform player;                    //플레이어 위치
+    public MonsterState currentState;           //현재 몬스터 상태
+
+    [Header("몬스터 스프라이트 제어")]
+    [SerializeField] protected float monsterScale = 1.0f; //몬스터 기본 크기 설정용(인스펙터 조절)
+    protected Animator animator;                //에셋 애니메이션 제어용 컨포넌트 변수
+    protected Transform visualTransform;        //외형 이미지를 담고 있는 자식 오브젝트 위치 변수
+    protected SpriteRenderer spriteRenderer;    //페이드 아웃용
 
     [Header("몬스터 분리")]
     // 주변 몬스터를 탐색할 범위
@@ -19,11 +25,19 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
     protected Rigidbody2D rb;
 
-    protected bool isDead;                //몬스터 죽은 상태
+    protected bool isDead;                      //몬스터 죽은 상태
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        //자식 오브젝트 Visual과 그 안의 애니메이터 찾아오기
+        visualTransform = transform.Find("Visual");
+
+        if (visualTransform != null)
+        {
+            //Visual 자식 아래에서 애니메이터 찾아오기
+            animator = visualTransform.GetComponentInChildren<Animator>();
+        }
     }
 
     protected virtual void OnEnable() 
@@ -50,6 +64,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     {
         if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
 
+        HandleSpriteAndAnimation(); //애니메이션 & 방향전환 처리
+
         /////////////////////////////테스트 공격/////////////////////////////////
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -63,6 +79,34 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         if(currentState == MonsterState.Attack)
         {
             AttackLogic();
+        }
+    }
+
+    //스프라이트 제어용 메서드
+    private void HandleSpriteAndAnimation()
+    {
+        if (player == null || visualTransform == null) return;
+
+        //방향전환(Flip)
+        //플레이어가 몬스터보다 오른쪽에 있다면
+        if (player.position.x > transform.position.x)
+        {
+            //오른쪽 보기(에셋기준 설정)
+            visualTransform.localScale = new Vector3(-monsterScale, monsterScale, 1f);
+        }
+        else //왼쪽이라면
+        {
+            //왼쪽 보기(에셋기준 설정)
+            visualTransform.localScale = new Vector3(monsterScale, monsterScale, 1f);
+        }
+
+        if (currentState == MonsterState.Chase)
+        {
+            animator.SetBool("1_Move", true);
+        }
+        else
+        {
+            animator.SetBool("1_Move", false);
         }
     }
 
@@ -176,12 +220,58 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     }
 
 
-    //사망
+    //[사망 메서드]
     protected virtual void Death()
     {
+        if (currentState == MonsterState.Dead) return;
         currentState = MonsterState.Dead; //죽은 상태로
 
-        //경험치 드랍
+        //시체가 플레이어를 따라오지 못하게 물리랑 충돌 잠금
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        //서서히 사라지는 사망 시퀀스 코루틴
+        StartCoroutine(DeathSequenceCo());
+    }
+
+    //[사망 시퀀스 코루틴]
+    private System.Collections.IEnumerator DeathSequenceCo()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("1_Move", false);
+            animator.SetTrigger("4_Death");
+        }
+
+        //사망 애니메이션 끝날때까지 대기
+        yield return new WaitForSeconds(0.8f);
+
+        if (spriteRenderer != null)
+        {
+            float duration = 0.5f;
+            float elapsed = 0f;
+            Color originalColor = spriteRenderer.color;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+                yield return null;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        //소멸 후 경험치 드랍
         if (DropManager.Instance != null)
         {
             DropManager.Instance.DropExp(transform.position);
