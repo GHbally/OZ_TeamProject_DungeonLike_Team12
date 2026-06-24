@@ -150,13 +150,13 @@ public class LastBossMonster : MonsterBase
                     yield return StartCoroutine(BounceBulletPattern()); //튕기는 탄환
                     break;
                 case BossPhase.Phase3:
-                    StartCoroutine(AllDirectionPattern()); //전방위 탄환
-                    yield return StartCoroutine(UltimatePattern()); //궁극기
+                    yield return StartCoroutine(Phase3Pattern());
                     break;
             }
             yield return new WaitForSeconds(patternDelay); //패턴사이휴식
         }
     }
+
 
     ///////////////슈팅////////////////////
     IEnumerator ShootPattern()
@@ -272,7 +272,7 @@ public class LastBossMonster : MonsterBase
 
     IEnumerator AllDirectionPattern()
     {
-        int count = 24; // 24 방향 공격
+        int count = 24;
 
         for (int i = 0; i < count; i++)
         {
@@ -286,11 +286,11 @@ public class LastBossMonster : MonsterBase
 
             bullet.transform.position = transform.position;
 
-            float angle = i * (360f / count); // 각도 계산
+            float angle = i * (360f / count);
 
-            Vector2 dir =new Vector2(
-                    Mathf.Cos(angle * Mathf.Deg2Rad),
-                    Mathf.Sin(angle * Mathf.Deg2Rad));
+            Vector2 dir = new Vector2(
+                Mathf.Cos(angle * Mathf.Deg2Rad),
+                Mathf.Sin(angle * Mathf.Deg2Rad));
 
             BossBullet bossBullet = bullet.GetComponent<BossBullet>();
 
@@ -299,35 +299,54 @@ public class LastBossMonster : MonsterBase
                 bossBullet.Init(dir);
             }
         }
-        
-        yield return new WaitForSeconds(1f);
+
+        yield break;
     }
 
-
-    ///////////////////// 궁극기 ////////////////////////////
-    //캐스팅 -> 안전지대 생성 -> 3초대기 -> 맵 전체 폭발
-    IEnumerator UltimatePattern()
+    IEnumerator Phase3Pattern()
     {
-        if (player == null) yield break;
+        Debug.Log("궁극기 시전"); // 궁극기 시작 로그 출력
 
-        Debug.Log("궁극기 시전");
+        // 맵 안의 랜덤 위치를 안전지대로 선택
+        Vector2 safePos = Random.insideUnitCircle * 5f;
 
-        Vector2 safePos = Random.insideUnitCircle * 5f; // 안전지대 위치
+        // 선택된 위치에 안전지대 생성
         GameObject safeZone =
-        Instantiate(safeZonePrefab, safePos, Quaternion.identity); // 안전지대 생성
+            Instantiate(safeZonePrefab, safePos, Quaternion.identity);
 
-        yield return new WaitForSeconds(ultimateCastTime);
+        float timer = 0f;              // 궁극기 진행 시간 측정
+        float shootInterval = 1f;      // 탄환 발사 간격(1초)
 
+        // 궁극기 시전 시간이 끝날 때까지 반복
+        while (timer < ultimateCastTime)
+        {
+            // 전방위 탄환 발사
+            yield return StartCoroutine(AllDirectionPattern());
+
+            // 다음 탄환 발사까지 1초 대기
+            yield return new WaitForSeconds(shootInterval);
+
+            // 경과 시간 누적
+            timer += shootInterval;
+        }
+
+        ///////////////////// 궁극기 ////////////////////////////
+        //캐스팅 -> 안전지대 생성 -> 3초대기 -> 맵 전체 폭발
+
+        // 궁극기 시전이 끝나면 맵 전체 폭발 생성
         GameObject explosion =
-        Instantiate(mapExplosionPrefab, Vector3.zero, Quaternion.identity); // 맵 폭발
+            Instantiate(mapExplosionPrefab, Vector3.zero, Quaternion.identity);
 
-        yield return new WaitForSeconds(1f); // 폭발 데미지가 적용될 시간 동안 안전지대를 유지
+        // 폭발 이펙트가 보이도록 1초 대기
+        yield return new WaitForSeconds(1f);
 
-        Destroy(safeZone ); // 안전지대 제거
+        // 안전지대 제거
+        Destroy(safeZone);
 
-        Destroy(explosion); // 폭발 이펙트 제거
+        // 폭발 이펙트 제거
+        Destroy(explosion);
     }
-
+    
     //////////////////보스 사망/////////////////////
 
     protected override void Death()

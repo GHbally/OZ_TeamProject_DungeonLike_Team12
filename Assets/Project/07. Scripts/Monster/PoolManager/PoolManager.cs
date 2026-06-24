@@ -113,7 +113,12 @@ public class PoolManager : MonoBehaviour
     //경험치 구슬 꺼내기
     public GameObject GetExpOrb()
     {
-        if (expPool.Count == 0)return null;
+        if (expPool.Count == 0)
+        {
+            GameObject newObj = Instantiate(expOrbPrefab);
+            newObj.SetActive(false);
+            expPool.Enqueue(newObj);
+        }
 
         GameObject obj = expPool.Dequeue();
         obj.SetActive(true);
@@ -206,11 +211,14 @@ public class PoolManager : MonoBehaviour
     //꺼내기
     public GameObject GetHealOrb()
     {
-        if(healOrbPool.Count == 0)
-            return null;
+        if (healOrbPool.Count == 0)
+        {
+            GameObject newObj = Instantiate(healOrbPrefab);
+            newObj.SetActive(false);
+            healOrbPool.Enqueue(newObj);
+        }
 
         GameObject obj = healOrbPool.Dequeue();
-
         obj.SetActive(true);
         return obj;
     }
@@ -251,10 +259,14 @@ public class PoolManager : MonoBehaviour
     // 보스 탄환 가져오기
     public GameObject GetBossBullet()
     {
-        if (bossBulletPool.Count == 0)return null;
+        if (bossBulletPool.Count == 0)
+        {
+            GameObject newObj = Instantiate(bossBulletPrefab);
+            newObj.SetActive(false);
+            bossBulletPool.Enqueue(newObj);
+        }
 
         GameObject obj = bossBulletPool.Dequeue();
-
         obj.SetActive(true);
 
         return obj;
@@ -263,10 +275,14 @@ public class PoolManager : MonoBehaviour
     // 반사 탄환 가져오기
     public GameObject GetBounceBullet()
     {
-        if (bounceBulletPool.Count == 0) return null;
+        if (bounceBulletPool.Count == 0)
+        {
+            GameObject newObj = Instantiate(bounceBulletPrefab);
+            newObj.SetActive(false);
+            bounceBulletPool.Enqueue(newObj);
+        }
 
         GameObject obj = bounceBulletPool.Dequeue();
-
         obj.SetActive(true);
 
         return obj;
