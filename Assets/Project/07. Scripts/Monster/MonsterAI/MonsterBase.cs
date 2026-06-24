@@ -8,6 +8,10 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     public float maxHp = 100;                   //최대 체력
     protected float currentHp;                  //현재 체력
     public float moveSpeed = 3f;                //이동속도
+    // 추가: 풀링 재사용 시 능력치가 계속 누적되는 것을 막기 위한 기본값 저장 변수
+    private float baseMaxHp;                    // 원래 최대 체력 저장
+    private float baseMoveSpeed;                // 원래 이동속도 저장
+
     public Transform player;                    //플레이어 위치
     public MonsterState currentState;           //현재 몬스터 상태
 
@@ -31,6 +35,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     {
         rb = GetComponent<Rigidbody2D>();
         //자식 오브젝트 Visual과 그 안의 애니메이터 찾아오기
+
+        // 추가: 인스펙터에서 설정한 원래 능력치를 저장
+        baseMaxHp = maxHp;
+        baseMoveSpeed = moveSpeed;
+
         visualTransform = transform.Find("Visual");
 
         if (visualTransform != null)
@@ -42,6 +51,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
     protected virtual void OnEnable() 
     {
+        // 추가: 풀에서 다시 꺼낼 때마다 원래 능력치로 초기화
+        maxHp = baseMaxHp;
+        moveSpeed = baseMoveSpeed;
+
+
         currentHp = maxHp;                  //체력 초기화
         currentState = MonsterState.Chase;  //추적시작
 
@@ -97,6 +111,22 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         }
     }
 
+    public void ApplyStageMultiplier
+    (
+        float hpMultiplier,
+        float speedMultiplier
+    )
+    {
+        // 수정: 기존 maxHp에 계속 곱하지 않고, 원래 체력 기준으로 계산
+        maxHp = baseMaxHp * hpMultiplier;
+
+        // 증가된 최대 체력으로 현재 체력 설정
+        currentHp = maxHp;
+
+        // 수정: 기존 moveSpeed에 계속 곱하지 않고, 원래 속도 기준으로 계산
+        moveSpeed = baseMoveSpeed * speedMultiplier;
+    }
+
     //스프라이트 제어용 메서드
     private void HandleSpriteAndAnimation()
     {
@@ -114,6 +144,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             //왼쪽 보기(에셋기준 설정)
             visualTransform.localScale = new Vector3(monsterScale, monsterScale, 1f);
         }
+
+        if (animator == null) return;
 
         if (currentState == MonsterState.Chase)
         {
