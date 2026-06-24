@@ -1692,6 +1692,7 @@ MonoBehaviour:
   attackRange: 2
   criticalChance: 0.05
   criticalMultiplier: 2
+  skillCoolMultiplier: 1
 --- !u!114 &857179968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,12 +1858,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves: []
-  spawnMin: {x: -8, y: -4}
-  spawnMax: {x: 8, y: 4}
+  spawnMin: {x: -18, y: -24}
+  spawnMax: {x: 10, y: 3}
   player: {fileID: 857179965}
   spawnBlockLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   checkRadius: 0.7
   midBossPrefab: {fileID: 5262284457916466998, guid: f186275692d9f8a47b6cddd1cc54c11f, type: 3}
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
