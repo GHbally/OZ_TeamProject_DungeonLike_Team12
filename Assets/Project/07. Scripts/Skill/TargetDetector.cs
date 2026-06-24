@@ -75,18 +75,6 @@ public class TargetDetector : MonoBehaviour
         return nearestTarget;   //최종적으로 남은 적 반환
     }
 
-    //감지 범위 기즈모
-    private void OnDrawGizmos()
-    {
-        if(attackstats == null)
-        {
-            return;
-        }
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackstats.AttackRange);
-    }
-
     // 특정 타겟이 공격 범위 안에 있는지 확인한다.
     // 적 중심점이 아니라 Collider의 가장 가까운 지점을 기준으로 검사한다.
     // 그래서 기즈모 원에 적 Collider가 닿으면 공격 가능한 상태로 인정된다.
@@ -114,5 +102,17 @@ public class TargetDetector : MonoBehaviour
         float rangeSqr = range * range;
 
         return distanceSqr <= rangeSqr;
+    }
+
+    //감지 범위 기즈모
+    private void OnDrawGizmos()
+    {
+        if (attackstats == null)
+        {
+            return;
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackstats.AttackRange);
     }
 }

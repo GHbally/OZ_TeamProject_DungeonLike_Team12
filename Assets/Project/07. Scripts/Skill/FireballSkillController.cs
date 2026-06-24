@@ -63,7 +63,7 @@ public class FireballSkillController : MonoBehaviour
             return;
         }
 
-        //TryCastFireball(fireballLevel);
+        TryCastFireball(fireballLevel);
 
         // 파이어볼 레벨과 상관없이 기본 쿨타임을 사용한다.
         // 단, 나중에 전체 스킬 쿨타임 감소 패시브가 있으면 그 배율만 적용된다.
@@ -125,5 +125,103 @@ public class FireballSkillController : MonoBehaviour
 
         // 전체 스킬 쿨타임 감소 배율을 적용한다.
         return attackStats.GetFinalSkillCooldown(baseCooldown);
+    }
+    
+    private void TryCastFireball(int fireballLevel)
+    {
+        if(fireballPool == null)
+        {
+            return;
+        }
+
+        if(targetDetector == null)
+        {
+            return;
+        }
+        if(attackStats == null)
+        {
+            return;
+        }
+
+        // 파이어볼 전용 사거리 안에서 가장 가까운 적을 찾는다.
+        Transform target = targetDetector.FindNearestTarget(fireballRange);
+
+        if(target == null)
+        {
+            return;
+        }
+
+        Vector2 direction = target.position - firePoint.position;
+
+        if(direction.sqrMagnitude <= 0f)
+        {
+            return;
+        }
+
+        DamageInfo1 damageInfo = CreateFireballDamageInfo();
+
+        // Pool에서 파이어볼 투사체를 꺼내 발사한다.
+        SkillProjectileBase projectile = fireballPool.Spawn(firePoint.position, direction.normalized, damageInfo);
+
+        FireballProjectile fireball = projectile as FireballProjectile;
+
+        bool isMaster =
+            fireballLevel >= masterLevel;
+
+        // 파이어볼 레벨에 따라 크기와 마스터 여부만 전달한다.
+        fireball.SetupFireball(fireballLevel, GetSizeByLevel(fireballLevel), isMaster, fireTrailPool );
+
+        Debug.Log($"파이어볼 발사 / Lv.{fireballLevel}");
+    }
+
+    private DamageInfo1 CreateFireballDamageInfo()
+    {
+        // AttackStats의 치명타 계산을 그대로 사용한다.
+        DamageInfo1 baseDamageInfo =
+            attackStats.CreateDamageInfo(gameObject);
+
+        // 파이어볼 전용 데미지 배율을 적용한다.
+        float finalDamage =
+            baseDamageInfo.Damage * fireballDamageMultiplier;
+
+        return new DamageInfo1(
+            finalDamage,
+            baseDamageInfo.IsCritical,
+            baseDamageInfo.Attacker
+        );
+    }
+    private float GetSizeByLevel(int level)
+    {
+        // 레벨이 1보다 낮게 들어오면 계산이 꼬일 수 있으므로 최소 1로 보정한다.
+        int safeLevel = Mathf.Max(1, level);
+
+        // 1레벨은 기본 크기만 사용한다.
+        // 2레벨부터 레벨당 증가량이 적용된다.
+        float calculatedSize =
+            baseSizeMultiplier +
+            ((safeLevel - 1) * sizeIncreasePerLevel);
+
+        // 파이어볼이 너무 커지는 것을 막기 위해 최대 크기로 제한한다.
+        return Mathf.Min(
+            maxSizeMultiplier,
+            calculatedSize
+        );
+    }
+    private void OnDrawGizmos()
+    {
+        // 파이어볼이 적을 감지하는 범위를 Scene 뷰에 표시한다.
+        // 실제 파이어볼 타겟 탐색도 fireballRange를 사용한다.
+        Gizmos.color = Color.green;
+
+        Vector3 gizmoCenter = transform.position;
+
+        // TargetDetector가 연결되어 있으면 TargetDetector 위치 기준으로 그린다.
+        // 실제 탐색도 targetDetector.FindNearestTarget(fireballRange)를 사용하기 때문이다.
+        if (targetDetector != null)
+        {
+            gizmoCenter = targetDetector.transform.position;
+        }
+
+        Gizmos.DrawWireSphere(gizmoCenter, fireballRange );
     }
 }
