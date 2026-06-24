@@ -96,11 +96,13 @@ public class PlayerBase : MonoBehaviour
         {
             if (sr != null)
             {
-                //그림자는 색상에서 제외
-                if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
-            }
-                
-            sr.color = Color.red;
+                string objName = sr.gameObject.name.ToLower();
+                //그림자와 눈은 색상에서 제외
+                if (objName.Contains("shadow")) continue;
+
+                if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
+                sr.color = Color.red;
+            }   
         }
  
         yield return new WaitForSeconds(0.1f);  //0.1초 동안 유지
@@ -110,7 +112,10 @@ public class PlayerBase : MonoBehaviour
         {
             if (sr != null) 
             {
-                if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
+                string objName = sr.gameObject.name.ToLower();
+                if (objName.Contains("shadow")) continue;
+
+                if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
             }
             sr.color = Color.white;
         }
@@ -131,7 +136,10 @@ public class PlayerBase : MonoBehaviour
             {
                 if (sr != null)
                 {
-                    if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
+                    string objName = sr.gameObject.name.ToLower();
+                    if (objName.Contains("shadow")) continue;
+
+                    if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
                     sr.color = Color.white;
                 }
             }
@@ -181,6 +189,26 @@ public class PlayerBase : MonoBehaviour
             //사망 시 자동 공격 정지
             autoAttack.StopAttack();
         }
+    }
+
+    //내 상위 부모들을 타고 올라가며 이름에 eye가 있는 애들 찾아줄 메서드
+    private bool IsParentContainsName(Transform current, string targetName)
+    {
+        Transform parent = current.parent;
+
+        //Visual까지 타고 올라가면서
+        while(parent != null && parent.name != "Visual" && parent.name != gameObject.name)
+        {
+            //지정해둔 이름의 찾음(eye찾을 것들)
+            if (parent.name.ToLower().Contains(targetName))
+            {
+                return true;
+            }
+            //한 단계 위쪽 부모 주소로 이동
+            parent = parent.parent;
+        }
+        //끝까지 올라갔는데도 없으면 해당 파츠가 아니므로 false 반환
+        return false;
     }
 
     [ContextMenu("강제 사망 테스트")]
