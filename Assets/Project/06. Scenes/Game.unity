@@ -1691,6 +1691,7 @@ MonoBehaviour:
   attackRange: 2
   criticalChance: 0.05
   criticalMultiplier: 2
+  skillCoolMultiplier: 1
 --- !u!114 &857179968
 MonoBehaviour:
   m_ObjectHideFlags: 0
