@@ -82,27 +82,19 @@ public class SkillManager : MonoBehaviour
     {
         List<SkillData> availableSkills = GetAvailableSkills();
 
-        Debug.Log($"[리롤] 전체 후보 스킬 수: {availableSkills.Count}");
-        Debug.Log($"[리롤] 제외할 이전 스킬 수: {exceptSkills.Count}");
-        Debug.Log($"[리롤] 요청 카드 수: {count}");
-
         for (int i = availableSkills.Count - 1; i >= 0; i--)
         {
             SkillData skillData = availableSkills[i];
 
             if (exceptSkills.Contains(skillData))
             {
-                Debug.Log($"[리롤] 이전 카드 제외: {skillData.SkillName}");
                 availableSkills.RemoveAt(i);
             }
         }
 
-        Debug.Log($"[리롤] 제외 후 후보 수: {availableSkills.Count}");
-
         // 제외 후 후보가 부족하면 전체 후보에서 다시 뽑는다.
         if (availableSkills.Count < count)
         {
-            Debug.LogWarning("[리롤] 후보가 부족해서 전체 후보를 다시 사용합니다.");
             availableSkills = GetAvailableSkills();
         }
 
@@ -115,13 +107,9 @@ public class SkillManager : MonoBehaviour
             availableSkills.Count
         );
 
-        Debug.Log($"[리롤] 최종 표시 카드 수: {cardCount}");
-
         for (int i = 0; i < cardCount; i++)
         {
             SkillData skillData = availableSkills[i];
-
-            Debug.Log($"[리롤] {i}번 카드 후보: {skillData.SkillName}");
 
             result.Add(
                 CreateSkillCardInfo(skillData)
@@ -135,7 +123,6 @@ public class SkillManager : MonoBehaviour
     {
         if (selectedSkill == null)
         {
-            Debug.LogWarning("선택된 스킬이 null입니다.");
             return;
         }
 
@@ -149,7 +136,6 @@ public class SkillManager : MonoBehaviour
 
         if (runtime.IsMaxLevel)
         {
-            Debug.Log($"{selectedSkill.SkillName}은 이미 최대 레벨입니다.");
             return;
         }
 

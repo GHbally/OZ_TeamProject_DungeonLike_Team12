@@ -13,11 +13,4 @@ public class WarriorSwordWaveProjectile : SkillProjectileBase
         // 검기는 여러 적을 관통해야 하므로 적중 가능 횟수를 크게 설정한다.
         SetMaxHitCount(maxPierceCount);
     }
-
-    protected override void OnHitTarget(
-        IDamageable1 damageable,
-        Collider2D hitCollider)
-    {
-        Debug.Log($"전사 검기 적중: {hitCollider.name}");
-    }
 }
