@@ -94,7 +94,13 @@ public class PlayerBase : MonoBehaviour
         //쪼개져있는 스프라이트들 전부 빨간색으로
         foreach (SpriteRenderer sr in childRenderers)
         {
-            if (sr != null) sr.color = Color.red;
+            if (sr != null)
+            {
+                //그림자는 색상에서 제외
+                if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
+            }
+                
+            sr.color = Color.red;
         }
  
         yield return new WaitForSeconds(0.1f);  //0.1초 동안 유지
@@ -102,7 +108,11 @@ public class PlayerBase : MonoBehaviour
         //원래색상 복귀
         foreach (SpriteRenderer sr in childRenderers)
         {
-            if (sr != null) sr.color = Color.white;
+            if (sr != null) 
+            {
+                if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
+            }
+            sr.color = Color.white;
         }
     }
 
@@ -110,7 +120,6 @@ public class PlayerBase : MonoBehaviour
     protected virtual void Death()
     {
         if (IsDead) return; //중복 사망 방지
-
         IsDead = true;
 
         Debug.Log($"캐릭터 사망");
@@ -120,7 +129,11 @@ public class PlayerBase : MonoBehaviour
         {
             foreach (SpriteRenderer sr in childRenderers)
             {
-                if (sr != null) sr.color = Color.white;
+                if (sr != null)
+                {
+                    if (sr.gameObject.name.ToLower().Contains("shadow")) continue;
+                    sr.color = Color.white;
+                }
             }
         }
 
