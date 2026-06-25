@@ -22,3 +22,5 @@ MonoBehaviour:
   - "\uACF5\uACA9 \uC18D\uB3C4 +0.5"
   - "\uACF5\uACA9 \uC18D\uB3C4 +0.5"
   - "\uACF5\uACA9 \uC18D\uB3C4 +0.5"
+  effectType: 3
+  effectValuePerLevel: 0.5

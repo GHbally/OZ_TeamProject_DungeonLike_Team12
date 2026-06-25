@@ -1,9 +1,5 @@
 using UnityEngine;
-
-/*
-[0617] 수정
- - DamageInfo1 수정 (몬스터와 맞춰서 넣어야 함)
- */
+using static UnityEngine.Rendering.DebugUI;
 
 public class AttackStats : MonoBehaviour
 {
@@ -19,6 +15,8 @@ public class AttackStats : MonoBehaviour
     [Header("CoolTime")]
     [SerializeField] float skillCoolMultiplier = 1f;
 
+    [Header("MovingSpeed")]
+    [SerializeField] float movingSpeed = 1f;
     public float AttackDamage => attackDamage;
     public float AttackSpeed => attackSpeed;
     public float AttackRange => attackRange;
@@ -29,6 +27,16 @@ public class AttackStats : MonoBehaviour
     // 1.0 = 감소 없음
     // 0.8 = 모든 스킬 쿨 20% 감소
     public float SkillCooldownMultiplier => skillCoolMultiplier;
+
+    private PlayerMovement playerMovement;
+
+    private void Awake()
+    {
+        if (playerMovement == null)
+        {
+            playerMovement = GetComponent<PlayerMovement>();
+        }
+    }
 
     public float GetAttackInterval()
     {
@@ -79,6 +87,12 @@ public class AttackStats : MonoBehaviour
         Debug.Log($"치명타 배율 증가: {amount}, 현재 치명타 배율: {criticalMultiplier}", this);
     }
 
+    public void IncreaseMovingSpeed(float amount)
+    {
+        playerMovement.MoveSpeed += amount;
+        Debug.Log($"이동속도 증가: {amount}, 현재 이동속도: {playerMovement.MoveSpeed}", this);
+    }
+
     public float GetFinalSkillCooldown(float baseCooldown)
     {
         // 쿨타임이 0 이하가 되는 것을 막기 위해 최소값을 보정한다.
@@ -90,7 +104,7 @@ public class AttackStats : MonoBehaviour
 
     // 전체 스킬 쿨타임 감소 패시브를 적용할 때 사용할 함수.
     // 예: percent = 10이면 전체 스킬 쿨타임 10% 감소.
-    public void ReduceAllSkillCooldownPercent(float percent)
+    public void ReduceSkillCooldownPercent(float percent)
     {
         // 10% 감소라면 multiplier는 0.9가 되어야 한다.
         float reduceValue = percent / 100f;
