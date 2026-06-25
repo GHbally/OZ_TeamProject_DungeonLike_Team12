@@ -39,10 +39,4 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 재시작
     }
-
-    public void GoHome()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainScene"); // 메인 메뉴 씬 이름
-    }
 }
