@@ -4,17 +4,33 @@ using System.Collections;
 
 public class SceneLoader : MonoBehaviour
 {
-    public CanvasGroup fadeGroup; // 인스펙터에서 검은색 패널(CanvasGroup)을 드래그해 넣으세요.
-    public float fadeDuration = 1.0f; // 페이드 시간
+    public static SceneLoader Instance;
 
-    public void OnClickStart()
+    public CanvasGroup fadeGroup;
+    public float fadeDuration = 1.0f;
+
+    void Awake()
     {
-        StartCoroutine(FadeAndLoad());
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음
+        }
+        else
+        {
+            Destroy(gameObject); // 만약 이미 존재한다면 중복 생성 방지
+        }
     }
 
-    IEnumerator FadeAndLoad()
+    // 통합 함수: 이 함수 하나만 사용하세요!
+    public void LoadScene(string sceneName)
     {
-        // 1. 서서히 어둡게 (Alpha 0 -> 1)
+        StartCoroutine(FadeAndLoad(sceneName));
+    }
+
+    IEnumerator FadeAndLoad(string sceneName)
+    {
+        // 1. 페이드 아웃 (검은색으로 변함)
         float timer = 0f;
         while (timer < fadeDuration)
         {
@@ -23,12 +39,7 @@ public class SceneLoader : MonoBehaviour
             yield return null;
         }
 
-        // 2. 씬 전환
-        SceneManager.LoadScene("LobbyScene");
-    }
-    public void LoadNextScene()
-    {
-        Debug.Log("클릭 이벤트가 감지되었습니다!"); // 이 로그가 찍히는지 확인하세요.
-        SceneManager.LoadScene("LobbyScene");
+        // 2. 씬 전환 (이름을 인자로 받음)
+        SceneManager.LoadScene(sceneName);
     }
 }
