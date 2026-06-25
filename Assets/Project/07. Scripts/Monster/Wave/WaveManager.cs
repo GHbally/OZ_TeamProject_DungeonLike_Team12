@@ -49,6 +49,10 @@ public class WaveManager : MonoBehaviour
     public GameObject midBossPrefab;
     public GameObject lastBossPrefab;
 
+    ////////스테이지 UI추가/////////////
+    [Header("UI")]
+    public StageWaveUI stageWaveUI;
+
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
     {
@@ -189,6 +193,13 @@ public class WaveManager : MonoBehaviour
     public void StartStage(int chapter, int stage)
     {
         Debug.Log($"[STAGE START] {chapter}-{stage}");
+
+        ////////스테이지 UI추가/////////////
+        if (stageWaveUI != null)
+        {
+            stageWaveUI.UpdateStage(chapter, stage);
+        }
+
         if (player == null)
         {
             //플레이어 위치를 변수에 저장
@@ -205,6 +216,13 @@ public class WaveManager : MonoBehaviour
         if (chapter == 1 && stage == 5)
         {
             aliveMonster = 1;
+
+            /////////스테이지 UI추가//////////
+            if (stageWaveUI != null)
+            {
+                stageWaveUI.UpdateWave(1, 1);
+                stageWaveUI.UpdateMonsterCount(aliveMonster);
+            }
             SpawnMidBoss();
             return;
         }
@@ -213,11 +231,19 @@ public class WaveManager : MonoBehaviour
         if (chapter == 2 && stage == 5)
         {
             aliveMonster = 1;
+
+            /////////스테이지 UI추가//////////
+            if (stageWaveUI != null)
+            {
+                stageWaveUI.UpdateWave(1, 1);
+                stageWaveUI.UpdateMonsterCount(aliveMonster);
+            }
             SpawnLastBoss();
             return;
         }
         //웨이브 시작
         StartCoroutine(StartWave());
+
     }
 
 
@@ -234,6 +260,13 @@ public class WaveManager : MonoBehaviour
         WaveData data = waves[currentWave];
         // 살아있는 몬스터의 수를 계산
         aliveMonster = data.warriorCount + data.archerCount;
+
+        ////////스테이지 UI추가/////////////
+        if (stageWaveUI != null)
+        {
+            stageWaveUI.UpdateWave(currentWave + 1, waves.Length);
+            stageWaveUI.UpdateMonsterCount(aliveMonster);
+        }
 
         //전사 몬스터 생성
         for (int i = 0; i < data.warriorCount; i++)
@@ -406,6 +439,12 @@ public class WaveManager : MonoBehaviour
     public void MonsterDead()
     {
         aliveMonster--;
+        ///// 스테이지 UI추가/////////
+        if (stageWaveUI != null)
+        {
+            stageWaveUI.UpdateMonsterCount(aliveMonster);
+        }
+
         Debug.Log("몬스터 죽음 / 남은 수: " + aliveMonster);
         // 아직 몬스터 남아있음
         if (aliveMonster > 0)
