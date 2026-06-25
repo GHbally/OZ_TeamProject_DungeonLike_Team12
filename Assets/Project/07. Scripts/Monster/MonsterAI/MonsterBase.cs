@@ -185,18 +185,63 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             animator.SetBool("1_Move", false);
         }
     }
-
     protected virtual void FixedUpdate()
     {
-        if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
+        if (currentState == MonsterState.Dead) return;
 
-        //추적 상태일 때만 플레이어를 쫓아감
+        Vector2 moveDir = Vector2.zero;
+
         if (currentState == MonsterState.Chase && player != null)
         {
-            MoveTowardsPlayer();
+            moveDir = ((Vector2)player.position - rb.position).normalized;
+        }
+
+        Vector2 separationDir = GetSeparationDirection();
+
+        Vector2 finalDir = (moveDir + separationDir * separationForce).normalized;
+
+        if (finalDir != Vector2.zero)
+        {
+            rb.MovePosition(
+                rb.position + finalDir * moveSpeed * Time.fixedDeltaTime
+            );
         }
     }
+    //protected virtual void FixedUpdate()
+    //{
+    //    if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
 
+    //    //추적 상태일 때만 플레이어를 쫓아감
+    //    if (currentState == MonsterState.Chase && player != null)
+    //    {
+    //        MoveTowardsPlayer();
+    //    }
+    //}
+    private Vector2 GetSeparationDirection()
+    {
+        Collider2D[] nearby =
+            Physics2D.OverlapCircleAll(transform.position, separationRadius);
+
+        Vector2 separation = Vector2.zero;
+
+        foreach (Collider2D col in nearby)
+        {
+            MonsterBase monster = col.GetComponentInParent<MonsterBase>();
+
+            if (monster == null) continue;
+            if (monster == this) continue;
+
+            Vector2 away = rb.position - (Vector2)monster.transform.position;
+            float distance = away.magnitude;
+
+            if (distance > 0.01f && distance < separationRadius)
+            {
+                separation += away.normalized * (separationRadius - distance);
+            }
+        }
+
+        return separation.normalized;
+    }
     ///////////////////플레이어 추적 이동////////////////////////
     private void MoveTowardsPlayer()
     {
