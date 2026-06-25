@@ -17,8 +17,10 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 9ca7b6b481b7748719224b0e2c855fec, type: 3}
   maxLevel: 5
   levelUpDescriptions:
-  - "\uC774\uB3D9 \uC18D\uB3C4 +0.2"
-  - "\uC774\uB3D9 \uC18D\uB3C4 +0.2"
-  - "\uC774\uB3D9 \uC18D\uB3C4 +0.2"
-  - "\uC774\uB3D9 \uC18D\uB3C4 +0.2"
-  - "\uC774\uB3D9 \uC18D\uB3C4 +0.2"
+  - "\uC774\uB3D9 \uC18D\uB3C4 +0.5"
+  - "\uC774\uB3D9 \uC18D\uB3C4 +0.5"
+  - "\uC774\uB3D9 \uC18D\uB3C4 +0.5"
+  - "\uC774\uB3D9 \uC18D\uB3C4 +0.5"
+  - "\uC774\uB3D9 \uC18D\uB3C4 +0.5"
+  effectType: 9
+  effectValuePerLevel: 0.5

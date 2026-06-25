@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
+
 
 // UI를 만들 때 요기서 함수를 호출해서 카드 후보를 받고,
 // 카드 선택 후 다시 선택된 SkillData를 이 클래스에 넘겨주면 된다.
@@ -21,7 +20,25 @@ public class SkillManager : MonoBehaviour
 
     private void Awake()
     {
+        CacheReferences();
         InitializeSkillRuntimes();
+    }
+
+    // 비어있는 컴퍼넌트 자동 붙이기
+    private void CacheReferences()
+    {
+        // SkillManager가 Player에 붙어 있으면 GetComponent로 찾을 수 있다.
+        if (attackStats == null)
+        {
+            attackStats = GetComponent<AttackStats>();
+        }
+
+        // SkillManager가 GameManager 같은 별도 오브젝트에 있으면
+        // Player 쪽 컴포넌트를 자동으로 찾아준다.
+        if (attackStats == null)
+        {
+            attackStats = FindFirstObjectByType<AttackStats>();
+        }
     }
 
     // allSkills에 등록된 모든 스킬의 런타임 정보를 미리 만든다.
@@ -152,9 +169,81 @@ public class SkillManager : MonoBehaviour
         SkillData skillData,
         int currentLevel)
     {
+        if (skillData == null)
+        {
+            return;
+        }
+
+        SkillEffectType effectType = skillData.EffectType;
+
+        float value = skillData.EffectValuePerLevel;
+
+        // EffectType이 None이면 레벨만 올리고 실제 스탯은 건드리지 않는다.
+        // 전사 스킬, 파이어볼 같은 액티브 스킬은 각 스크립트가 현재 레벨을 확인해서 동작한다.
+        if (effectType == SkillEffectType.None)
+        {
+            Debug.Log(
+                $"{skillData.SkillName}: 별도 스탯 적용 없음 / Lv.{currentLevel}",
+                this
+            );
+
+            return;
+        }
+
+        if (attackStats == null)
+        {
+            return;
+        }
+
+        switch (effectType)
+        {
+            case SkillEffectType.AttackDamageFlat:
+                // 공격력을 고정 수치만큼 증가시킨다.
+                attackStats.IncreaseAttackDamage(value);
+                break;
+
+            case SkillEffectType.AttackDamagePercent:
+                // 공격력을 퍼센트로 증가시킨다.
+                // 예: value가 10이면 공격력 10% 증가.
+                attackStats.IncreaseAttackDamagePercent(value);
+                break;
+
+            case SkillEffectType.AttackSpeedFlat:
+                // 공격속도를 고정 수치만큼 증가시킨다.
+                attackStats.IncreaseAttackSpeed(value);
+                break;
+
+            case SkillEffectType.AttackRangeFlat:
+                // 공격 사거리를 고정 수치만큼 증가시킨다.
+                attackStats.IncreaseAttackRange(value);
+                break;
+
+            case SkillEffectType.CriticalChanceFlat:
+                // 치명타 확률을 증가시킨다.
+                // AttackStats 내부에서 0~1 사이로 제한한다.
+                attackStats.IncreaseCriticalChance(value);
+                break;
+
+            case SkillEffectType.CriticalMultiplierFlat:
+                // 치명타 배율을 증가시킨다.
+                attackStats.IncreaseCriticalMultiplier(value);
+                break;
+
+            case SkillEffectType.SkillCooldownReductionPercent:
+                // 전체 스킬 쿨타임 감소 패시브.
+                // 파이어볼 같은 액티브 스킬의 최종 쿨타임 계산에 사용된다.
+                attackStats.ReduceSkillCooldownPercent(value);
+                break;
+            case SkillEffectType.MovingSpeedFlat:
+                // 이동속도 증가
+                attackStats.IncreaseMovingSpeed(value);
+                break;
+        }
+
         Debug.Log(
-            $"스킬 효과 적용 위치: {skillData.SkillName} / Lv.{currentLevel}"
-        );
+        $"{skillData.SkillName} 효과 적용 완료 / 타입: {effectType}, 값: {value}, 현재 레벨: {currentLevel}",
+        this
+    );
 
         // TODO: 실제 효과 연결
         // 예: 공격력 증가, 공격속도 증가, 투사체 개수 증가

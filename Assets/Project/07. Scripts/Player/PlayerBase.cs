@@ -73,19 +73,35 @@ public class PlayerBase : MonoBehaviour
             hpSlider.value = currentHp;
         }
 
-        //묶어 놓은 자식 스프라이트들이 존재하면 피격 코루틴
-        if (childRenderers != null && childRenderers.Length > 0)
+        if(currentHp <= 0)
         {
-            //중복 피격 시 색상 꼬임 방지
+            //모든 피격 코루틴 정지
             StopAllCoroutines();
-            //피격시 빨갛게 되는 효과
-            StartCoroutine(HurtFlashCo());
-        }
 
-        if (currentHp <= 0)
-        {
-            //체력 0이하 사망
+            //눈, 그림자를 제외한 온몸의 스프라이트 빨갛게
+            if (childRenderers != null)
+            {
+                foreach(SpriteRenderer sr in childRenderers)
+                {
+                    if (sr != null)
+                    {
+                        string objName = sr.gameObject.name.ToLower();
+                        if (objName.Contains("shadow")) continue;
+                        if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
+
+                        sr.color = Color.red;
+                    }
+                }
+            }
             Death();
+        }
+        else
+        {
+            if(childRenderers != null && childRenderers.Length > 0)
+            {
+                StopAllCoroutines();
+                StartCoroutine(HurtFlashCo());
+            }
         }
     }
 
@@ -131,17 +147,23 @@ public class PlayerBase : MonoBehaviour
  
         yield return new WaitForSeconds(0.1f);  //0.1초 동안 유지
 
-        //원래색상 복귀
+        ResetRenderersColor();
+    }
+
+    private void ResetRenderersColor()
+    {
+        if (childRenderers == null) return;
+
         foreach (SpriteRenderer sr in childRenderers)
         {
-            if (sr != null) 
+            if (sr != null)
             {
                 string objName = sr.gameObject.name.ToLower();
                 if (objName.Contains("shadow")) continue;
-
                 if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
+
+                sr.color = Color.white;
             }
-            sr.color = Color.white;
         }
     }
 
@@ -152,22 +174,6 @@ public class PlayerBase : MonoBehaviour
         IsDead = true;
 
         Debug.Log($"캐릭터 사망");
-
-        //사망하면 빨갛게 변했던 색을 원래대로 돌린 후 애니메이션 재생
-        if (childRenderers != null)
-        {
-            foreach (SpriteRenderer sr in childRenderers)
-            {
-                if (sr != null)
-                {
-                    string objName = sr.gameObject.name.ToLower();
-                    if (objName.Contains("shadow")) continue;
-
-                    if (objName.Contains("eye") || IsParentContainsName(sr.transform, "eye")) continue;
-                    sr.color = Color.white;
-                }
-            }
-        }
 
         if (movement != null)
         {
@@ -213,6 +219,16 @@ public class PlayerBase : MonoBehaviour
             //사망 시 자동 공격 정지
             autoAttack.StopAttack();
         }
+
+        StartCoroutine(PlayerDeathSequenceCo());
+    }
+
+    //사망 연출 지연 코루틴
+    private System.Collections.IEnumerator PlayerDeathSequenceCo()
+    {
+        yield return new WaitForSeconds(0.8f);
+
+        ResetRenderersColor();
     }
 
     //내 상위 부모들을 타고 올라가며 이름에 eye가 있는 애들 찾아줄 메서드
