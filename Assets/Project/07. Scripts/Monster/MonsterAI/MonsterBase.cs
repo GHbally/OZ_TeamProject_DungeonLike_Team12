@@ -1,5 +1,6 @@
 //[몬스터 부모 클래스]
 using UnityEngine;
+using System.Collections.Generic;               //List 사용을 위해 추가
 
 public abstract class MonsterBase : MonoBehaviour, IDamageable1
 {
@@ -8,7 +9,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     public float maxHp = 100;                   //최대 체력
     protected float currentHp;                  //현재 체력
     public float moveSpeed = 3f;                //이동속도
-    // 추가: 풀링 재사용 시 능력치가 계속 누적되는 것을 막기 위한 기본값 저장 변수
+
+    //추가: 풀링 재사용 시 능력치가 계속 누적되는 것을 막기 위한 기본값 저장 변수
     private float baseMaxHp;                    // 원래 최대 체력 저장
     private float baseMoveSpeed;                // 원래 이동속도 저장
 
@@ -19,7 +21,10 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     [SerializeField] protected float monsterScale = 1.0f; //몬스터 기본 크기 설정용(인스펙터 조절)
     protected Animator animator;                //에셋 애니메이션 제어용 컨포넌트 변수
     protected Transform visualTransform;        //외형 이미지를 담고 있는 자식 오브젝트 위치 변수
-    protected SpriteRenderer spriteRenderer;    //페이드 아웃용
+
+    //단일 SpriteRenderer대신 자식 모든 스프라이트를 담을 리스트로 변경
+    protected List<SpriteRenderer> monsterRenderers = new List<SpriteRenderer>();
+    protected SpriteRenderer mainSpriteRenderer;    //사망 페이드 아웃용
 
     [Header("몬스터 분리")]
     // 주변 몬스터를 탐색할 범위
@@ -27,8 +32,12 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     // 몬스터끼리 밀어내는 힘
     public float separationForce = 1.5f;
 
-    protected Rigidbody2D rb;
+    [Header("피격 연출 설정")]
+    [SerializeField] private Color hitColor = new Color(1.0f, 0.3f, 0.3f, 1f);
+    [SerializeField] private float hitFlashDuration = 0.1f; //깜빡이는 시간
+    private Coroutine hitCoroutine; //중복 피격 시 코루틴 제어용 변수
 
+    protected Rigidbody2D rb;
     protected bool isDead;                      //몬스터 죽은 상태
 
     protected virtual void Awake()
@@ -46,6 +55,24 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         {
             //Visual 자식 아래에서 애니메이터 찾아오기
             animator = visualTransform.GetComponentInChildren<Animator>();
+
+            //Visual 자식들 중에서 모든 SpriteRenderer를 긁어오기 (스켈레탈 구조 대응)
+            SpriteRenderer[] allRenderers = visualTransform.GetComponentsInChildren<SpriteRenderer>();
+
+            foreach (SpriteRenderer sr in allRenderers)
+            {
+                string objName = sr.gameObject.name.ToLower();
+                //그림자나 눈이 이름에 포함된 스프라이트는 피격 연출에서 제외!
+                if (objName.Contains("shadow") || objName.Contains("eye"))
+                {
+                    continue;
+                }
+
+                monsterRenderers.Add(sr);
+
+                //사망 페이드 아웃 때 사용할 메인 스프라이트 Renderer 하나를 임시 저장
+                if (mainSpriteRenderer == null) mainSpriteRenderer = sr;
+            }
         }
     }
 
@@ -59,7 +86,9 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         currentHp = maxHp;                  //체력 초기화
         currentState = MonsterState.Chase;  //추적시작
 
-        isDead = false; // 사망 상태 초기화
+        isDead = false;                     //사망 상태 초기화
+
+        ResetRenderersColor();              //풀에서 나올때 피격 색상 초기화
 
         if (rb != null)
         {
@@ -260,9 +289,46 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             $"남은 체력: {currentHp}"
         );
 
+        //피격 시 연출 코루틴 재생(이미 도는 중이면 끄고 새로 시작)
+        if (hitCoroutine != null) StopCoroutine(hitCoroutine);
+        hitCoroutine = StartCoroutine(HitFlashCo());
+
         if (currentHp <= 0f)
         {
+            //사망 직전 플래시 강제 시행
+            if (hitCoroutine != null) StopCoroutine(hitCoroutine);
+
+            foreach (SpriteRenderer sr in monsterRenderers)
+            {
+                if (sr != null) sr.color = hitColor; //인스펙터에서 지정한 몬스터 피격 색상
+            }
+
             Death();
+        }
+    }
+
+    //[피격 연출 코루틴]
+    private System.Collections.IEnumerator HitFlashCo()
+    {
+        //지정된 피격 색상으로 변경
+        foreach (SpriteRenderer sr in monsterRenderers)
+        {
+            if (sr != null) sr.color = hitColor;
+        }
+
+        //지정된 시간만큼 대기
+        yield return new WaitForSeconds(hitFlashDuration);
+
+        //원래 색상(원래 흰색)으로 원상복구
+        ResetRenderersColor();
+    }
+
+    //[렌더러 색을 기본값으로 돌려놓는 메서드]
+    private void ResetRenderersColor()
+    {
+        foreach (SpriteRenderer sr in monsterRenderers)
+        {
+            if (sr != null) sr.color = Color.white;
         }
     }
 
@@ -271,6 +337,10 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     protected virtual void Death()
     {
         isDead = true;
+
+        //죽을 때 피격코루틴 도는중이면 정지하고 리셋
+        if (hitCoroutine != null) StopCoroutine(hitCoroutine);
+
         if (currentState == MonsterState.Dead) return;
         currentState = MonsterState.Dead; //죽은 상태로
 
@@ -300,17 +370,37 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         //사망 애니메이션 끝날때까지 대기
         yield return new WaitForSeconds(0.8f);
 
-        if (spriteRenderer != null)
+        //페이드아웃을 위해 색상을 원래 화이트로 초기화
+        ResetRenderersColor();
+
+        //모든 신체파츠를 동시에 서서히 투명하게 만듦
+        if (monsterRenderers.Count > 0)
         {
             float duration = 0.5f;
             float elapsed = 0f;
-            Color originalColor = spriteRenderer.color;
+
+            //페이드아웃 시작 전 모든 파츠의 원래 컬러들 기억하기
+            List<Color> originalColors = new List<Color>();
+            foreach (SpriteRenderer sr in monsterRenderers)
+            {
+                if (sr != null) originalColors.Add(sr.color);
+                else originalColors.Add(Color.white);
+            }
 
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+                //모든 파츠의 알파값을 매 프레임 동시에 깎아내림
+                for (int i = 0; i < monsterRenderers.Count; i++)
+                {
+                    if (monsterRenderers[i] != null)
+                    {
+                        Color orig = originalColors[i];
+                        monsterRenderers[i].color = new Color(orig.r, orig.g, orig.b, alpha);
+                    }
+                }
                 yield return null;
             }
         }
