@@ -295,6 +295,14 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
         if (currentHp <= 0f)
         {
+            //사망 직전 플래시 강제 시행
+            if (hitCoroutine != null) StopCoroutine(hitCoroutine);
+
+            foreach (SpriteRenderer sr in monsterRenderers)
+            {
+                if (sr != null) sr.color = hitColor; //인스펙터에서 지정한 몬스터 피격 색상
+            }
+
             Death();
         }
     }
@@ -332,7 +340,6 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
         //죽을 때 피격코루틴 도는중이면 정지하고 리셋
         if (hitCoroutine != null) StopCoroutine(hitCoroutine);
-        ResetRenderersColor();
 
         if (currentState == MonsterState.Dead) return;
         currentState = MonsterState.Dead; //죽은 상태로
@@ -363,20 +370,37 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         //사망 애니메이션 끝날때까지 대기
         yield return new WaitForSeconds(0.8f);
 
-        //기존 단일 spriteRenderer 대신 채집해둔 리스트 기반 스프라이트로 페이드아웃
-        SpriteRenderer fadeTarget = mainSpriteRenderer;
+        //페이드아웃을 위해 색상을 원래 화이트로 초기화
+        ResetRenderersColor();
 
-        if (mainSpriteRenderer != null)
+        //모든 신체파츠를 동시에 서서히 투명하게 만듦
+        if (monsterRenderers.Count > 0)
         {
             float duration = 0.5f;
             float elapsed = 0f;
-            Color originalColor = mainSpriteRenderer.color;
+
+            //페이드아웃 시작 전 모든 파츠의 원래 컬러들 기억하기
+            List<Color> originalColors = new List<Color>();
+            foreach (SpriteRenderer sr in monsterRenderers)
+            {
+                if (sr != null) originalColors.Add(sr.color);
+                else originalColors.Add(Color.white);
+            }
 
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-                mainSpriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+                //모든 파츠의 알파값을 매 프레임 동시에 깎아내림
+                for (int i = 0; i < monsterRenderers.Count; i++)
+                {
+                    if (monsterRenderers[i] != null)
+                    {
+                        Color orig = originalColors[i];
+                        monsterRenderers[i].color = new Color(orig.r, orig.g, orig.b, alpha);
+                    }
+                }
                 yield return null;
             }
         }
