@@ -23,6 +23,6 @@ public class StageWaveUI : MonoBehaviour
     // 남은 몬스터 수 표시 갱신
     public void UpdateMonsterCount(int aliveMonster)
     {
-        monsterText.text = $"Monster : {aliveMonster}";
+        monsterText.text = $"남은 몬스터 : {aliveMonster}";
     }
 }
