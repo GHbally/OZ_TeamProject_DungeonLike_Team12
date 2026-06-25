@@ -22,3 +22,5 @@ MonoBehaviour:
   - "\uACF5\uACA9\uB825 + 10"
   - "\uACF5\uACA9\uB825 + 10"
   - "\uACF5\uACA9\uB825 + 10"
+  effectType: 1
+  effectValuePerLevel: 10
