@@ -6,15 +6,27 @@ public class HealOrb : MonoBehaviour
     [Header("회복량 설정")]
     public int healAmount = 20;
 
+    
+    ////////////////////힐 실제 추가/////////////////////
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //플레이어만 획득
-        if (!other.CompareTag("Player")) return;
+        // 플레이어만 획득
+        if (!other.CompareTag("Player"))
+            return;
 
-        Debug.Log($"체력{healAmount} 회복");
-        // 나중에 플레이어 체력 시스템 연결
-        // other.GetComponent<PlayerHP>()   .Heal(healAmount);
+        // PlayerBase 가져오기
+        PlayerBase player = other.GetComponent<PlayerBase>();
 
+        // PlayerBase가 있으면 체력 회복
+        if (player != null)
+        {
+            player.Heal(healAmount);
+
+            Debug.Log($"체력 {healAmount} 회복");
+        }
+
+        // 회복 구슬 풀로 반환
         ReturnPool();
     }
 

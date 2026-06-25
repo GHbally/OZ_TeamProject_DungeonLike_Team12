@@ -89,6 +89,30 @@ public class PlayerBase : MonoBehaviour
         }
     }
 
+    
+    ///////////////////////// 체력 회복 추가////////////////////////////////
+   
+    public void Heal(float healAmount)
+    {
+        // 죽은 상태면 회복 불가
+        if (IsDead)
+            return;
+
+        // 체력 회복
+        currentHp += healAmount;
+
+        // 최대 체력을 넘지 않도록 제한
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+
+        // HP UI 갱신
+        if (hpSlider != null)
+        {
+            hpSlider.value = currentHp;
+        }
+
+        Debug.Log($"체력 {healAmount} 회복 / 현재 HP : {currentHp}");
+    }
+
     private System.Collections.IEnumerator HurtFlashCo()
     {
         //쪼개져있는 스프라이트들 전부 빨간색으로
