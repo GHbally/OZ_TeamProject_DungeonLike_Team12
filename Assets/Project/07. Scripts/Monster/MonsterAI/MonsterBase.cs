@@ -185,26 +185,36 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             animator.SetBool("1_Move", false);
         }
     }
+    // 물리 연산이 일정한 시간 간격으로 실행되는 함수
     protected virtual void FixedUpdate()
     {
-        if (currentState == MonsterState.Dead) return;
+        // 몬스터가 죽었으면 더 이상 이동하지 않음
+        if (currentState == MonsterState.Dead)return;
 
+        // 이동 방향을 저장할 변수
         Vector2 moveDir = Vector2.zero;
 
+        // 현재 상태가 추적이고 플레이어가 존재하면
         if (currentState == MonsterState.Chase && player != null)
         {
+            // 플레이어를 향하는 방향 계산
+            // normalized : 방향만 남기고 길이를 1로 만들어 일정한 속도로 이동
             moveDir = ((Vector2)player.position - rb.position).normalized;
         }
 
+        // 주변 몬스터를 피해가는 방향 계산
         Vector2 separationDir = GetSeparationDirection();
 
-        Vector2 finalDir = (moveDir + separationDir * separationForce).normalized;
+        // 플레이어를 향하는 방향과 몬스터끼리 밀어내는 방향을 합침
+        // separationForce가 클수록 더 강하게 밀려남
+        Vector2 finalDir =(moveDir + separationDir * separationForce).normalized;
 
+        // 이동할 방향이 존재하면
         if (finalDir != Vector2.zero)
         {
-            rb.MovePosition(
-                rb.position + finalDir * moveSpeed * Time.fixedDeltaTime
-            );
+            // Rigidbody를 이용해 이동
+            // 현재 위치 + 이동방향 × 이동속도 × 프레임 시간
+            rb.MovePosition( rb.position +finalDir * moveSpeed * Time.fixedDeltaTime);
         }
     }
     //protected virtual void FixedUpdate()
@@ -217,29 +227,46 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     //        MoveTowardsPlayer();
     //    }
     //}
+    // 주변 몬스터를 피해가는 방향을 계산하는 함수
     private Vector2 GetSeparationDirection()
     {
-        Collider2D[] nearby =
-            Physics2D.OverlapCircleAll(transform.position, separationRadius);
+        // separationRadius 안에 있는 모든 Collider 검색
+        Collider2D[] nearby =Physics2D.OverlapCircleAll(
+                transform.position,
+                separationRadius);
 
+        // 최종적으로 밀려날 방향을 저장
         Vector2 separation = Vector2.zero;
 
+        // 주변의 모든 Collider 검사
         foreach (Collider2D col in nearby)
         {
-            MonsterBase monster = col.GetComponentInParent<MonsterBase>();
+            // 부모 오브젝트에서 MonsterBase 가져오기
+            MonsterBase monster =
+                col.GetComponentInParent<MonsterBase>();
 
-            if (monster == null) continue;
+            // 몬스터가 아니면 건너뜀
+            if (monster == null)continue;
+
+            // 자기 자신이면 건너뜀
             if (monster == this) continue;
 
+            // 상대 몬스터 반대 방향 계산
             Vector2 away = rb.position - (Vector2)monster.transform.position;
+
+            // 두 몬스터 사이 거리 계산
             float distance = away.magnitude;
 
+            // 너무 가까우면
             if (distance > 0.01f && distance < separationRadius)
             {
+                // 가까울수록 더 강하게 밀어냄
                 separation += away.normalized * (separationRadius - distance);
             }
         }
 
+        // 여러 방향을 하나의 방향으로 합쳐 반환
+        // normalized를 사용하는 이유는 이동속도가 너무 빨라지는 것을 막기 위해서
         return separation.normalized;
     }
     ///////////////////플레이어 추적 이동////////////////////////
