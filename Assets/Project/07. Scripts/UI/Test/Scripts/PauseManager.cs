@@ -9,7 +9,7 @@ public class PauseManager : MonoBehaviour
     void Update()
     {
         // ESC 키 입력 감지
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             if (isPaused) Resume();
             else Pause();
@@ -28,12 +28,6 @@ public class PauseManager : MonoBehaviour
         pauseMenuUI.SetActive(true);  // UI 보여주기
         Time.timeScale = 0f;          // 게임 시간 멈춤
         isPaused = true;
-    }
-
-    public void GoHome()
-    {
-        Time.timeScale = 1f;          // 씬 전환 전 시간 복구 필수
-        SceneManager.LoadScene("MainScene"); // 메인 메뉴 씬 이름
     }
 
     public void OpenSettings()
