@@ -12,6 +12,8 @@ public class ArcherMonster : MonsterBase
     public float attackCooldown = 2f;   //공격주기
     private float attackTimer;          //연사 속도 타이머
 
+    public float attackPreDelay = 0.5f; //선공격 딜레이
+
     protected override void OnEnable()
     {
         base.OnEnable();    //부모의 체력, 플레이어 추적 받아오기
@@ -46,8 +48,18 @@ public class ArcherMonster : MonsterBase
         //쿨타임 마다
         if (attackTimer >= attackCooldown)
         {
-            attackTimer = 0f;   //타이머 0으로 초기화하고
-            Shoot();            //발사
+            attackTimer = 0f;       //타이머 0으로 초기화하고
+            StartAttackMotion();    //공격 모션
+        }
+    }
+
+    void StartAttackMotion()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("6_Other");
+
+            Invoke(nameof(Shoot), attackPreDelay);
         }
     }
 
@@ -60,7 +72,9 @@ public class ArcherMonster : MonsterBase
         if (arrow == null) return;  //화살이 있을때만 실행
 
         //화살 생성 위치
-        arrow.transform.position = transform.position;
+        arrow.transform.position = transform.position + new Vector3(0, 0.5f, 0);
+
+        Vector3 targetPosition = player.position + new Vector3(0, 0.6f, 0);
 
         //플레이어 방향 계산
         Vector2 dir = ((Vector2)player.position - (Vector2)transform.position).normalized;

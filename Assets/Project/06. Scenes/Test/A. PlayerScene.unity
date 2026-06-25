@@ -2018,6 +2018,7 @@ MonoBehaviour:
   checkRadius: 0.7
   midBossPrefab: {fileID: 5262284457916466998, guid: f186275692d9f8a47b6cddd1cc54c11f, type: 3}
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
+  stageWaveUI: {fileID: 0}
 --- !u!114 &1539551881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2215,7 +2216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3220171afcf528247a6f228c05328e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  target: {fileID: 0}
+  target: {fileID: 1752358324}
   smoothTime: 0.15
 --- !u!1 &1622699522
 GameObject:
@@ -2568,7 +2569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBase
   hpSlider: {fileID: 0}
-  maxHp: 10000
+  maxHp: 100
 --- !u!114 &1752358331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2615,7 +2616,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
