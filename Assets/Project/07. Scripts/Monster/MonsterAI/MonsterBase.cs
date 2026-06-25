@@ -207,6 +207,9 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             );
         }
     }
+
+    
+    /// 궁수 몬스터와 전사 몬스터 겹침
     //protected virtual void FixedUpdate()
     //{
     //    if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
