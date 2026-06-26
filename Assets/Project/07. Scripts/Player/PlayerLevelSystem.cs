@@ -24,6 +24,13 @@ public class PlayerLevelSystem : MonoBehaviour
         playerBase = GetComponent<PlayerBase>();
         //시작시 필요 경험치
         CalculateMaxExp();
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateEXP(currentExp, maxExp); //시작 시 경험치바 초기화
+
+            HUDController.Instance.UpdateLevel(currentLevel);
+        }
     }
 
     //경험치 구슬 먹었을 때
@@ -33,7 +40,12 @@ public class PlayerLevelSystem : MonoBehaviour
         if (playerBase != null && playerBase.IsDead) return;
 
         currentExp += amount; //경험치 누적
-        
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateEXP(currentExp, maxExp); //실시간 경험치 게이지 상승
+        }
+
         //현재경험치가 요구경험치 이상이면 
         while (currentExp >= maxExp)
         {
@@ -51,6 +63,13 @@ public class PlayerLevelSystem : MonoBehaviour
 
         //필요 경험치 불러오기
         CalculateMaxExp();
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateEXP(currentExp, maxExp); //레벨업 후 바 리셋 및 이월 적용
+
+            HUDController.Instance.UpdateLevel(currentLevel);
+        }
 
         //레벨업 시 스킬 찍는 선택지
         TriggerSkillSelectionWindow();

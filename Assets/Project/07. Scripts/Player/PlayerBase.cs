@@ -36,6 +36,12 @@ public class PlayerBase : MonoBehaviour
             hpSlider.value = currentHp;
         }
 
+        //HUD용
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateHP(currentHp, maxHp);
+        }
+
         movement = GetComponent<PlayerMovement>();  //PlayerMovement 스크립트 연결
 
         Transform visual = transform.Find("Visual");    //자식 Visual 찾기
@@ -73,7 +79,13 @@ public class PlayerBase : MonoBehaviour
             hpSlider.value = currentHp;
         }
 
-        if(currentHp <= 0)
+        //HUD용
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateHP(currentHp, maxHp); //메인 HUD 피통 깎기
+        }
+
+        if (currentHp <= 0)
         {
             //모든 피격 코루틴 정지
             StopAllCoroutines();
@@ -125,6 +137,12 @@ public class PlayerBase : MonoBehaviour
         {
             hpSlider.value = currentHp;
         }
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateHP(currentHp, maxHp); // 메인 HUD 피통 채우기
+        }
+
 
         Debug.Log($"체력 {healAmount} 회복 / 현재 HP : {currentHp}");
     }
