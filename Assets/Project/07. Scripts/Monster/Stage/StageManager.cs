@@ -13,12 +13,19 @@ public class StageManager : MonoBehaviour
     }
     public void ClearStage()
     {
-        if (chapter == 1 && stage == 3)
+        if (chapter == 2 && stage == 5)
         {
             Debug.Log("게임 클리어");
             return;
         }
         stage++;
+
+        if (stage > 5)
+        {
+            chapter++;
+            stage = 1;
+        }
+
         waveManager.StartStage(chapter, stage);
     }
 }
