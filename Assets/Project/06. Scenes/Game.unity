@@ -2708,7 +2708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBase
   hpSlider: {fileID: 733869382}
-  maxHp: 300
+  maxHp: 1
 --- !u!114 &857179962
 MonoBehaviour:
   m_ObjectHideFlags: 0
