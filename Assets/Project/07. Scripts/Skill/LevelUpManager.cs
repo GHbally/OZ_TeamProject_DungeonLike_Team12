@@ -19,6 +19,10 @@ public class LevelUpManager : MonoBehaviour
 
     private readonly List<SkillCardInfo> currentDisplayedCards = new();
 
+    
+    /////////////////////////////클리어 보상 추가////////////////////////////
+    [Header("스테이지 클리어 보상")]
+    [SerializeField] private GameObject nextStagePortal; // 스킬 선택 후 나타날 포털
 
     private void Start()
     {
@@ -27,6 +31,7 @@ public class LevelUpManager : MonoBehaviour
         {
             levelUpPanel.SetActive(false);
         }
+
     }
 
     public void OpenLevelUpUI()
@@ -127,6 +132,11 @@ public class LevelUpManager : MonoBehaviour
         skillManager.ApplySkillChoice(selectedCard.SkillData);
 
         CloseLevelUpUI();
+
+        if (nextStagePortal != null) // 포털이 연결되어 있다면
+        {
+            nextStagePortal.SetActive(true); // 포털 보이기
+        }
     }
 
     public void CloseLevelUpUI()

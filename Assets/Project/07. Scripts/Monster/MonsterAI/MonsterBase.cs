@@ -207,6 +207,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
         // 플레이어를 향하는 방향과 몬스터끼리 밀어내는 방향을 합침
         // separationForce가 클수록 더 강하게 밀려남
+
         Vector2 finalDir =(moveDir + separationDir * separationForce).normalized;
 
         // 이동할 방향이 존재하면
@@ -506,7 +507,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         if (waveManager != null)
         {
             //몬스터 사망했으니 개체수 1 줄이기(웨이브당 총 몬스터 수랑 연동)
-            waveManager.MonsterDead();
+            waveManager.MonsterDead(transform.position);
         }
     }
 }
