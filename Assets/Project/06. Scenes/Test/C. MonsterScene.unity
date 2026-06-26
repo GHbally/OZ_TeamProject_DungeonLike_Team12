@@ -2474,7 +2474,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 47ae2b62fc9a8b5468a0ff433147abe5, type: 3}
   m_Color: {r: 0.24077655, g: 0.1745283, b: 1, a: 1}
@@ -2937,8 +2937,8 @@ MonoBehaviour:
   chapter: 1
   stage: 1
   waveManager: {fileID: 1611300499}
-  rewardBox: {fileID: 9118674948096215837, guid: 9c20240539f5c604aa82e9aaba97740d, type: 3}
   nextStagePortal: {fileID: 1410364715}
+  portalSpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1862251822
 GameObject:
   m_ObjectHideFlags: 0
