@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour
     public enum GameState { Playing, Paused, GameOver, Won }
     public GameState currentState;
 
+    private void Start()
+    {
+        Time.timeScale = 1f; // 씬 시작 시 무조건 시간 흐르게 설정
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
