@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4216074504907327139}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 72.4, y: 169.4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -174,12 +174,16 @@ MonoBehaviour:
   moveSpeed: 3
   player: {fileID: 0}
   currentState: 0
+  monsterScale: 1
   separationRadius: 1
   separationForce: 1.5
+  hitColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  hitFlashDuration: 0.1
   patternDelay: 2
   warningPrefab: {fileID: 6489365640212829556, guid: 62f92b45806ceb848a06cefae4b5c341, type: 3}
   explosionPrefab: {fileID: 1831817976119594177, guid: 4d76c8207ee1a8e4e935cf20dbb02366, type: 3}
   safeZonePrefab: {fileID: 3492031209936100975, guid: fd7b0d37ee087d547b45a69873140650, type: 3}
   mapExplosionPrefab: {fileID: 1470437264910173104, guid: 5a936df8490eeba43a692617fb94bcce, type: 3}
+  ultimateCastTime: 5
   touchDamage: 10
   touchDamageInterval: 1
