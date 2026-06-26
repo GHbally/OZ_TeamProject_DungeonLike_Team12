@@ -27,9 +27,9 @@ public class PlayerLevelSystem : MonoBehaviour
 
         if (HUDController.Instance != null)
         {
-            HUDController.Instance.UpdateEXP(currentExp, maxExp); //시작 시 경험치바 초기화
-
-            HUDController.Instance.UpdateLevel(currentLevel);
+            HUDController.Instance.UpdateEXP(currentExp, maxExp);   //시작 시 경험치바 초기화
+                
+            HUDController.Instance.UpdateLevel(currentLevel);       //레벨 업데이트 초기화
         }
     }
 

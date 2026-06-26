@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("이동속도")]
     [SerializeField] private float moveSpeed = 5.0f;    //이동 속도
 
-    [Header("사운드 설정")]
     private AudioSource audioSource;                    //소리 재생해 줄 컴포넌트
+
+    [Header("사운드 설정")]
     [SerializeField] private AudioClip dashSound;       //인스펙터에서 넣을 대쉬 오디오
+
 
     //[읽기, 쓰기] 외부에서 내 MoveSpeed를 수정할 수 있게 열기
     //이동 속도는 외부적인 스펙업을 통해 바뀔 여지가 있으므로 읽기+쓰기
@@ -23,9 +25,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f; //대쉬 지속 시간
     [SerializeField] private float dashCooldown = 1.0f; //대쉬 쿨
 
+    [HideInInspector] public Transform visualTransform;      //캐릭터 스프라이트를 담고 있는 자식 위치 저장용 변수
+
     private Rigidbody2D rb;                 //리지드바디
     private Vector2 moveVec;                //입력받은 X, Y축 이동방향 값 저장할 벡터 변수
-    private Transform visualTransform;      //캐릭터 스프라이트를 담고 있는 자식 위치 저장용 변수
     private Animator animator;              //애니메이션 제어용 변수
 
     private bool isDashing = false;         //현재 대쉬중인지
@@ -53,6 +56,11 @@ public class PlayerMovement : MonoBehaviour
 
         //플레이어 본체에 붙어있는 AudioSource 컴포넌트 가져오기
         audioSource = GetComponent<AudioSource>();
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateDash(dashCooldown, dashCooldown); //시작할 때 대쉬바 꽉 채워두기
+        }
     }
 
     void Update()
@@ -166,8 +174,26 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("1_Move", false);
         }
 
-        //대쉬 쿨타임
-        yield return new WaitForSeconds(dashCooldown);
+        float currentCooldownTimer = 0f; //대쉬쿨타임 타이머(일회용 호출이므로 아래 선언)
+
+        while (currentCooldownTimer < dashCooldown)
+        {
+            currentCooldownTimer += Time.deltaTime; //매 프레임 흐른 시간을 누적
+
+            if (HUDController.Instance != null)
+            {
+                //HUD에게 (현재 흐른 시간, 총 쿨타임 시간)을 던져 게이지가 부드럽게 차오르게
+                HUDController.Instance.UpdateDash(currentCooldownTimer, dashCooldown);
+            }
+
+            yield return null; //다음 프레임까지 대기
+        }
+
+        // 쿨타임이 끝났으므로 게이지 오차를 방지하기 위해 꽉 찬 상태로 한 번 더 고정
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateDash(dashCooldown, dashCooldown);
+        }
 
         canDash = true;     //대쉬 사용 가능
     }
