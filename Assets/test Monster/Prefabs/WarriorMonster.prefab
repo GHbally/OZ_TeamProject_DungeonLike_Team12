@@ -177,8 +177,10 @@ MonoBehaviour:
   player: {fileID: 0}
   currentState: 0
   monsterScale: 1
-  separationRadius: 1
+  separationRadius: 0.5
   separationForce: 2
+  hitColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  hitFlashDuration: 0.1
   damage: 10
   damageInterval: 1
   attackRange: 0.8

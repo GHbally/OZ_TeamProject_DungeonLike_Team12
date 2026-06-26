@@ -62,17 +62,17 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = 15, archerCount = 5,
+                    warriorCount = 65, archerCount = 15,
                     hpMultiplier = 1f, speedMultiplier = 1f
                 },
                 new WaveData()
                 {
-                    warriorCount = 20, archerCount = 7,
+                    warriorCount = 65, archerCount = 15,
                     hpMultiplier= 1.1f, speedMultiplier = 1.05f
                 },
                 new WaveData()
                 {
-                    warriorCount = 25, archerCount=10,
+                    warriorCount = 65, archerCount = 15,
                     hpMultiplier = 1.2f, speedMultiplier= 1.1f
                 }
             };
@@ -83,19 +83,19 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = 20, archerCount = 8,
+                    warriorCount = 75, archerCount = 25,
                     hpMultiplier = 1.2f, speedMultiplier = 1.1f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = 25,archerCount = 10,
+                    warriorCount = 75,archerCount = 25,
                     hpMultiplier = 1.3f,speedMultiplier = 1.15f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = 30, archerCount = 12,
+                    warriorCount = 75, archerCount = 25,
                     hpMultiplier = 1.4f, speedMultiplier = 1.2f
                 }
             };

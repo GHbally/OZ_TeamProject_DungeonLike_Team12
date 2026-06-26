@@ -54,12 +54,13 @@ MonoBehaviour:
   player: {fileID: 0}
   currentState: 0
   monsterScale: 1
-  separationRadius: 1
+  separationRadius: 0.5
   separationForce: 0.8
   hitColor: {r: 1, g: 0.3, b: 0.3, a: 1}
   hitFlashDuration: 0.1
   attackRange: 7
   attackCooldown: 2
+  attackPreDelay: 0.5
 --- !u!50 &8289540266107429600
 Rigidbody2D:
   serializedVersion: 5

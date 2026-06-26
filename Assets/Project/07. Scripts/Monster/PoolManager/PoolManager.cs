@@ -17,11 +17,11 @@ public class PoolManager : MonoBehaviour
 
     [Header("풀 크기")]
 
-    public int arrowPoolSize = 30; //화살 개수 미리 생성
-    public int expPoolSize = 50; //경험치 개수 미리 생성
+    public int arrowPoolSize = 70; //화살 개수 미리 생성
+    public int expPoolSize = 100; //경험치 개수 미리 생성
     public int healOrbPoolSize = 20;
-    public int warriorPoolSize = 20; //몬스터 수
-    public int archerPoolSize = 20;
+    public int warriorPoolSize = 100; //몬스터 수
+    public int archerPoolSize = 50;
 
     [Header("보스 탄환")]
 

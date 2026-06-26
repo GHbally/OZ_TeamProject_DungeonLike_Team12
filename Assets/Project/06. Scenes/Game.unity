@@ -2495,11 +2495,11 @@ MonoBehaviour:
   healOrbPrefab: {fileID: 3080511462412774030, guid: 41d400ceaf0c49c47a1377c85126e5cd, type: 3}
   warriorMonsterPrefab: {fileID: 1324394498758035481, guid: d4cc7c61b6ea410429a110673ce2ddc9, type: 3}
   archerMonsterPrefab: {fileID: 865639307355208688, guid: d88f7d686ba189f4f9e8d56e838d02fc, type: 3}
-  arrowPoolSize: 30
-  expPoolSize: 50
+  arrowPoolSize: 70
+  expPoolSize: 100
   healOrbPoolSize: 20
-  warriorPoolSize: 20
-  archerPoolSize: 20
+  warriorPoolSize: 100
+  archerPoolSize: 80
   bossBulletPrefab: {fileID: 9211397875618147529, guid: e569304225699c84089d81c97c42ffce, type: 3}
   bossBulletPoolSize: 40
   bounceBulletPrefab: {fileID: 1757875339719539717, guid: 722b14fe09372bb45b080ce9227dbf33, type: 3}
@@ -3372,7 +3372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBase
   hpSlider: {fileID: 733869382}
-  maxHp: 1
+  maxHp: 300
 --- !u!114 &857179962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3386,6 +3386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
+  dashSound: {fileID: 0}
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
@@ -3853,7 +3854,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   checkRadius: 0.7
-  midBossPrefab: {fileID: 5262284457916466998, guid: f186275692d9f8a47b6cddd1cc54c11f, type: 3}
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
   stageWaveUI: {fileID: 492020493}
 --- !u!114 &1001306707
@@ -4216,7 +4216,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -5347,6 +5347,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694948519}
   m_CullTransparentMesh: 1
+--- !u!1 &1767469706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1767469708}
+  - component: {fileID: 1767469707}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1767469707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767469706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: a79b3781fef6cdc47bc84904d85f8916, type: 2}
+--- !u!4 &1767469708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767469706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.0299325, y: -2.323061, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1781225784
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,3 +5939,4 @@ SceneRoots:
   - {fileID: 260668996}
   - {fileID: 1108154660}
   - {fileID: 963149957}
+  - {fileID: 1767469708}
