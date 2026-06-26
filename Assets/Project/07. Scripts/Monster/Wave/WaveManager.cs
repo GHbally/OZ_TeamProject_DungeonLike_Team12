@@ -52,7 +52,12 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     public StageWaveUI stageWaveUI;
 
-    
+    [Header("웨이브 시작/종료 UI")]
+    public WaveTransitionUI waveTransitionUI;
+
+    [SerializeField] private float waveStartUIDuration = 1.5f;
+    [SerializeField] private float waveEndUIDuration = 1.5f;
+
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
     {
@@ -153,7 +158,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
         //웨이브 시작
-        StartCoroutine(StartWave());
+        StartCoroutine(StartWaveFlow());
 
     }
 
@@ -195,6 +200,29 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }
+    IEnumerator StartWaveFlow()
+    {
+        if (waveTransitionUI != null)
+        {
+            waveTransitionUI.ShowWaveStart(
+                currentWave + 1,
+                waves.Length
+            );
+        }
+
+        // 웨이브 시작 UI를 잠깐 보여준다.
+        yield return new WaitForSeconds(waveStartUIDuration);
+
+        if (waveTransitionUI != null)
+        {
+            waveTransitionUI.HideAll();
+        }
+
+        // 실제 몬스터 생성 시작.
+        // 실제 몬스터 생성 시작.
+        yield return StartCoroutine(StartWave());
+    }
+
 
     //전사 생성
     void SpawnWarrior(WaveData data)
@@ -387,7 +415,30 @@ public class WaveManager : MonoBehaviour
             return; // 스테이지 클리어 처리가 끝났으므로 종료
         }
 
-        StartCoroutine(StartWave());
+        StartCoroutine(EndWaveFlow());
+    }
+
+    // 웨이브 종료 UI를 보여준 뒤 다음 웨이브를 시작한다.
+    IEnumerator EndWaveFlow()
+    {
+        if (waveTransitionUI != null)
+        {
+            waveTransitionUI.ShowWaveEnd(
+                currentWave,
+                waves.Length
+            );
+        }
+
+        // 웨이브 끝 UI를 1.5초 동안 보여준다.
+        yield return new WaitForSeconds(waveEndUIDuration);
+
+        if (waveTransitionUI != null)
+        {
+            waveTransitionUI.HideAll();
+        }
+
+        // 다음 웨이브 시작 UI → 전투 흐름으로 이동한다.
+        StartCoroutine(StartWaveFlow());
     }
 }
 
