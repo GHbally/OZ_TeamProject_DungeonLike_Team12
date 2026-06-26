@@ -53,6 +53,11 @@ public class PlayerMovement : MonoBehaviour
 
         //플레이어 본체에 붙어있는 AudioSource 컴포넌트 가져오기
         audioSource = GetComponent<AudioSource>();
+
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateDash(dashCooldown, dashCooldown); //시작할 때 대쉬바 꽉 채워두기
+        }
     }
 
     void Update()
@@ -166,8 +171,26 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("1_Move", false);
         }
 
-        //대쉬 쿨타임
-        yield return new WaitForSeconds(dashCooldown);
+        float currentCooldownTimer = 0f; //대쉬쿨타임 타이머(일회용 호출이므로 아래 선언)
+
+        while (currentCooldownTimer < dashCooldown)
+        {
+            currentCooldownTimer += Time.deltaTime; //매 프레임 흐른 시간을 누적
+
+            if (HUDController.Instance != null)
+            {
+                //HUD에게 (현재 흐른 시간, 총 쿨타임 시간)을 던져 게이지가 부드럽게 차오르게
+                HUDController.Instance.UpdateDash(currentCooldownTimer, dashCooldown);
+            }
+
+            yield return null; //다음 프레임까지 대기
+        }
+
+        // 쿨타임이 끝났으므로 게이지 오차를 방지하기 위해 꽉 찬 상태로 한 번 더 고정
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateDash(dashCooldown, dashCooldown);
+        }
 
         canDash = true;     //대쉬 사용 가능
     }

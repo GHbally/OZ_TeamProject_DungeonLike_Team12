@@ -16,6 +16,14 @@ public class HUDController : MonoBehaviour
     [Header("EXP Bar Settings")]
     [SerializeField] private Slider expSlider;      //경험치바 슬라이더 오브젝트 담을 애
 
+    [Header("Dash Bar Settings")]
+    [SerializeField] private Slider dashSlider;     //대쉬 게이지 슬라이더 오브젝트를 담을 애
+
+    [Header("Kill Count Settings")]
+    [SerializeField] private TMP_Text killCountText; //킬 카운트 텍스트 수정용
+
+    private int currentKillCount = 0;   //킬카운트
+
     private void Awake()
     {
         Instance = this;
@@ -46,5 +54,29 @@ public class HUDController : MonoBehaviour
 
         //현재 쌓인 경험치 수치에 맞춰 채울거
         expSlider.value = currentExp;
+    }
+
+    //Dash업데이트 해줄 친구
+    public void UpdateDash(float currentDash, float maxDash)
+    {
+        if (dashSlider != null)
+        {
+            //대쉬 최대치
+            dashSlider.maxValue = maxDash;
+            //대쉬 쿨
+            dashSlider.value = currentDash;
+        }
+    }
+
+    //KillCount업데이트 해줄 친구
+    public void UpdateKillCount()
+    {
+        currentKillCount++; //몬스터 죽을때마다 +1
+
+        if (killCountText != null)
+        {
+            //텍스트 갱신
+            killCountText.text = currentKillCount.ToString();
+        }
     }
 }

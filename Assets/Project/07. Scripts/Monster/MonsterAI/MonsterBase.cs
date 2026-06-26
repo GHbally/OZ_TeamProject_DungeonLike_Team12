@@ -417,6 +417,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         if (currentState == MonsterState.Dead) return;
         currentState = MonsterState.Dead; //죽은 상태로
 
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateKillCount();
+        }
+
         //시체가 플레이어를 따라오지 못하게 물리랑 충돌 잠금
         if (rb != null)
         {
