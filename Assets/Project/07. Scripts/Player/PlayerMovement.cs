@@ -60,6 +60,17 @@ public class PlayerMovement : MonoBehaviour
         //플레이어가 죽은 상태라면 
         if (playerBase != null && playerBase.IsDead) return;
 
+        //일시정지 또는 게임오버 상태일 때는 모든 키보드 조작과 방향 전환 무시
+        if (Time.timeScale == 0f ||
+           (GameManager.Instance != null &&
+           (GameManager.Instance.currentState == GameManager.GameState.Paused ||
+            GameManager.Instance.currentState == GameManager.GameState.GameOver)))
+        {
+            // 덤으로 멈췄을 땐 이동 벡터도 0으로 밀어버려 잔상을 방지합니다.
+            moveVec = Vector2.zero;
+            return;
+        }
+
         //대쉬중엔 조작 무시
         if (isDashing) return;
 
