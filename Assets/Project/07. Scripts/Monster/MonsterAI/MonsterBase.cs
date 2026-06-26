@@ -481,15 +481,16 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             yield return new WaitForSeconds(0.5f);
         }
 
-        //소멸 후 경험치 드랍
+        // 소멸 후 경험치 또는 힐 구슬 중 하나만 드랍
         if (DropManager.Instance != null)
         {
-            DropManager.Instance.DropExp(transform.position);
-
-            //힐 구슬
             if (Random.value < 0.1f)
             {
-                DropManager.Instance.DropHealOrb(transform.position); //힐 구슬 구현 예정
+                DropManager.Instance.DropHealOrb(transform.position);
+            }
+            else
+            {
+                DropManager.Instance.DropExp(transform.position);
             }
         }
 

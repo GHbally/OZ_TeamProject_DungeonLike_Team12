@@ -1,4 +1,4 @@
 public enum MonsterType
 {
-    Warrior, Archer, MidBoss, LastBoss
+    Warrior, Archer, LastBoss
 }
