@@ -30,16 +30,14 @@ public class SceneLoader : MonoBehaviour
 
     IEnumerator FadeAndLoad(string sceneName)
     {
-        // 1. 페이드 아웃 (검은색으로 변함)
         float timer = 0f;
         while (timer < fadeDuration)
         {
-            timer += Time.deltaTime;
+            // 중요: deltaTime이 아닌 unscaledDeltaTime을 써야 게임이 멈춰도 연출이 진행됨
+            timer += Time.unscaledDeltaTime;
             fadeGroup.alpha = timer / fadeDuration;
             yield return null;
         }
-
-        // 2. 씬 전환 (이름을 인자로 받음)
         SceneManager.LoadScene(sceneName);
     }
 }
