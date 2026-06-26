@@ -349,35 +349,32 @@ public class LastBossMonster : MonsterBase
 
     //////////////////보스 사망/////////////////////
 
-    protected override void Death()
+    protected override void Death()//김영웅 수정
     {
-        if (isDead) return; // 이미 죽은 상태라면 중복 실행 방지
+        if (isDead) return;
         isDead = true;
 
         currentState = MonsterState.Dead;
         StopAllCoroutines();
 
-        // 1. 보스 사망 연출 (예: 애니메이션 재생)
-        // anim.SetTrigger("Die"); 
-
-        // 2. UI를 띄우고 클리어 처리하는 코루틴 호출
+        // 사망 연출을 위해 코루틴 사용
         StartCoroutine(DieSequence());
     }
 
-    private IEnumerator DieSequence()
+    private IEnumerator DieSequence()//김영웅 수정
     {
-        // 사망 연출이 있다면 기다림 (예: 2초)
+        // 보스가 죽는 연출 시간 (2초)
         yield return new WaitForSeconds(2.0f);
 
         Debug.Log("최종보스 처치 완료");
 
+        // StageManager에게 보스가 죽었다고 알림
         StageManager stageManager = FindFirstObjectByType<StageManager>();
         if (stageManager != null)
         {
-            stageManager.ClearStage();
+            stageManager.ClearStage(); // 클리어 UI 및 다음 단계 관리
         }
 
-        // 모든 처리가 끝난 후 보스 제거
         Destroy(gameObject);
     }
 }
