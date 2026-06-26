@@ -27,11 +27,26 @@ public class StageManager : MonoBehaviour
     // 모든 웨이브를 클리어했을 때 호출
     public void ClearStage()
     {
-        // 포탈 위치를 (0, 0, 0)으로 이동
-        nextStagePortal.transform.position = portalSpawnPosition;
+        nextStagePortal.transform.position = new Vector3(0f, 0f, 0f); // 포탈 위치를 0,0,0으로 이동
 
-        // 다음 스테이지로 갈 수 있도록 포탈 활성화
-        nextStagePortal.SetActive(true);
+        nextStagePortal.SetActive(true); // 포탈 오브젝트 활성화
+
+        SpriteRenderer sr = nextStagePortal.GetComponent<SpriteRenderer>(); // 포탈 오브젝트의 SpriteRenderer 가져오기
+
+        if (sr != null) // SpriteRenderer가 있으면 실행
+        {
+            sr.enabled = true; // SpriteRenderer를 켜서 화면에 보이게 함
+
+            sr.color = Color.white; // 색을 흰색으로 바꿔서 잘 보이게 함
+
+            sr.sortingLayerName = "Default"; // 기본 정렬 레이어 사용
+
+            sr.sortingOrder = 999; // 다른 배경보다 훨씬 앞에 보이게 함
+        }
+
+        nextStagePortal.transform.localScale = new Vector3(3f, 3f, 1f); // 포탈 크기를 크게 키워서 테스트
+
+        Debug.Log("포탈 활성화 완료 / 위치: " + nextStagePortal.transform.position); // 포탈 위치 확인
     }
 
     // 플레이어가 포탈에 들어왔을 때 호출

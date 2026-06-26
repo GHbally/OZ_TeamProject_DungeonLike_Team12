@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3673066974703988754}
   - component: {fileID: 4955721167043720331}
   - component: {fileID: 8057109376275432450}
+  - component: {fileID: 2957847159960778338}
   m_Layer: 0
   m_Name: RewardBox
   m_TagString: Untagged
@@ -83,8 +84,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: d56dac77db5e63746a027db5aafb042c, type: 3}
-  m_Color: {r: 1, g: 0.48099434, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 476352f4a6fb744e0bb12205270aae7a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -151,3 +152,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4353aea3159e64d4b81e7c36f22c7948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardBox
+--- !u!114 &2957847159960778338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118674948096215837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112fe0df9944fc042a8796c5f09a204e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectGlow
+  glowColor: {r: 1.6121702, g: 1.3806311, b: 0, a: 1}
