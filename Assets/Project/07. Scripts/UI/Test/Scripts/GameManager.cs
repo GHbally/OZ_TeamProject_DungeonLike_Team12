@@ -24,13 +24,20 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Playing:
                 Time.timeScale = 1f;
-                deathMenuUI.SetActive(false); // 게임 중엔 숨김
+                if (deathMenuUI != null) deathMenuUI.SetActive(false);
                 break;
+
             case GameState.GameOver:
+                // 게임 일시정지
                 Time.timeScale = 0f;
-                deathMenuUI.SetActive(true);  // 사망 시 표시
+
+                // 사망 UI 활성화
+                if (deathMenuUI != null) deathMenuUI.SetActive(true);
+
+                // 필요하다면 마우스 커서도 보이게 처리
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
-                // ... 나머지 상태 ...
         }
     }
 
