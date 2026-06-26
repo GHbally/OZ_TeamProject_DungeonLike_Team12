@@ -346,27 +346,38 @@ public class LastBossMonster : MonsterBase
         // 폭발 이펙트 제거
         Destroy(explosion);
     }
-    
+
     //////////////////보스 사망/////////////////////
 
     protected override void Death()
     {
-        isDead = true;                     // 사망 상태
+        if (isDead) return; // 이미 죽은 상태라면 중복 실행 방지
+        isDead = true;
 
-        currentState = MonsterState.Dead; // 상태 변경
+        currentState = MonsterState.Dead;
+        StopAllCoroutines();
 
-        StopAllCoroutines();              // 진행 중인 패턴 종료
+        // 1. 보스 사망 연출 (예: 애니메이션 재생)
+        // anim.SetTrigger("Die"); 
 
-        Debug.Log("최종보스 처치");
-
-        StageManager stageManager = FindFirstObjectByType<StageManager>();
-
-        if (stageManager != null)
-        {
-            stageManager.ClearStage();    // 스테이지 클리어
-        }
-
-        Destroy(gameObject);              // 보스 제거
+        // 2. UI를 띄우고 클리어 처리하는 코루틴 호출
+        StartCoroutine(DieSequence());
     }
 
+    private IEnumerator DieSequence()
+    {
+        // 사망 연출이 있다면 기다림 (예: 2초)
+        yield return new WaitForSeconds(2.0f);
+
+        Debug.Log("최종보스 처치 완료");
+
+        StageManager stageManager = FindFirstObjectByType<StageManager>();
+        if (stageManager != null)
+        {
+            stageManager.ClearStage();
+        }
+
+        // 모든 처리가 끝난 후 보스 제거
+        Destroy(gameObject);
+    }
 }
