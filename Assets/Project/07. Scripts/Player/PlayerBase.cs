@@ -175,6 +175,11 @@ public class PlayerBase : MonoBehaviour
 
         Debug.Log($"Ä³¸¯ÅÍ »ç¸Á");
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
+        }
+
         if (movement != null)
         {
             movement.StopAllCoroutines();
