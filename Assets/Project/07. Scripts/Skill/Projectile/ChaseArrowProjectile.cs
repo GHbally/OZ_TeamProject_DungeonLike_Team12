@@ -3,15 +3,15 @@ using UnityEngine;
 // 궁수 스킬
 // 3레벨에 동서남북으로 화살발사, 4레벨에 관통 2회, 5레벨부터 가까운 적에게 유도되는 기능을 가진다.
 
-public class ChaserArrow : SkillProjectileBase
+public class ChaseArrowProjectile : SkillProjectileBase
 {
     [Header("궁수 화살 레벨 설정")]
     [SerializeField] private int piercingUnlockLevel = 4;
     [SerializeField] private int chaseUnlockLevel = 5;
 
     [Header("관통 설정")]
-    [SerializeField] private int normalMaxHitCount = 1;
-    [SerializeField] private int piercingMaxHitCount = 3;
+    [SerializeField] private int normalMaxHitCount = 5;
+    [SerializeField] private int piercingMaxHitCount = 10;
 
     [Header("유도 설정")]
     [SerializeField] private float chaseRange = 10f;
@@ -22,7 +22,21 @@ public class ChaserArrow : SkillProjectileBase
     // 매 프레임 새 배열을 만들지 않기 위해 미리 만들어 둠
     private readonly Collider2D[] chaseResults = new Collider2D[16];
 
+    private ContactFilter2D enemyFilter;
+
     private int archerLevel;
+
+    private void Awake()
+    {
+        SetupContactFilter();
+    }
+    private void SetupContactFilter()
+    {
+        enemyFilter = new ContactFilter2D();    //
+        enemyFilter.SetLayerMask(chaseEnemyLayer);   //몬스터 레이어인 애들
+        enemyFilter.useLayerMask = true;
+        enemyFilter.useTriggers = true;         //Is Trigger 켜진 애들도 감지 대상으로
+    }
 
     protected override void OnInitialized()
     {
@@ -96,11 +110,11 @@ public class ChaserArrow : SkillProjectileBase
     }
     private Transform FindNearestEnemy()
     {
-        int count = Physics2D.OverlapCircleNonAlloc(
+        int count = Physics2D.OverlapCircle(
             transform.position,
             chaseRange,
-            chaseResults,
-            chaseEnemyLayer
+            enemyFilter,
+            chaseResults
         );
 
         Transform nearestTarget = null;
@@ -142,7 +156,7 @@ public class ChaserArrow : SkillProjectileBase
         archerLevel = 0;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
