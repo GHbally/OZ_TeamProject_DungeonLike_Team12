@@ -46,6 +46,7 @@ public class WaveManager : MonoBehaviour
     public float checkRadius = 0.7f;  // 생성 가능 여부 검사 반경
 
     [Header("보스 프리팹")]
+    public GameObject midBossPrefab;
     public GameObject lastBossPrefab;
 
     ////////스테이지 UI추가/////////////
@@ -60,53 +61,128 @@ public class WaveManager : MonoBehaviour
         {
             waves = new WaveData[]
             {
-                new WaveData()
-                {
-                    warriorCount = 15, archerCount = 5,
-                    hpMultiplier = 1f, speedMultiplier = 1f
-                },
-                new WaveData()
-                {
-                    warriorCount = 20, archerCount = 7,
-                    hpMultiplier= 1.1f, speedMultiplier = 1.05f
-                },
-                new WaveData()
-                {
-                    warriorCount = 25, archerCount=10,
-                    hpMultiplier = 1.2f, speedMultiplier= 1.1f
-                }
+            new WaveData(){ warriorCount = 3, archerCount = 0, 
+                hpMultiplier = 1f, speedMultiplier = 1f },
+            new WaveData(){ warriorCount = 5, archerCount = 1, 
+                hpMultiplier = 1.05f, speedMultiplier = 1f },
+            new WaveData(){ warriorCount = 7, archerCount = 2, 
+                hpMultiplier = 1.1f, speedMultiplier = 1.05f }
             };
         }
+
+        // 1-2
         else if (chapter == 1 && stage == 2)
         {
             waves = new WaveData[]
             {
-                new WaveData()
-                {
-                    warriorCount = 20, archerCount = 8,
-                    hpMultiplier = 1.2f, speedMultiplier = 1.1f
-                },
-
-                new WaveData()
-                {
-                    warriorCount = 25,archerCount = 10,
-                    hpMultiplier = 1.3f,speedMultiplier = 1.15f
-                },
-
-                new WaveData()
-                {
-                    warriorCount = 30, archerCount = 12,
-                    hpMultiplier = 1.4f, speedMultiplier = 1.2f
-                }
+            new WaveData(){ warriorCount = 5, archerCount = 1, 
+                hpMultiplier = 1.1f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 7, archerCount = 2,
+                hpMultiplier = 1.15f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.2f, speedMultiplier = 1.1f }
             };
         }
 
-        // 1-3 최종보스
+        // 1-3
         else if (chapter == 1 && stage == 3)
         {
             waves = new WaveData[]
             {
-                new WaveData(){ warriorCount = 0, archerCount = 0,}
+            new WaveData(){ warriorCount = 8, archerCount = 2, 
+                hpMultiplier = 1.2f, speedMultiplier = 1.05f },
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.25f, speedMultiplier = 1.1f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.3f, speedMultiplier = 1.1f }
+            };
+        }
+
+        // 1-4
+        else if (chapter == 1 && stage == 4)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.3f, speedMultiplier = 1.1f },
+            new WaveData(){ warriorCount = 12, archerCount = 4,
+                hpMultiplier = 1.35f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 15, archerCount = 5,
+                hpMultiplier = 1.4f, speedMultiplier = 1.15f }
+            };
+        }
+
+        // 1-5 중간보스
+        else if (chapter == 1 && stage == 5)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 0, archerCount = 0,}
+            };
+        }
+
+        // 2-1
+        else if (chapter == 2 && stage == 1)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 8, archerCount = 2, 
+                hpMultiplier = 1.4f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 10, archerCount = 3,
+                hpMultiplier = 1.45f, speedMultiplier = 1.15f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.5f, speedMultiplier = 1.2f }
+            };
+        }
+
+        // 2-2
+        else if (chapter == 2 && stage == 2)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 10, archerCount = 3, 
+                hpMultiplier = 1.5f, speedMultiplier = 1.2f },
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.6f, speedMultiplier = 1.2f },
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.7f, speedMultiplier = 1.25f }
+            };
+        }
+
+        // 2-3
+        else if (chapter == 2 && stage == 3)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 12, archerCount = 4, 
+                hpMultiplier = 1.7f, speedMultiplier = 1.25f },
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.8f, speedMultiplier = 1.25f },
+            new WaveData(){ warriorCount = 16, archerCount = 6, 
+                hpMultiplier = 1.9f, speedMultiplier = 1.3f }
+            };
+        }
+
+        // 2-4
+        else if (chapter == 2 && stage == 4)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 14, archerCount = 5, 
+                hpMultiplier = 1.9f, speedMultiplier = 1.3f },
+            new WaveData(){ warriorCount = 16, archerCount = 6, 
+                hpMultiplier = 2f, speedMultiplier = 1.3f },
+            new WaveData(){ warriorCount = 18, archerCount = 7, 
+                hpMultiplier = 2.1f, speedMultiplier = 1.35f }
+            };
+        }
+
+        // 2-5 최종보스
+        else if (chapter == 2 && stage == 5)
+        {
+            waves = new WaveData[]
+            {
+            new WaveData(){ warriorCount = 0, archerCount = 0,}
             };
         }
     }
@@ -136,8 +212,8 @@ public class WaveManager : MonoBehaviour
         // 웨이브 데이터 생성
         CreateStageData(chapter, stage);
 
-        // 1-3 최종보스
-        if (chapter == 1 && stage == 3)
+        // 1-5 중간보스
+        if (chapter == 1 && stage == 5)
         {
             aliveMonster = 1;
 
@@ -146,6 +222,20 @@ public class WaveManager : MonoBehaviour
             {
                 stageWaveUI.UpdateWave(1, 1);
                 stageWaveUI.UpdateMonsterCount(aliveMonster);
+            }
+            SpawnMidBoss();
+            return;
+        }
+
+        // 2-5 최종보스
+        if (chapter == 2 && stage == 5)
+        {
+            aliveMonster = 1;
+
+            /////////스테이지 UI추가//////////
+            if (stageWaveUI != null)
+            {
+                stageWaveUI.UpdateWave(1, 1);
                 stageWaveUI.UpdateMonsterCount(aliveMonster);
             }
             SpawnLastBoss();
@@ -158,10 +248,11 @@ public class WaveManager : MonoBehaviour
 
 
     /********************
-    1-1 ~ 1-2 -> 일반 웨이브 진행
-    1-3 -> 최종보스 생성
-    보스 처치 -> 게임 클리어
-    **********************/
+    1-1 ~ 1-4 -> 일반 웨이브 진행
+    1-5 -> 중간보스 생성
+    aliveMonster = 1
+    보스 처치 -> aliveMonster = 0 -> 스테이지 클리어
+     **********************/
     //웨이브 시작
     IEnumerator StartWave()
     {
@@ -241,13 +332,22 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-   
+    //중간 보스 생성
+    public void SpawnMidBoss()
+    {
+        if (midBossPrefab == null) return;
+
+        Instantiate(midBossPrefab,GetRandomSpawnPosition(), Quaternion.identity);
+
+        Debug.Log("중간보스 등장");
+    }
+
     //최종 보스 생성
     public void SpawnLastBoss()
     {
         if(lastBossPrefab == null) return;
 
-        Instantiate(lastBossPrefab, new Vector3(-4.4f, -9.7f, 0f), Quaternion.identity);
+        Instantiate(lastBossPrefab, GetRandomSpawnPosition(), Quaternion.identity);
 
         Debug.Log("최종보스 등장");
     }

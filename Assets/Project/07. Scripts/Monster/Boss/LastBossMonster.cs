@@ -30,7 +30,7 @@ public class LastBossMonster : MonsterBase
         base.OnEnable();
 
         // 맵 중앙에 보스 배치
-        transform.position = new Vector3(-4.4f, -9.7f, 0f);
+        transform.position = Vector3.zero;
         currentState = MonsterState.Attack;
         // Rigidbody가 존재하면
         if (rb != null)

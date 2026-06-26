@@ -1810,7 +1810,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2268,7 +2268,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2496,10 +2496,6 @@ PrefabInstance:
     - target: {fileID: 1977186657312483781, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
       propertyPath: m_Name
       value: Stage_Pasture
-      objectReference: {fileID: 0}
-    - target: {fileID: 3698033936403928363, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2847,6 +2843,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   checkRadius: 0.7
+  midBossPrefab: {fileID: 5262284457916466998, guid: f186275692d9f8a47b6cddd1cc54c11f, type: 3}
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
   stageWaveUI: {fileID: 1488934118}
 --- !u!114 &1611300500
@@ -2862,7 +2859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 1
+  stage: 4
   waveManager: {fileID: 1611300499}
 --- !u!1 &1862251822
 GameObject:
@@ -3121,7 +3118,7 @@ Transform:
   m_GameObject: {fileID: 2092143169}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: -9.7, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3175,7 +3172,6 @@ MonoBehaviour:
   criticalChance: 0.05
   criticalMultiplier: 2
   skillCoolMultiplier: 1
-  movingSpeed: 1
 --- !u!114 &2092143174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3363,7 +3359,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
