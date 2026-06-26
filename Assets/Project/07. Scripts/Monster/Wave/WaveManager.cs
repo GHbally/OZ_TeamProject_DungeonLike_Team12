@@ -359,15 +359,32 @@ public class WaveManager : MonoBehaviour
         {
             Debug.Log("스테이지 클리어");
             Debug.Log("상자 생성!");
-            Debug.Log(deadPosition);
+            Debug.Log(deadPosition); //마지막 몬스터가 죽은 위치 확인용
 
-            Instantiate(
-                rewardBoxPrefab,      // 생성할 보상 상자
-                deadPosition,         // 마지막 몬스터가 죽은 위치
-                Quaternion.identity   // 회전 없음
-            );
+            if (rewardBoxPrefab != null)
+            {
+                Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogError("RewardBoxPrefab이 WaveManager에 연결되지 않았습니다.");
+            }
 
-            return;
+
+            // 추가 : 씬에서 StageManager 찾기
+            StageManager stageManager = FindFirstObjectByType<StageManager>();
+
+            // 추가 :  StageManager가 있으면 ClearStage 실행
+            if (stageManager != null)
+            {
+                stageManager.ClearStage(); // 포탈 활성화
+            }
+            else
+            {
+                Debug.LogError("StageManager를 찾지 못했습니다."); // StageManager 미존재 오류
+            }
+
+            return; // 스테이지 클리어 처리가 끝났으므로 종료
         }
 
         StartCoroutine(StartWave());
