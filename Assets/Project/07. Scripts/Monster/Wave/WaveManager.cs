@@ -52,6 +52,7 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     public StageWaveUI stageWaveUI;
 
+    
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
     {
@@ -329,14 +330,14 @@ public class WaveManager : MonoBehaviour
     //}
 
 
-
+    public GameObject rewardBoxPrefab; // 보상 상자 프리팹
     /******************
     몬스터 사망 -> aliveMonster 감소
     0이 되면 -> 다음 웨이브 
     마지막 웨이브면 -> 스테이지 클리어
      *******************/
     //몬스터 사망시 호출
-    public void MonsterDead()
+    public void MonsterDead(Vector3 deadPosition)
     {
         aliveMonster--;
         ///// 스테이지 UI추가/////////
@@ -357,7 +358,15 @@ public class WaveManager : MonoBehaviour
         if (currentWave >= waves.Length)
         {
             Debug.Log("스테이지 클리어");
-            FindFirstObjectByType<StageManager>().ClearStage();
+            Debug.Log("상자 생성!");
+            Debug.Log(deadPosition);
+
+            Instantiate(
+                rewardBoxPrefab,      // 생성할 보상 상자
+                deadPosition,         // 마지막 몬스터가 죽은 위치
+                Quaternion.identity   // 회전 없음
+            );
+
             return;
         }
 
