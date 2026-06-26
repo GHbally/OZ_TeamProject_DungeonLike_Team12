@@ -7,6 +7,11 @@ public class PlayerBase : MonoBehaviour
     [Header("UI 연결")]
     [SerializeField] private Slider hpSlider; // 인스펙터에서 드래그할 슬라이더(김영웅 수정)
 
+    [Header("10멋진 변신")]
+    [SerializeField] private GameObject visualBase;  //1레벨 기본 비주얼 (하이어라키의 "Visual")
+    [SerializeField] private GameObject visualLv10;  //10레벨 비주얼 (하이어라키의 "Visual_Lv10")
+    [SerializeField] private GameObject visualLv30;  //30레벨 비주얼 (하이어라키의 "Visual_Lv30")
+
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHp = 100.0f;  //최대 HP
     private float currentHp;                        //현재 체력
