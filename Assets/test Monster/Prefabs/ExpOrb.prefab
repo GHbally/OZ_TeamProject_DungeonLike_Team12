@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7464569857649908340}
   - component: {fileID: 7282102944398624364}
   - component: {fileID: 7974195007047644039}
+  - component: {fileID: 3328432242727443766}
   m_Layer: 0
   m_Name: ExpOrb
   m_TagString: Exp
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8079739786600684702, guid: d9d48993becf9f54398e6f4d613087cd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 108136a809eb44363bb15514fbd2048d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -142,3 +143,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpOrb
   expAmount: 10
+--- !u!114 &3328432242727443766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8256797681668257143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112fe0df9944fc042a8796c5f09a204e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectGlow
+  glowColor: {r: 1.4980394, g: 1.4980394, b: 1.4980394, a: 1}

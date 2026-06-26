@@ -29,6 +29,16 @@ public class Arrow : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(!other.CompareTag("Player")) return;
+
+        //이동컴포넌트 가져와서
+        PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
+
+        //플레이어 대쉬(무적)상태일 경우
+        if (playerMovement != null && playerMovement.IsInvincible)
+        {
+            return; //아무것도 안하고 빠져나가기
+        }
+
         Debug.Log("플레이어 피격");
         PlayerBase player = other.GetComponent<PlayerBase>();
         if (player != null)
