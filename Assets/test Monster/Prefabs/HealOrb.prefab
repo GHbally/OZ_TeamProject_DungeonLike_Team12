@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3872067426415092076}
   - component: {fileID: 3128657891880697197}
   - component: {fileID: 7667431324326998602}
+  - component: {fileID: 4290378711644359077}
   m_Layer: 0
   m_Name: HealOrb
   m_TagString: Untagged
@@ -69,7 +70,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
 --- !u!212 &3128657891880697197
 SpriteRenderer:
   serializedVersion: 2
@@ -119,7 +120,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: 47ae2b62fc9a8b5468a0ff433147abe5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: afacb48c4aaf24b91a94b80dcb0d8fb0, type: 3}
   m_Color: {r: 1, g: 0, b: 0.83183813, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -142,3 +143,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealOrb
   healAmount: 20
+--- !u!114 &4290378711644359077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3080511462412774030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112fe0df9944fc042a8796c5f09a204e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectGlow
+  glowColor: {r: 2.9960785, g: 2.9960785, b: 2.9960785, a: 1}
