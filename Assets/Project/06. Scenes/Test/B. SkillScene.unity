@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8231932688036060326, guid: d88f7d686ba189f4f9e8d56e838d02fc, type: 3}
+      propertyPath: moveSpeed
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -850,6 +854,7 @@ GameObject:
   - component: {fileID: 518272274}
   - component: {fileID: 518272273}
   - component: {fileID: 518272283}
+  - component: {fileID: 518272284}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -967,6 +972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
+  dashSound: {fileID: 0}
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
@@ -1076,6 +1082,28 @@ MonoBehaviour:
   baseSizeMultiplier: 1
   sizeIncreasePerLevel: 0.2
   maxSizeMultiplier: 2
+--- !u!114 &518272284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518272272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73bc5c87cc2f5b143994d338b7e106a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChaseArrowController
+  skillManager: {fileID: 1190465180}
+  chaseArrowSkillData: {fileID: 11400000, guid: c4aaf281a7a456e429fd1e32baeb9f8d, type: 2}
+  chaseArrowPool: {fileID: 1344624557}
+  targetDetector: {fileID: 518272276}
+  attackStats: {fileID: 518272275}
+  firePoint: {fileID: 825304692}
+  baseCooldown: 2
+  chaseArrowRange: 7
+  damageMultiplier: 1
+  fourWayUnlockLevel: 2
 --- !u!1 &551878094
 GameObject:
   m_ObjectHideFlags: 0
@@ -2247,6 +2275,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 381163455f55c274488bf9ac0ed5b5dd, type: 2}
   - {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   - {fileID: 11400000, guid: 7807054e2a35b9d4594e435c86b6187c, type: 2}
+  - {fileID: 11400000, guid: c4aaf281a7a456e429fd1e32baeb9f8d, type: 2}
 --- !u!4 &1190465181
 Transform:
   m_ObjectHideFlags: 0
@@ -2262,6 +2291,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1344624555
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1344624556}
+  - component: {fileID: 1344624557}
+  m_Layer: 0
+  m_Name: ChaseArrowPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1344624556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344624555}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2041638715}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1344624557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344624555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f317bbdfb4ecfe4c983e00c06dce160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillProjectilePool
+  projectilePrefab: {fileID: 2181878211855493746, guid: 597a638e7bed9a547ad4286c192f9e51, type: 3}
+  projectileContainer: {fileID: 1541574135}
+  defaultCapacity: 10
+  maxPoolSize: 100
 --- !u!1 &1348013111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2946,6 +3023,7 @@ Transform:
   - {fileID: 291688409}
   - {fileID: 1559136452}
   - {fileID: 1058773096}
+  - {fileID: 1344624556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2106208363

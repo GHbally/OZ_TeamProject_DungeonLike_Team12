@@ -11,7 +11,7 @@ public class ChaseArrowController : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
     [Header("궁수 스킬 기본 설정")]
-    [SerializeField] private float baseColldown = 2f;
+    [SerializeField] private float baseCooldown = 2f;
     [SerializeField] private float chaseArrowRange = 7f;
     [SerializeField] private float damageMultiplier = 1f;
 
@@ -47,7 +47,7 @@ public class ChaseArrowController : MonoBehaviour
             return;
         }
 
-        //TryFireChaseArrowSkill(chaseArrowLevel);
+        TryFireChaseArrowSkill(chaseArrowLevel);
     }
 
     private void CacheReferentces()
@@ -76,7 +76,7 @@ public class ChaseArrowController : MonoBehaviour
             return 0;
         }
 
-        if (chaseArrowSkillData)
+        if (chaseArrowSkillData == null)
         {
             return 0;
         }
@@ -84,8 +84,148 @@ public class ChaseArrowController : MonoBehaviour
         return skillManager.GetCurrentLevel(chaseArrowSkillData);
     }
 
-    private void TryFireChaseArrowSkill()
+    private void TryFireChaseArrowSkill(int chaseArrowLevel)
     {
+        if (chaseArrowPool == null)
+        {
+            return;
+        }
 
+        if (firePoint == null)
+        {
+            return;
+        }
+
+        if (attackStats == null)
+        {
+            return;
+        }
+
+        if (targetDetector == null)
+        {
+            return;
+        }
+
+        Transform target =
+            targetDetector.FindNearestTarget(chaseArrowRange);
+
+        if (target == null)
+        {
+            return;
+        }
+        Vector2 direction =
+            (target.position - firePoint.position).normalized;
+
+        DamageInfo1 damageInfo =
+            CreateChaseAorrwDamageInfo();
+
+        if (chaseArrowLevel >= fourWayUnlockLevel)
+        {
+            FireSingleArrow(
+                direction,
+                damageInfo,
+                chaseArrowLevel
+            );
+
+            FireFourWayArrows(
+                damageInfo,
+                chaseArrowLevel
+            );
+        }
+        else
+        {
+            FireSingleArrow(
+                direction,
+                damageInfo,
+                chaseArrowLevel
+            );
+        }
+        cooldownTimer = GetFinalCooldown();
+    }
+    private void FireSingleArrow(
+       Vector2 direction,
+       DamageInfo1 damageInfo,
+       int chaseArrowLevel)
+    {
+        SpawnArrow(
+            direction,
+            damageInfo,
+            chaseArrowLevel
+        );
+    }
+    private void FireFourWayArrows(
+        DamageInfo1 damageInfo,
+        int chaseArrowLevel)
+    {
+        SpawnArrow(Vector2.up, damageInfo, chaseArrowLevel);
+        SpawnArrow(Vector2.down, damageInfo, chaseArrowLevel);
+        SpawnArrow(Vector2.left, damageInfo, chaseArrowLevel);
+        SpawnArrow(Vector2.right, damageInfo, chaseArrowLevel);
+    }
+
+    private void SpawnArrow(
+        Vector2 direction,
+        DamageInfo1 damageInfo,
+        int chaseArrowLevel)
+    {
+        if(direction.sqrMagnitude <= 0f)
+        {
+            return;
+        }
+
+        SkillProjectileBase projectile =
+            chaseArrowPool.Spawn(
+                firePoint.position,
+                direction.normalized,
+                damageInfo);
+
+        ChaseArrowProjectile chaseArrow = projectile as ChaseArrowProjectile;
+
+        if(chaseArrow == null)
+        {
+            return;
+        }
+
+        chaseArrow.SetupArcherArrow(chaseArrowLevel);
+    }
+
+    private DamageInfo1 CreateChaseAorrwDamageInfo()
+    {
+        DamageInfo1 baseDamageInfo = attackStats.CreateDamageInfo(gameObject);
+
+        float finalDamage = baseDamageInfo.Damage * damageMultiplier;
+
+        return new DamageInfo1(
+            finalDamage,
+            baseDamageInfo.IsCritical,
+            baseDamageInfo.Attacker
+            );
+    }
+
+    private float GetFinalCooldown()
+    {
+        if(attackStats == null)
+        {
+            return baseCooldown;
+        }
+
+        // 파이어볼처럼 AttackStats의 전체 스킬 쿨타임 감소 효과를 적용한다.
+        return attackStats.GetFinalSkillCooldown(baseCooldown);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // 추적 화살이 적을 탐색하는 공격 사거리
+        // 화살 자체 유도 범위와는 별개
+        Gizmos.color = Color.yellow;
+
+        Vector3 gizmoCenter = transform.position;
+
+        if(targetDetector != null)
+        {
+            gizmoCenter = targetDetector.transform.position;
+        }
+
+        Gizmos.DrawWireSphere(gizmoCenter,chaseArrowRange);
     }
 }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
+  m_Name: ChaseArrow
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  skillName: "\uCD94\uC801 \uD654\uC0B4"
+  description: "\uCD94\uC801 \uD654\uC0B4 \uC2A4\uD0AC\uC744 \uD68D\uB4DD\uD569\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 9ef71e342246e4c35962b08bfa9f02a5, type: 3}
+  maxLevel: 5
+  levelUpDescriptions:
+  - "\uCD94\uC801 \uD654\uC0B4 \uD68D\uB4DD"
+  - "\uC804 \uBC29\uD5A5 \uD654\uC0B4"
+  - 
+  - "\uC801 \uAD00\uD1B5 +2"
+  - "\uC720\uB3C4 \uAE30\uB2A5\uC744 \uD68D\uB4DD"
+  effectType: 0
+  effectValuePerLevel: 0
