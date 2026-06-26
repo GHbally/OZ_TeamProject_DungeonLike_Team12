@@ -52,11 +52,11 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     public StageWaveUI stageWaveUI;
 
-    [Header("웨이브 시작/종료 UI")]
-    public WaveTransitionUI waveTransitionUI;
+    [Header("클리어 UI")]
+    public WaveClaerUI waveClearUI;
 
-    [SerializeField] private float waveStartUIDuration = 1.5f;
-    [SerializeField] private float waveEndUIDuration = 1.5f;
+    [SerializeField] private float waveClearImageDuration = 1.5f;
+    [SerializeField] private float nextWaveDelay = 3f;
 
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
@@ -158,7 +158,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
         //웨이브 시작
-        StartCoroutine(StartWaveFlow());
+        StartCoroutine(StartWave());
 
     }
 
@@ -200,29 +200,6 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }
-    IEnumerator StartWaveFlow()
-    {
-        if (waveTransitionUI != null)
-        {
-            waveTransitionUI.ShowWaveStart(
-                currentWave + 1,
-                waves.Length
-            );
-        }
-
-        // 웨이브 시작 UI를 잠깐 보여준다.
-        yield return new WaitForSeconds(waveStartUIDuration);
-
-        if (waveTransitionUI != null)
-        {
-            waveTransitionUI.HideAll();
-        }
-
-        // 실제 몬스터 생성 시작.
-        // 실제 몬스터 생성 시작.
-        yield return StartCoroutine(StartWave());
-    }
-
 
     //전사 생성
     void SpawnWarrior(WaveData data)
@@ -414,31 +391,31 @@ public class WaveManager : MonoBehaviour
 
             return; // 스테이지 클리어 처리가 끝났으므로 종료
         }
-
-        StartCoroutine(EndWaveFlow());
+        StartCoroutine(WaveClearFlow());
     }
 
-    // 웨이브 종료 UI를 보여준 뒤 다음 웨이브를 시작한다.
-    IEnumerator EndWaveFlow()
+    private IEnumerator WaveClearFlow()
     {
-        if (waveTransitionUI != null)
+        // 웨이브 클리어 이미지를 켠다.
+        if (waveClearUI != null)
         {
-            waveTransitionUI.ShowWaveEnd(
-                currentWave,
-                waves.Length
-            );
+            waveClearUI.ShowWaveClear();
         }
 
-        // 웨이브 끝 UI를 1.5초 동안 보여준다.
-        yield return new WaitForSeconds(waveEndUIDuration);
+        // 웨이브 클리어 이미지를 1.5초 동안 보여준다.
+        yield return new WaitForSeconds(waveClearImageDuration);
 
-        if (waveTransitionUI != null)
+        // 웨이브 클리어 이미지를 끈다.
+        if (waveClearUI != null)
         {
-            waveTransitionUI.HideAll();
+            waveClearUI.HideWaveClear();
         }
 
-        // 다음 웨이브 시작 UI → 전투 흐름으로 이동한다.
-        StartCoroutine(StartWaveFlow());
+        // 이미지가 사라진 뒤 3초 기다린다.
+        yield return new WaitForSeconds(nextWaveDelay);
+
+        // 다음 웨이브를 시작한다.
+        StartCoroutine(StartWave());
     }
 }
 
