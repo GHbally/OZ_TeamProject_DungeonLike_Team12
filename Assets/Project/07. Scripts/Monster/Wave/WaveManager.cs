@@ -55,8 +55,11 @@ public class WaveManager : MonoBehaviour
     [Header("클리어 UI")]
     public WaveClaerUI waveClearUI;
 
-    [SerializeField] private float waveClearImageDuration = 1.5f;
+    // 클리어 UI가 화면에 머무는 시간
+    [SerializeField] private float waveClearImageDuration = 3f;
     [SerializeField] private float nextWaveDelay = 3f;
+    [SerializeField] private float stageClearImageDuration = 3f;
+
 
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
@@ -345,6 +348,7 @@ public class WaveManager : MonoBehaviour
     public void MonsterDead(Vector3 deadPosition)
     {
         aliveMonster--;
+
         ///// 스테이지 UI추가/////////
         if (stageWaveUI != null)
         {
@@ -362,6 +366,20 @@ public class WaveManager : MonoBehaviour
         // 모든 웨이브 클리어
         if (currentWave >= waves.Length)
         {
+            // 스테이지 클리어 UI를 켠다.
+            if (waveClearUI != null)
+            {
+                waveClearUI.ShowStageClear();
+            }
+
+            // 스테이지 클리어 UI를 n초 동안 보여준다.
+            new WaitForSeconds(stageClearImageDuration);
+
+            if (waveClearUI != null)
+            {
+                waveClearUI.HideStageClear();
+            }
+
             Debug.Log("스테이지 클리어");
             Debug.Log("상자 생성!");
             Debug.Log(deadPosition); //마지막 몬스터가 죽은 위치 확인용
@@ -402,7 +420,7 @@ public class WaveManager : MonoBehaviour
             waveClearUI.ShowWaveClear();
         }
 
-        // 웨이브 클리어 이미지를 1.5초 동안 보여준다.
+        // 웨이브 클리어 이미지를 n초 동안 보여준다.
         yield return new WaitForSeconds(waveClearImageDuration);
 
         // 웨이브 클리어 이미지를 끈다.
@@ -411,7 +429,7 @@ public class WaveManager : MonoBehaviour
             waveClearUI.HideWaveClear();
         }
 
-        // 이미지가 사라진 뒤 3초 기다린다.
+        // 이미지가 사라진 뒤 n초 기다린다.
         yield return new WaitForSeconds(nextWaveDelay);
 
         // 다음 웨이브를 시작한다.
