@@ -28,6 +28,9 @@ public class WaveManager : MonoBehaviour
     private int aliveMonster; //살아있는 몬스터 수
     private bool isLastBossSpawned = false; // true면 보스를 다시 생성하지 않음
 
+    [SerializeField] private int spawnWarriorNumber = 65;
+    [SerializeField] private int spawnArcherNumber = 15;
+
     public WaveData[] waves; //웨이브 데이터 배열
 
     [Header("맵 안 스폰 범위")]
@@ -79,17 +82,17 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = 65, archerCount = 15,
+                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
                     hpMultiplier = 1f, speedMultiplier = 1f
                 },
                 new WaveData()
                 {
-                    warriorCount = 65, archerCount = 15,
+                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
                     hpMultiplier= 1.1f, speedMultiplier = 1.05f
                 },
                 new WaveData()
                 {
-                    warriorCount = 65, archerCount = 15,
+                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
                     hpMultiplier = 1.2f, speedMultiplier= 1.1f
                 }
             };
@@ -100,19 +103,19 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = 75, archerCount = 25,
+                    warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
                     hpMultiplier = 1.2f, speedMultiplier = 1.1f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = 75,archerCount = 25,
+                    warriorCount = spawnWarriorNumber + 10,archerCount = spawnArcherNumber + 10,
                     hpMultiplier = 1.3f,speedMultiplier = 1.15f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = 75, archerCount = 25,
+                    warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
                     hpMultiplier = 1.4f, speedMultiplier = 1.2f
                 }
             };
@@ -400,44 +403,11 @@ public class WaveManager : MonoBehaviour
         // 모든 웨이브 클리어
         if (currentWave >= waves.Length)
         {
-            // 스테이지 클리어 UI를 켠다.
-            if (wavestageClearUI != null)
-            {
-                wavestageClearUI.ShowStageClear();
-            }
+            // 클리어 코드
+            // 여기 있던 코드를 함수로 옮겨놨습니다
+            StartCoroutine(StageClearFlow(deadPosition));
 
-            // 스테이지 클리어 UI를 n초 동안 보여준다.
-            new WaitForSeconds(stageClearImageDuration);
-
-            if (wavestageClearUI != null)
-            {
-                wavestageClearUI.HideStageClear();
-            }
-
-            if (rewardBoxPrefab != null)
-            {
-                spawnedRewardBox  = Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogError("RewardBoxPrefab이 WaveManager에 연결되지 않았습니다.");
-            }
-
-
-            // 추가 : 씬에서 StageManager 찾기
-            StageManager stageManager = FindFirstObjectByType<StageManager>();
-
-            // 추가 :  StageManager가 있으면 ClearStage 실행
-            if (stageManager != null)
-            {
-                stageManager.ClearStage(); // 포탈 활성화
-            }
-            else
-            {
-                Debug.LogError("StageManager를 찾지 못했습니다."); // StageManager 미존재 오류
-            }
-
-            return; // 스테이지 클리어 처리가 끝났으므로 종료
+            return;
         }
         StartCoroutine(WaveClearFlow());
     }
@@ -479,6 +449,46 @@ public class WaveManager : MonoBehaviour
 
         // 이미 제거한 오브젝트를 다시 참조하지 않도록 null로 초기화한다.
         spawnedRewardBox = null;
+    }
+
+    private IEnumerator StageClearFlow(Vector3 deadPosition)
+    {
+        // 스테이지 클리어 UI를 켠다.
+        if (wavestageClearUI != null)
+        {
+            wavestageClearUI.ShowStageClear();
+        }
+
+        // 스테이지 클리어 UI를 n초 동안 보여준다.
+        yield return new WaitForSeconds(stageClearImageDuration);
+
+        if (wavestageClearUI != null)
+        {
+            wavestageClearUI.HideStageClear();
+        }
+
+        if (rewardBoxPrefab != null)
+        {
+            spawnedRewardBox = Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogError("RewardBoxPrefab이 WaveManager에 연결되지 않았습니다.");
+        }
+
+
+        // 추가 : 씬에서 StageManager 찾기
+        StageManager stageManager = FindFirstObjectByType<StageManager>();
+
+        // 추가 :  StageManager가 있으면 ClearStage 실행
+        if (stageManager != null)
+        {
+            stageManager.ClearStage(); // 포탈 활성화
+        }
+        else
+        {
+            Debug.LogError("StageManager를 찾지 못했습니다."); // StageManager 미존재 오류
+        }
     }
 }
 

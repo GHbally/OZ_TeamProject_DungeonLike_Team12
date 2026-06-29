@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public class StageManager : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class StageManager : MonoBehaviour
     // 다음 스테이지로 이동하는 포탈 오브젝트
     public GameObject nextStagePortal;
 
-    [Header("맵 전환")]
+    [Header("맵 전환 Obejct")]
     public StageMapSwitcher stageMapSwitcher;
 
     private int currentEnemyCount = 0;//김영웅 수정
@@ -21,6 +23,13 @@ public class StageManager : MonoBehaviour
 
     // 적이 생성될 때마다 호출 (보스, 잡몹 등) 김영웅 수정
     public void RegisterEnemy() => currentEnemyCount++;
+
+    [Header("시작/미션 UI")]
+    public GameStartManager gameStartManager;
+
+    [Header("플레이어 위치 이동")]
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform[] stageStartPoints;
 
     // 게임이 시작될 때 한 번만 실행
     private void Start()
@@ -38,6 +47,7 @@ public class StageManager : MonoBehaviour
         waveManager.StartStage(chapter, stage);
     }
 
+    [Header("포탈 생성 위치")]
     public Vector3 portalSpawnPosition = new Vector3(0f, 0f, 0f); // 포탈이 생성될 위치
     // 모든 웨이브를 클리어했을 때 호출
     public void ClearStage()
@@ -79,32 +89,75 @@ public class StageManager : MonoBehaviour
     // 플레이어가 포탈에 들어왔을 때 호출
     public void NextStage()
     {
-        // 포탈은 다음 스테이지가 시작되면 다시 숨김
+        // 기존 함수를 UI를 띄우기 위해 코루틴으로 옮겨놨습니다.
+
+        StartCoroutine(NextStageFlow());
+    }
+
+    private IEnumerator NextStageFlow()
+    {
         nextStagePortal.SetActive(false);
 
-        // 다음 스테이지로 넘어가기 전에 현재 맵에 남아있는 ExpOrb와 HealOrb를 전부 회수한다.
         if (PoolManager.Instance != null)
         {
             PoolManager.Instance.ReturnAllOrbsInScene();
         }
 
-        // 마지막 스테이지라면 게임 종료
         if (chapter == 1 && stage == 3)
         {
-            Debug.Log("게임 클리어"); // 콘솔에 게임 클리어 출력
-            return; // 더 이상 실행하지 않음
+            Debug.Log("게임 클리어");
+            yield break;
         }
 
-        // 다음 스테이지 번호 증가
         stage++;
 
-        // 현재 스테이지 번호에 맞는 맵만 켠다.
         if (stageMapSwitcher != null)
         {
             stageMapSwitcher.ChangeMap(stage);
         }
 
-        // 다음 스테이지의 웨이브 시작
+        // 맵이 바뀐 뒤 플레이어를 해당 스테이지 시작 위치로 이동시킨다.
+        MovePlayerToStageStartPoint();
+
+        // 카메라가 플레이어 위치를 따라갈 시간을 조금 준다.
+        // 아직 Time.timeScale을 0으로 만들기 전이라 카메라 이동이 가능하다.
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        if (gameStartManager != null)
+        {
+            yield return StartCoroutine(gameStartManager.ShowMissionForNextStage());
+        }
+
         waveManager.StartStage(chapter, stage);
+    }
+
+    private void MovePlayerToStageStartPoint()
+    {
+        // 플레이어가 연결되지 않았으면 이동할 수 없으므로 종료한다.
+        if (player == null)
+        {
+            Debug.LogWarning("StageManager: Player가 연결되지 않았습니다.", gameObject);
+            return;
+        }
+
+        // stage는 1부터 시작하고 배열은 0부터 시작하므로 -1을 해준다.
+        int targetIndex = stage - 1;
+
+        // 잘못된 스테이지 번호이거나 시작 위치가 부족하면 종료한다.
+        if (targetIndex < 0 || targetIndex >= stageStartPoints.Length)
+        {
+            Debug.LogWarning($"StageManager: Stage {stage}에 해당하는 시작 위치가 없습니다.", gameObject);
+            return;
+        }
+
+        // 해당 스테이지의 시작 위치가 비어 있으면 종료한다.
+        if (stageStartPoints[targetIndex] == null)
+        {
+            Debug.LogWarning($"StageManager: Stage {stage} 시작 위치가 연결되지 않았습니다.", gameObject);
+            return;
+        }
+
+        // 플레이어를 현재 스테이지 시작 위치로 이동시킨다.
+        player.position = stageStartPoints[targetIndex].position;
     }
 }
