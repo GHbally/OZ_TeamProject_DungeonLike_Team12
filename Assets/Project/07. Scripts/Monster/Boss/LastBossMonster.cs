@@ -25,9 +25,20 @@ public class LastBossMonster : MonsterBase
 
     private Coroutine patternRoutine;
 
+    // 보스 죽음 연출이 이미 시작됐는지 확인하는 변수
+    private bool isBossDeathStarted = false;
+
+    // 보스가 죽었을 때 이 변수를 이용해서 안전장판을 삭제할 수 있음
+    private GameObject currentSafeZone;
+
+    // 보스가 죽었을 때 폭발 이펙트도 같이 정리하기 위해 사용
+    private GameObject currentMapExplosion;
+
     protected override void OnEnable()
     {
         base.OnEnable();
+        /////////////보스 애니메이터 수안 추가 
+        animator = GetComponentInChildren<Animator>();
 
         // 맵 중앙에 보스 배치
         transform.position = new Vector3(-4.4f, -9.7f, 0f);
@@ -45,9 +56,13 @@ public class LastBossMonster : MonsterBase
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
+        isBossDeathStarted = false;
+
         // 바로 데미지를 줄 수 있도록 타이머 초기화
         touchDamageTimer = touchDamageInterval;
+
         StartCoroutine(InitBoss());
+
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -161,6 +176,12 @@ public class LastBossMonster : MonsterBase
     ///////////////슈팅////////////////////
     IEnumerator ShootPattern()
     {
+        // 탄환 발사 패턴이 시작될 때 공격 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         for (int i = 0; i < 5; i++)
         {
             if (player == null) yield break; // 플레이어 없으면 종료
@@ -197,6 +218,11 @@ public class LastBossMonster : MonsterBase
 
     IEnumerator AoEAttackPattern()
     {
+        // 장판 공격 패턴이 시작될 때 공격 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
         if (player == null) yield break;
 
         Vector3 targetPos = player.position; // 현재 플레이어 위치 저장
@@ -215,6 +241,12 @@ public class LastBossMonster : MonsterBase
 
     IEnumerator SummonPattern()
     {
+        // 몬스터 소환은 마법 시전 느낌이므로 Cast 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("Cast");
+        }
+
         // 3~5마리 랜덤 소환
         int count = Random.Range(3, 6);
 
@@ -225,6 +257,18 @@ public class LastBossMonster : MonsterBase
 
             // 풀에 없으면 스킵
             if (monster == null) continue;
+
+            // 소환된 몬스터의 MonsterBase를 가져옴
+            MonsterBase monsterBase = monster.GetComponent<MonsterBase>();
+            
+            // 나중에 죽을 때 보상상자를 드랍하지 않게 하기 위해 사용
+            if (monsterBase != null)
+            {
+                monsterBase.isBossSummonedMonster = true;
+            }
+
+            // 풀에 없으면 스킵
+          
 
             // 보스 기준 주변 랜덤 위치 생성
             Vector2 randomOffset = Random.insideUnitCircle * 3f;
@@ -244,6 +288,12 @@ public class LastBossMonster : MonsterBase
 
     IEnumerator BounceBulletPattern()
     {
+        // 튕기는 탄환 발사 시 공격 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         for (int i = 0; i < 6; i++)
         {
             GameObject bullet = PoolManager.Instance.GetBounceBullet();
@@ -303,24 +353,62 @@ public class LastBossMonster : MonsterBase
         yield break;
     }
 
+    // ====================== 3페이즈 궁극기 패턴 ======================
     IEnumerator Phase3Pattern()
     {
-        Debug.Log("궁극기 시전"); // 궁극기 시작 로그 출력
+        // Animator 컴포넌트가 존재하는지 확인
+        if (animator != null)
+        {
+            // Cast 트리거를 실행하여 캐스팅(시전) 애니메이션 재생
+            animator.SetTrigger("Cast");
+        }
 
-        // 맵 안의 랜덤 위치를 안전지대로 선택
-        Vector2 safePos = Random.insideUnitCircle * 5f;
+        // 콘솔에 궁극기 시작 로그 출력(디버깅용)
+        Debug.Log("궁극기 시전");
 
-        // 선택된 위치에 안전지대 생성
-        GameObject safeZone =
-            Instantiate(safeZonePrefab, safePos, Quaternion.identity);
+        // 현재 메인 카메라 가져오기
+        Camera cam = Camera.main;
 
-        float timer = 0f;              // 궁극기 진행 시간 측정
-        float shootInterval = 1f;      // 탄환 발사 간격(1초)
+        // 화면(Viewport) 안에서 랜덤한 위치를 선택
+        // Viewport 좌표는 (0,0)이 왼쪽 아래, (1,1)이 오른쪽 위
+        Vector3 viewportPos = new Vector3(
 
-        // 궁극기 시전 시간이 끝날 때까지 반복
+            // 화면 가로 15% ~ 85% 사이에서 랜덤
+            // 가장자리에 생성되지 않도록 여유를 둠
+            Random.Range(0.15f, 0.85f),
+
+            // 화면 세로 15% ~ 85% 사이에서 랜덤
+            Random.Range(0.15f, 0.85f),
+
+            // 카메라와의 거리(Z축)
+            // ViewportToWorldPoint()에서 반드시 필요
+            Mathf.Abs(cam.transform.position.z)
+        );
+
+        // 화면 좌표(Viewport)를 실제 게임 월드 좌표로 변환
+        Vector3 safePos = cam.ViewportToWorldPoint(viewportPos);
+
+        // 2D 게임이므로 Z축은 항상 0으로 고정
+        safePos.z = 0;
+
+        // 안전지대 생성
+        // 플레이어가 이동해야 하는 위치
+        currentSafeZone = Instantiate(safeZonePrefab, safePos, Quaternion.identity);
+
+        // 궁극기 캐스팅 시간 계산용 변수
+
+        // 현재 캐스팅이 얼마나 진행되었는지 저장
+        float timer = 0f;
+
+        // 탄환을 몇 초마다 발사할지 설정
+        float shootInterval = 1f;
+
+        // 궁극기 캐스팅 시간 동안 반복
         while (timer < ultimateCastTime)
         {
-            // 전방위 탄환 발사
+            // -----------------------------
+            // 전방위 탄환 발사 패턴 실행
+            // -----------------------------
             yield return StartCoroutine(AllDirectionPattern());
 
             // 다음 탄환 발사까지 1초 대기
@@ -330,47 +418,102 @@ public class LastBossMonster : MonsterBase
             timer += shootInterval;
         }
 
-        ///////////////////// 궁극기 ////////////////////////////
-        //캐스팅 -> 안전지대 생성 -> 3초대기 -> 맵 전체 폭발
+        //////////////////// 궁극기 발동////////////////////
 
-        // 궁극기 시전이 끝나면 맵 전체 폭발 생성
-        GameObject explosion =
-            Instantiate(mapExplosionPrefab, Vector3.zero, Quaternion.identity);
+        // 맵 전체 폭발 생성
+        currentMapExplosion = Instantiate(mapExplosionPrefab, Vector3.zero, Quaternion.identity);
 
-        // 폭발 이펙트가 보이도록 1초 대기
-        yield return new WaitForSeconds(1f);
+        // 폭발 이펙트가 보이도록 잠시 대기
+        yield return new WaitForSeconds(0.5f);
 
-        // 안전지대 제거
-        Destroy(safeZone);
+        // 안전지대 삭제
 
-        // 폭발 이펙트 제거
-        Destroy(explosion);
+        // 안전지대가 아직 존재하면 삭제
+        if (currentSafeZone != null)
+        {
+            Destroy(currentSafeZone);
+
+            // 삭제 후 참조 제거
+            currentSafeZone = null;
+        }
+
+        // 폭발 이펙트 삭제
+
+        // 폭발 이펙트가 아직 존재하면 삭제
+        if (currentMapExplosion != null)
+        {
+            Destroy(currentMapExplosion);
+
+            // 삭제 후 참조 제거
+            currentMapExplosion = null;
+        }
+
+        // 코루틴 종료
+        // PatternLoop()로 돌아가 다음 패턴을 진행
     }
 
     //////////////////보스 사망/////////////////////
 
-    protected override void Death()//김영웅 수정
+    protected override void Death()
     {
-        if (isDead) return;
+        // 죽음 연출이 이미 시작됐다면 다시 실행하지 않음
+        if (isBossDeathStarted) return;
+
+        // 죽음 연출 시작 처리
+        isBossDeathStarted = true;
+
+        // 보스 사망 상태로 변경
         isDead = true;
 
+        // 현재 상태를 Dead로 변경
         currentState = MonsterState.Dead;
-        StopAllCoroutines();
 
-        // 사망 연출을 위해 코루틴 사용
-        StartCoroutine(DieSequence());
+        // 보스 패턴 코루틴 정지
+        if (patternRoutine != null)
+        {
+            StopCoroutine(patternRoutine);
+            patternRoutine = null;
+        }
+
+        // 충돌을 꺼서 죽은 뒤 추가 피격 방지
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // 죽는 애니메이션 실행
+        if (animator != null)
+        {
+            // 다른 트리거 초기화
+            animator.ResetTrigger("Attack");
+            animator.ResetTrigger("Cast");
+
+            // 이동 애니메이션 끄기
+            animator.SetBool("Move", false);
+
+            // 죽는 애니메이션 실행
+            animator.SetTrigger("Death");
+        }
+
+        // 죽는 연출 후 삭제
+        StartCoroutine(BossDieSequence());
     }
 
-    private IEnumerator DieSequence()//김영웅 수정
+    private IEnumerator BossDieSequence()
     {
-        yield return new WaitForSeconds(2.0f);
+        // 죽는 애니메이션 재생 시간만큼 대기
+        yield return new WaitForSeconds(1.5f);
 
+        // 스테이지 매니저에게 보스 사망 알림
         StageManager stageManager = FindFirstObjectByType<StageManager>();
+
         if (stageManager != null)
         {
-            // 보스가 죽었음을 알리고 카운트 감소
             stageManager.UnregisterEnemy(true);
         }
+
+        // 대기 후 보스 삭제
         Destroy(gameObject);
     }
 }

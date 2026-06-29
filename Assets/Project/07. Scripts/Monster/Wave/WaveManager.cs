@@ -26,6 +26,7 @@ public class WaveManager : MonoBehaviour
 
     private int currentWave; // 현재 웨이브 번호
     private int aliveMonster; //살아있는 몬스터 수
+    private bool isLastBossSpawned = false; // true면 보스를 다시 생성하지 않음
 
     public WaveData[] waves; //웨이브 데이터 배열
 
@@ -141,8 +142,13 @@ public class WaveManager : MonoBehaviour
         }
         //이전 코루틴 종료
         StopAllCoroutines();
+
         // 첫 웨이브 부터 시작
         currentWave = 0;
+
+        // 새 스테이지가 시작될 때 최종보스 생성 여부 초기화
+        isLastBossSpawned = false;
+
         // 웨이브 데이터 생성
         CreateStageData(chapter, stage);
 
@@ -251,14 +257,30 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-   
-    //최종 보스 생성
+
+    // 최종보스 생성 함수
     public void SpawnLastBoss()
     {
-        if(lastBossPrefab == null) return;
+        // 이미 최종보스가 생성된 상태라면 다시 생성하지 않음
+        if (isLastBossSpawned)
+        {
+            return;
+        }
 
+        // 최종보스 프리팹이 연결되어 있지 않으면 생성하지 않음
+        if (lastBossPrefab == null)
+        {
+            Debug.LogError("Last Boss Prefab이 연결되지 않았습니다.");
+            return;
+        }
+
+        // 최종보스 생성 완료 표시
+        isLastBossSpawned = true;
+
+        // 최종보스를 지정한 위치에 1마리만 생성
         Instantiate(lastBossPrefab, new Vector3(-4.4f, -9.7f, 0f), Quaternion.identity);
 
+        // 콘솔 확인용 로그
         Debug.Log("최종보스 등장");
     }
 
@@ -340,6 +362,8 @@ public class WaveManager : MonoBehaviour
 
 
     public GameObject rewardBoxPrefab; // 보상 상자 프리팹
+
+
     /******************
     몬스터 사망 -> aliveMonster 감소
     0이 되면 -> 다음 웨이브 

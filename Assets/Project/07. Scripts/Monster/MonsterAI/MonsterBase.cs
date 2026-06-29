@@ -39,6 +39,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
     protected Rigidbody2D rb;
     protected bool isDead;                      //몬스터 죽은 상태
+    public bool isBossSummonedMonster = false; // 이 몬스터가 최종보스가 소환한 몬스터인지 확인하는 변수
 
     protected virtual void Awake()
     {
@@ -87,6 +88,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         currentState = MonsterState.Chase;  //추적시작
 
         isDead = false;                     //사망 상태 초기화
+        isBossSummonedMonster = false;
 
         ResetRenderersColor();              //풀에서 나올때 피격 색상 초기화
 
@@ -441,8 +443,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     {
         if (animator != null)
         {
-            animator.SetBool("1_Move", false);
-            animator.SetTrigger("4_Death");
+            animator.SetBool("Move", false);
+            animator.SetTrigger("Death");
         }
 
         //사망 애니메이션 끝날때까지 대기
@@ -511,8 +513,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
         if (waveManager != null)
         {
-            //몬스터 사망했으니 개체수 1 줄이기(웨이브당 총 몬스터 수랑 연동)
-            waveManager.MonsterDead(transform.position);
+            // 일반 몬스터만 WaveManager에 알림
+            if (!isBossSummonedMonster)
+            {
+                waveManager.MonsterDead(transform.position);
+            }
         }
     }
 }
