@@ -34654,7 +34654,7 @@ Tilemap:
       m_AnimatedSprites:
       - {fileID: 21300016, guid: 41ed6ef399e2c4c559e1cac90deed718, type: 3}
       - {fileID: 21300022, guid: 41ed6ef399e2c4c559e1cac90deed718, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -5, y: -20, z: 0}
@@ -35041,7 +35041,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8454812978193818064}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

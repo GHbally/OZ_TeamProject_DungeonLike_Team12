@@ -44,6 +44,8 @@ public class LevelUpManager : MonoBehaviour
 
         levelUpPanel.SetActive(true);
 
+        GameManager.Instance.ChangeState(GameManager.GameState.Menu);
+
         // 카드 선택 중에는 게임을 멈춘다.
         Time.timeScale = 0f;
 
@@ -145,7 +147,7 @@ public class LevelUpManager : MonoBehaviour
         {
             levelUpPanel.SetActive(false);
         }
-
+        GameManager.Instance.ChangeState(GameManager.GameState.Playing);
         Time.timeScale = 1f;
     }
 }

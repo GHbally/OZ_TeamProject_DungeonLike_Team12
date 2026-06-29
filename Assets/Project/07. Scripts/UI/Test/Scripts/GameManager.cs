@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject deathMenuUI;
     [SerializeField] private GameObject winMenuUI; // 승리 UI 추가
 
-    public enum GameState { Playing, Paused, GameOver, Won }
+    public enum GameState { Playing, Paused, GameOver, Won, Menu }
     public GameState currentState;
 
     private void Awake()
@@ -31,9 +31,15 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 Time.timeScale = 1f;
                 if (deathMenuUI) deathMenuUI.SetActive(false);
-                if (winMenuUI) winMenuUI.SetActive(false); // 승리 UI도 끔
+                if (winMenuUI) winMenuUI.SetActive(false);
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+                break;
+
+            case GameState.Menu: // UI 조작 중일 때 마우스 사용 가능
+                Time.timeScale = 0f; // 필요에 따라 멈춤
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
 
             case GameState.GameOver:
