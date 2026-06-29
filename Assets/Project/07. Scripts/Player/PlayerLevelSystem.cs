@@ -61,6 +61,12 @@ public class PlayerLevelSystem : MonoBehaviour
         currentExp -= maxExp;
         currentLevel++; //레벨 1 올리기
 
+        //변신할거
+        if (playerBase != null)
+        {
+            playerBase.Transformation(currentLevel);
+        }
+
         //필요 경험치 불러오기
         CalculateMaxExp();
 
@@ -105,6 +111,12 @@ public class PlayerLevelSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             uiManager.CloseLevelUpUI();
+
+            //+키로 강제 레벨업 테스트
+            if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.Equals))
+            {
+                LevelUp();
+            }
         }
     }
 }//

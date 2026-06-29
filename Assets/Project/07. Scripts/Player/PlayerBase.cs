@@ -9,8 +9,8 @@ public class PlayerBase : MonoBehaviour
 
     [Header("10멋진 변신")]
     [SerializeField] private GameObject visualBase;  //1레벨 기본 비주얼 (하이어라키의 "Visual")
+    [SerializeField] private GameObject visualLv5;   //5레벨 비주얼 (하이어라키의 "Visual_Lv5")
     [SerializeField] private GameObject visualLv10;  //10레벨 비주얼 (하이어라키의 "Visual_Lv10")
-    [SerializeField] private GameObject visualLv30;  //30레벨 비주얼 (하이어라키의 "Visual_Lv30")
 
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHp = 100.0f;  //최대 HP
@@ -28,7 +28,9 @@ public class PlayerBase : MonoBehaviour
     private PlayerMovement movement;
     private Animator animator;
 
-    private SpriteRenderer[] childRenderers; //스켈레탈 파츠 자식들을 다 담아줄 배열
+    private SpriteRenderer[] childRenderers;    //스켈레탈 파츠 자식들을 다 담아줄 배열
+
+    private Transform visualTransform;          //현재 활성화된(현재 스프라이트 비주얼 상태) 비주얼의 위치(조준점) 추적할 변수
 
     //상속받을 자식(직업)들이 Override할 수 있게 protected
     protected virtual void Start()
@@ -49,12 +51,15 @@ public class PlayerBase : MonoBehaviour
 
         movement = GetComponent<PlayerMovement>();  //PlayerMovement 스크립트 연결
 
-        Transform visual = transform.Find("Visual");    //자식 Visual 찾기
-        if (visual != null)
+        if (visualBase != null)
         {
-            animator = visual.GetComponentInChildren<Animator>(); ;         //애니메이터 빼옴
-
-            childRenderers = visual.GetComponentsInChildren<SpriteRenderer>();
+            RefreshComponents(visualBase.transform);
+        }
+        else
+        {
+            // 혹시 슬롯에 빠졌을 때를 대비한 백업 코드
+            Transform visual = transform.Find("Visual");
+            if (visual != null) RefreshComponents(visual);
         }
     }
 
@@ -264,8 +269,8 @@ public class PlayerBase : MonoBehaviour
     {
         Transform parent = current.parent;
 
-        //Visual까지 타고 올라가면서
-        while(parent != null && parent.name != "Visual" && parent.name != gameObject.name)
+        //visualTransform까지 타고 올라가면서
+        while (parent != null && parent != visualTransform && parent.name != gameObject.name)
         {
             //지정해둔 이름의 찾음(eye찾을 것들)
             if (parent.name.ToLower().Contains(targetName))
@@ -284,5 +289,52 @@ public class PlayerBase : MonoBehaviour
     {
         // 내 체력을 0으로 만들고 사망 메서드를 직접 실행
         TakeDamage(maxHp);
+    }
+
+    //레벨별 변신
+    public void Transformation(int currentLevel)
+    {
+        //레벨 10 변신 조건
+        if (currentLevel >= 10)
+        {
+            if (visualLv10 != null && !visualLv10.activeSelf)
+            {
+                if (visualBase != null) visualBase.SetActive(false);    //기본 끄기
+                if (visualLv5 != null) visualLv5.SetActive(false);      //Lv5 끄기
+
+                visualLv10.SetActive(true);                             //Lv10 켜기
+                RefreshComponents(visualLv10.transform);                //조준점 및 컴포넌트 모두 교체
+                Debug.Log("3단계 변신 완료!");
+            }
+        }
+
+        //레벨 5 변신 조건
+        else if (currentLevel >= 5)
+        {
+            if (visualLv5 != null && !visualLv5.activeSelf)
+            {
+                if (visualBase != null) visualBase.SetActive(false);    //기본 끄기
+
+                visualLv5.SetActive(true);                              //Lv5 켜기
+                RefreshComponents(visualLv5.transform);                 //조준점 및 컴포넌트 모두 교체
+                Debug.Log("2단계 변신 완료!");
+            }
+        }
+    }
+
+    //변신했을 때 플레이어 코어와 이동 스크립트가 새 외형을 보도록 묶어주는 메서드
+    private void RefreshComponents(Transform newVisual)
+    {
+        visualTransform = newVisual;                                            //피격 부모 추적 상한선 교체
+        animator = newVisual.GetComponentInChildren<Animator>();                //새 애니메이터 연결
+        childRenderers = newVisual.GetComponentsInChildren<SpriteRenderer>();   //새 신체 파츠 배열 갱신
+
+        //이동 스크립트(PlayerMovement)의 좌우 반전용 visualTransform도 새 외형 세트로 전송
+        if (movement != null)
+        {
+            movement.visualTransform = newVisual;   //기존에 넣었던 위치 전송
+
+            movement.animator = animator;           //애니메이터 새 스프라이트로 교체
+        }
     }
 }
