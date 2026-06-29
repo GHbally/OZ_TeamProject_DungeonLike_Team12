@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   deathMenuUI: {fileID: 1475534990}
+  winMenuUI: {fileID: 340934911}
   currentState: 0
 --- !u!1 &273282049
 GameObject:
@@ -983,7 +984,7 @@ GameObject:
   - component: {fileID: 340934914}
   - component: {fileID: 340934913}
   m_Layer: 5
-  m_Name: Victory
+  m_Name: WinMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
