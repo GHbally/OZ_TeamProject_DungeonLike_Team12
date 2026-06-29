@@ -11,18 +11,18 @@ public class StageWaveUI : MonoBehaviour
     // 스테이지 표시 갱신
     public void UpdateStage(int chapter, int stage)
     {
-        stageText.text = $"Stage {chapter}-{stage}";
+        stageText.text = $"{chapter}-{stage}";
     }
 
     // 웨이브 표시 갱신
     public void UpdateWave(int currentWave, int totalWave)
     {
-        waveText.text = $"Wave {currentWave} / {totalWave}";
+        waveText.text = $"{currentWave} / {totalWave}";
     }
 
     // 남은 몬스터 수 표시 갱신
     public void UpdateMonsterCount(int aliveMonster)
     {
-        monsterText.text = $"Monster : {aliveMonster}";
+        monsterText.text = $"{aliveMonster}";
     }
 }
