@@ -49,6 +49,9 @@ public class SkillData : ScriptableObject
     public SkillEffectType EffectType => effectType;
     public float EffectValuePerLevel => effectValuePerLevel;
 
+    public bool isActiveSkill;
+    public int SkillID;
+
 
     // 다음 레벨 설명 반환
     public string GetLevelUpDescription(int nextLevel)
