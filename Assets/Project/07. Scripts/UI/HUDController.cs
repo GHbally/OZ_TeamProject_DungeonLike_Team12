@@ -22,6 +22,15 @@ public class HUDController : MonoBehaviour
     [Header("Kill Count Settings")]
     [SerializeField] private TMP_Text killCountText; //킬 카운트 텍스트 수정용
 
+    //HUD 슬롯 제어
+    [System.Serializable]
+    public class SkillSlotUI
+    {
+        public GameObject slotObject;   //슬롯 부모 오브젝트 (ex: SkillSlot1)
+        public Image iconImage;         //스킬 아이콘 이미지 컴포넌트
+        public TMP_Text levelText;      //스킬 레벨 텍스트
+    }
+
     private int currentKillCount = 0;   //킬카운트
 
     private void Awake()
