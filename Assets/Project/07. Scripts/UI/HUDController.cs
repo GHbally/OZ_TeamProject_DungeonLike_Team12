@@ -100,6 +100,7 @@ public class HUDController : MonoBehaviour
         }
     }
 
+    //HUD스킬 아이콘 바꿔줄 친구
     public void UpdateSkillHUD(SkillData skillData, int currentLevel)
     {
         if (skillData == null) return;
@@ -127,10 +128,10 @@ public class HUDController : MonoBehaviour
                     skillSlots[i].iconImage.gameObject.SetActive(true);
                     skillSlots[i].iconImage.enabled = true;
                     skillSlots[i].iconImage.sprite = skillData.Icon;
-                    skillSlots[i].iconImage.color = Color.white; // 원래 도트 색 유지
+                    skillSlots[i].iconImage.color = Color.white; //원래 도트 색 유지
                 }
 
-                // 하위 자식 레벨 텍스트 오브젝트 강제 활성화
+                //하위 자식 레벨 텍스트 오브젝트 강제 활성화
                 if (skillSlots[i].levelText != null)
                 {
                     skillSlots[i].levelText.gameObject.SetActive(true);
@@ -138,10 +139,8 @@ public class HUDController : MonoBehaviour
                 }
 
                 RefreshSlotVisual(skillSlots[i], currentLevel);
-                Canvas.ForceUpdateCanvases(); // UI 즉시 강제 리프레시
-
-                Debug.Log($"[HUD 등록 성공] {skillSlots[i].slotObject.name} -> {skillData.SkillName} 장착 완료!");
-                return; // 딱 한 칸만 채우고 종료
+                Canvas.ForceUpdateCanvases(); //UI 강제 리프레시
+                return;
             }
         }
     }
