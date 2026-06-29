@@ -20,8 +20,31 @@ public class SkillManager : MonoBehaviour
 
     private void Awake()
     {
+        //CacheReferences();
+        //InitializeSkillRuntimes();
+    }
+
+    void Start()
+    {
         CacheReferences();
         InitializeSkillRuntimes();
+
+        attackStats = GetComponent<AttackStats>();
+        if (attackStats == null) attackStats = FindFirstObjectByType<AttackStats>();
+
+        //전사 베기가 5번칸에 있으므로 5로 설정
+        if (allSkills != null && allSkills.Count > 5 && allSkills[5] != null)
+        {
+            // 전사 베기 스킬 데이터 원본을 런타임 주머니에 1레벨로 강제 생성
+            if (skillRuntimes.TryGetValue(allSkills[5], out SkillRuntime warriorRuntime))
+            {
+                warriorRuntime.LevelUp(); //1레벨 시작
+                if (HUDController.Instance != null)
+                {
+                    HUDController.Instance.UpdateSkillHUD(allSkills[5], warriorRuntime.CurrentLevel);
+                }
+            }
+        }
     }
 
     // 비어있는 컴퍼넌트 자동 붙이기
@@ -163,6 +186,22 @@ public class SkillManager : MonoBehaviour
         );
 
         ApplySkillEffect(selectedSkill, runtime.CurrentLevel);
+
+        //[추가] 실시간 HUD 동기화
+        //스킬 레벨 오를때마다 HUD 갱신
+        if (HUDController.Instance != null)
+        {
+            //리스트에 안전하게 들어있는지 확인하고, 5(베기), 6(파이어볼), 7(화살)번 칸의 스킬일 때만 HUD를 켜기
+            if (allSkills.Count > 7 &&
+               (selectedSkill == allSkills[5] || selectedSkill == allSkills[6] || selectedSkill == allSkills[7]))
+            {
+                HUDController.Instance.UpdateSkillHUD(selectedSkill, runtime.CurrentLevel);
+            }
+            else
+            {
+                Debug.Log($"[패시브 패스] {selectedSkill.SkillName}은 패시브이므로 HUD에 등록하지 않음");
+            }
+        }
     }
 
     private void ApplySkillEffect(
