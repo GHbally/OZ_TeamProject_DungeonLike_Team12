@@ -443,8 +443,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     {
         if (animator != null)
         {
-            animator.SetBool("Move", false);
-            animator.SetTrigger("Death");
+            animator.SetBool("1_Move", false);
+            animator.SetTrigger("4_Death");
         }
 
         //사망 애니메이션 끝날때까지 대기
