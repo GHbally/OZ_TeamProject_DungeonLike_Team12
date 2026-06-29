@@ -13,6 +13,9 @@ public class StageManager : MonoBehaviour
     // 다음 스테이지로 이동하는 포탈 오브젝트
     public GameObject nextStagePortal;
 
+    [Header("맵 전환")]
+    public StageMapSwitcher stageMapSwitcher;
+
     private int currentEnemyCount = 0;//김영웅 수정
     private bool isBossDead = false;//김영웅 수정
 
@@ -24,6 +27,12 @@ public class StageManager : MonoBehaviour
     {
         // 처음에는 포탈을 숨겨둠
         nextStagePortal.SetActive(false);
+
+        // 현재 스테이지에 맞는 맵을 켜고 플레이어를 시작 위치로 이동시킨다.
+        if (stageMapSwitcher != null)
+        {
+            stageMapSwitcher.ChangeMap(stage);
+        }
 
         // 현재 챕터와 스테이지의 첫 번째 웨이브 시작
         waveManager.StartStage(chapter, stage);
@@ -82,6 +91,12 @@ public class StageManager : MonoBehaviour
 
         // 다음 스테이지 번호 증가
         stage++;
+
+        // 현재 스테이지 번호에 맞는 맵만 켠다.
+        if (stageMapSwitcher != null)
+        {
+            stageMapSwitcher.ChangeMap(stage);
+        }
 
         // 다음 스테이지의 웨이브 시작
         waveManager.StartStage(chapter, stage);
