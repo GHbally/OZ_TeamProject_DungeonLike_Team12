@@ -363,18 +363,14 @@ public class LastBossMonster : MonsterBase
 
     private IEnumerator DieSequence()//김영웅 수정
     {
-        // 보스가 죽는 연출 시간 (2초)
         yield return new WaitForSeconds(2.0f);
 
-        Debug.Log("최종보스 처치 완료");
-
-        // StageManager에게 보스가 죽었다고 알림
         StageManager stageManager = FindFirstObjectByType<StageManager>();
         if (stageManager != null)
         {
-            stageManager.ClearStage(); // 클리어 UI 및 다음 단계 관리
+            // 보스가 죽었음을 알리고 카운트 감소
+            stageManager.UnregisterEnemy(true);
         }
-
         Destroy(gameObject);
     }
 }

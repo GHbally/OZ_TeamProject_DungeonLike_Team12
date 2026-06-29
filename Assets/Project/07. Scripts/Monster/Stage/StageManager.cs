@@ -13,6 +13,12 @@ public class StageManager : MonoBehaviour
     // 다음 스테이지로 이동하는 포탈 오브젝트
     public GameObject nextStagePortal;
 
+    private int currentEnemyCount = 0;//김영웅 수정
+    private bool isBossDead = false;//김영웅 수정
+
+    // 적이 생성될 때마다 호출 (보스, 잡몹 등) 김영웅 수정
+    public void RegisterEnemy() => currentEnemyCount++;
+
     // 게임이 시작될 때 한 번만 실행
     private void Start()
     {
@@ -47,6 +53,18 @@ public class StageManager : MonoBehaviour
         nextStagePortal.transform.localScale = new Vector3(3f, 3f, 1f); // 포탈 크기를 크게 키워서 테스트
 
         Debug.Log("포탈 활성화 완료 / 위치: " + nextStagePortal.transform.position); // 포탈 위치 확인
+    }
+
+    public void UnregisterEnemy(bool isBoss)// 김영웅 수정
+    {
+        currentEnemyCount--;
+        if (isBoss) isBossDead = true;
+
+        // 보스가 죽었고, 잡몹이 모두 제거되었을 때만 클리어
+        if (isBossDead && currentEnemyCount <= 0)
+        {
+            ClearStage();
+        }
     }
 
     // 플레이어가 포탈에 들어왔을 때 호출

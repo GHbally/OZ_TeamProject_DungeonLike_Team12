@@ -5,20 +5,21 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private GameObject deathMenuUI; // 인스펙터에서 연결
+    [SerializeField] private GameObject deathMenuUI;
+    [SerializeField] private GameObject winMenuUI; // 승리 UI 추가
 
     public enum GameState { Playing, Paused, GameOver, Won }
     public GameState currentState;
-
-    private void Start()
-    {
-        Time.timeScale = 1f; // 씬 시작 시 무조건 시간 흐르게 설정
-    }
 
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+    }
+
+    private void Start()
+    {
+        ChangeState(GameState.Playing); // 게임 시작 시 Playing 상태로 초기화
     }
 
     public void ChangeState(GameState newState)
@@ -29,17 +30,22 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Playing:
                 Time.timeScale = 1f;
-                if (deathMenuUI != null) deathMenuUI.SetActive(false);
+                if (deathMenuUI) deathMenuUI.SetActive(false);
+                if (winMenuUI) winMenuUI.SetActive(false); // 승리 UI도 끔
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
 
             case GameState.GameOver:
-                // 게임 일시정지
                 Time.timeScale = 0f;
+                if (deathMenuUI) deathMenuUI.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
 
-                // 사망 UI 활성화
-                if (deathMenuUI != null) deathMenuUI.SetActive(true);
-
-                // 필요하다면 마우스 커서도 보이게 처리
+            case GameState.Won: // 승리 상태 로직 추가
+                Time.timeScale = 0f;
+                if (winMenuUI) winMenuUI.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 break;
@@ -48,7 +54,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 재시작
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
