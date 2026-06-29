@@ -82,6 +82,12 @@ public class StageManager : MonoBehaviour
         // 포탈은 다음 스테이지가 시작되면 다시 숨김
         nextStagePortal.SetActive(false);
 
+        // 다음 스테이지로 넘어가기 전에 현재 맵에 남아있는 ExpOrb와 HealOrb를 전부 회수한다.
+        if (PoolManager.Instance != null)
+        {
+            PoolManager.Instance.ReturnAllOrbsInScene();
+        }
+
         // 마지막 스테이지라면 게임 종료
         if (chapter == 1 && stage == 3)
         {

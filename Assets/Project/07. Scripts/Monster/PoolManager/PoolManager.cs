@@ -303,4 +303,38 @@ public class PoolManager : MonoBehaviour
 
         bounceBulletPool.Enqueue(obj);
     }
+
+    public void ReturnAllOrbsInScene()
+    {
+        // ExpOrb 태그를 가진 활성 오브젝트들을 전부 찾는다.
+        GameObject[] expOrbs = GameObject.FindGameObjectsWithTag("Exp");
+
+        for (int i = 0; i < expOrbs.Length; i++)
+        {
+            // 이미 비활성화된 오브젝트는 FindGameObjectsWithTag로 잡히지 않지만,
+            // 안전하게 null 체크를 해준다.
+            if (expOrbs[i] == null)
+            {
+                continue;
+            }
+
+            // 기존 반환 함수를 그대로 사용해서 풀로 회수한다.
+            ReturnExpOrb(expOrbs[i]);
+        }
+
+        // HealOrb 태그를 가진 활성 오브젝트들을 전부 찾는다.
+        GameObject[] healOrbs =
+            GameObject.FindGameObjectsWithTag("Heal");
+
+        for (int i = 0; i < healOrbs.Length; i++)
+        {
+            if (healOrbs[i] == null)
+            {
+                continue;
+            }
+
+            // 기존 반환 함수를 그대로 사용해서 풀로 회수한다.
+            ReturnHealOrb(healOrbs[i]);
+        }
+    }
 }

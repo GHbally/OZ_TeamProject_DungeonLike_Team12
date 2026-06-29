@@ -62,6 +62,12 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float nextWaveDelay = 3f;
     [SerializeField] private float stageClearImageDuration = 3f;
 
+    [Header("보상 상자 Prefab")]
+    public GameObject rewardBoxPrefab; // 보상 상자 프리팹
+
+    // 현재 스테이지 클리어 후 생성된 보상 상자를 저장한다.
+    // 다음 스테이지로 넘어갈 때 이 오브젝트를 제거하기 위해 사용한다.
+    private GameObject spawnedRewardBox;
 
     // 스테이지별 웨이브 데이터 생성
     void CreateStageData(int chapter, int stage)
@@ -128,6 +134,9 @@ public class WaveManager : MonoBehaviour
     public void StartStage(int chapter, int stage)
     {
         Debug.Log($"[STAGE START] {chapter}-{stage}");
+
+        // 다음 스테이지가 시작될 때 이전 스테이지에 남아 있던 보상 상자를 제거한다.
+        RemoveSpawnedRewardBox();
 
         ////////스테이지 UI추가/////////////
         if (stageWaveUI != null)
@@ -361,7 +370,7 @@ public class WaveManager : MonoBehaviour
     //}
 
 
-    public GameObject rewardBoxPrefab; // 보상 상자 프리팹
+
 
 
     /******************
@@ -405,13 +414,9 @@ public class WaveManager : MonoBehaviour
                 wavestageClearUI.HideStageClear();
             }
 
-            Debug.Log("스테이지 클리어");
-            Debug.Log("상자 생성!");
-            Debug.Log(deadPosition); //마지막 몬스터가 죽은 위치 확인용
-
             if (rewardBoxPrefab != null)
             {
-                Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
+                spawnedRewardBox  = Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
             }
             else
             {
@@ -459,6 +464,21 @@ public class WaveManager : MonoBehaviour
 
         // 다음 웨이브를 시작한다.
         StartCoroutine(StartWave());
+    }
+
+    private void RemoveSpawnedRewardBox()
+    {
+        // 저장된 보상 상자가 없으면 제거할 것이 없으므로 종료한다.
+        if (spawnedRewardBox == null)
+        {
+            return;
+        }
+
+        // Instantiate로 만든 보상 상자이므로 Destroy로 제거한다.
+        Destroy(spawnedRewardBox);
+
+        // 이미 제거한 오브젝트를 다시 참조하지 않도록 null로 초기화한다.
+        spawnedRewardBox = null;
     }
 }
 
