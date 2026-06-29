@@ -52,8 +52,9 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     public StageWaveUI stageWaveUI;
 
+
     [Header("클리어 UI")]
-    public WaveClaerUI waveClearUI;
+    public WaveClaerUI wavestageClearUI;
 
     // 클리어 UI가 화면에 머무는 시간
     [SerializeField] private float waveClearImageDuration = 3f;
@@ -367,17 +368,17 @@ public class WaveManager : MonoBehaviour
         if (currentWave >= waves.Length)
         {
             // 스테이지 클리어 UI를 켠다.
-            if (waveClearUI != null)
+            if (wavestageClearUI != null)
             {
-                waveClearUI.ShowStageClear();
+                wavestageClearUI.ShowStageClear();
             }
 
             // 스테이지 클리어 UI를 n초 동안 보여준다.
             new WaitForSeconds(stageClearImageDuration);
 
-            if (waveClearUI != null)
+            if (wavestageClearUI != null)
             {
-                waveClearUI.HideStageClear();
+                wavestageClearUI.HideStageClear();
             }
 
             Debug.Log("스테이지 클리어");
@@ -415,18 +416,18 @@ public class WaveManager : MonoBehaviour
     private IEnumerator WaveClearFlow()
     {
         // 웨이브 클리어 이미지를 켠다.
-        if (waveClearUI != null)
+        if (wavestageClearUI != null)
         {
-            waveClearUI.ShowWaveClear();
+            wavestageClearUI.ShowWaveClear();
         }
 
         // 웨이브 클리어 이미지를 n초 동안 보여준다.
         yield return new WaitForSeconds(waveClearImageDuration);
 
         // 웨이브 클리어 이미지를 끈다.
-        if (waveClearUI != null)
+        if (wavestageClearUI != null)
         {
-            waveClearUI.HideWaveClear();
+            wavestageClearUI.HideWaveClear();
         }
 
         // 이미지가 사라진 뒤 n초 기다린다.
