@@ -104,7 +104,7 @@ public class HUDController : MonoBehaviour
     {
         if (skillData == null) return;
 
-        // 1. 이미 HUD 슬롯에 등록된 스킬인지 체크 (레벨업)
+        //이미 HUD 슬롯에 등록된 스킬인지 체크 (레벨업)
         for (int i = 0; i < skillSlots.Count; i++)
         {
             if (skillSlots[i].assignedSkill == skillData)
@@ -114,14 +114,14 @@ public class HUDController : MonoBehaviour
             }
         }
 
-        // 2. 새로운 액티브 스킬 등록 -> 빈 슬롯 찾기
+        //새로운 액티브 스킬 등록 -> 빈 슬롯 찾기
         for (int i = 0; i < skillSlots.Count; i++)
         {
             if (skillSlots[i].assignedSkill == null)
             {
                 skillSlots[i].assignedSkill = skillData;
 
-                // 하위 자식 아이콘 오브젝트 및 컴포넌트 강제 활성화
+                //하위 자식 아이콘 오브젝트 및 컴포넌트 강제 활성화
                 if (skillSlots[i].iconImage != null)
                 {
                     skillSlots[i].iconImage.gameObject.SetActive(true);

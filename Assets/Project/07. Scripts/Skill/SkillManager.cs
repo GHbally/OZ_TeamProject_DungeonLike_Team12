@@ -191,7 +191,7 @@ public class SkillManager : MonoBehaviour
         //스킬 레벨 오를때마다 HUD 갱신
         if (HUDController.Instance != null)
         {
-            //리스트에 안전하게 들어있는지 확인하고, 오직 5, 6, 7번 칸의 스킬일 때만 HUD를 켜기
+            //리스트에 안전하게 들어있는지 확인하고, 5(베기), 6(파이어볼), 7(화살)번 칸의 스킬일 때만 HUD를 켜기
             if (allSkills.Count > 7 &&
                (selectedSkill == allSkills[5] || selectedSkill == allSkills[6] || selectedSkill == allSkills[7]))
             {
