@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 break;
 
+            case GameState.Paused:
             case GameState.Menu: // UI 조작 중일 때 마우스 사용 가능
                 Time.timeScale = 0f; // 필요에 따라 멈춤
                 Cursor.visible = true;

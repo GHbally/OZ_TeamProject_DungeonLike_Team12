@@ -513,6 +513,10 @@ public class LastBossMonster : MonsterBase
             stageManager.UnregisterEnemy(true);
         }
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.Won);
+        }
         // 대기 후 보스 삭제
         Destroy(gameObject);
     }
