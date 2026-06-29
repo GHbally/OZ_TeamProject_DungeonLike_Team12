@@ -27,13 +27,13 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public Transform visualTransform;      //캐릭터 스프라이트를 담고 있는 자식 위치 저장용 변수
 
-    private Rigidbody2D rb;                 //리지드바디
-    private Vector2 moveVec;                //입력받은 X, Y축 이동방향 값 저장할 벡터 변수
-    private Animator animator;              //애니메이션 제어용 변수
+    private Rigidbody2D rb;                         //리지드바디
+    private Vector2 moveVec;                        //입력받은 X, Y축 이동방향 값 저장할 벡터 변수
+    [HideInInspector] public Animator animator;     //애니메이션 제어용 변수
 
-    private bool isDashing = false;         //현재 대쉬중인지
-    private bool canDash = true;            //지금 대쉬 사용할 수 있는 상태인지
-    private Vector2 dashDirection;          //대쉬 시작한 시점의 이동 방향 저장
+    private bool isDashing = false;                 //현재 대쉬중인지
+    private bool canDash = true;                    //지금 대쉬 사용할 수 있는 상태인지
+    private Vector2 dashDirection;                  //대쉬 시작한 시점의 이동 방향 저장
     private PlayerBase playerBase;
 
     //현재 캐릭터가 움직이고 있는지 확인하기 위해 이동 벡터 길이를 제곱한 값을 넘겨주는 프로퍼티
