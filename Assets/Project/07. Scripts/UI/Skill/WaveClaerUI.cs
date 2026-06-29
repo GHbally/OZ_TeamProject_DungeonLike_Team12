@@ -3,10 +3,10 @@ using System.Collections;
 
 public class WaveClaerUI : MonoBehaviour
 {
-    [Header("웨이브 클리어 UI")]
+    [Header("웨이브 클리어 Image")]
     [SerializeField] private GameObject waveClearImage;
 
-    [Header("스테이지 클리어 UI")]
+    [Header("스테이지 클리어 Image")]
     [SerializeField] private GameObject stageClearImage;
 
     private void Awake()

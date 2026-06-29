@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 222662224}
   - component: {fileID: 222662222}
   m_Layer: 5
-  m_Name: WaveClearUI
+  m_Name: WaveStageClearUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1588,8 +1588,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 733869380}
-  - {fileID: 745973668}
   - {fileID: 222662223}
+  - {fileID: 745973668}
   - {fileID: 493120448}
   - {fileID: 1694948520}
   - {fileID: 1596429406}
@@ -6723,10 +6723,10 @@ MonoBehaviour:
   checkRadius: 0.7
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
   stageWaveUI: {fileID: 492020493}
-  waveClearUI: {fileID: 222662222}
-  waveClearImageDuration: 1.5
+  wavestageClearUI: {fileID: 222662222}
+  waveClearImageDuration: 3
   nextWaveDelay: 3
-  stageClearImageDuration: 1.5
+  stageClearImageDuration: 3
   rewardBoxPrefab: {fileID: 9118674948096215837, guid: 9c20240539f5c604aa82e9aaba97740d, type: 3}
 --- !u!114 &1001306707
 MonoBehaviour:
@@ -7782,7 +7782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1334734407
 RectTransform:
   m_ObjectHideFlags: 0
