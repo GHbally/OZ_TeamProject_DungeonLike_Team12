@@ -409,6 +409,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1268624554035902855, guid: 5b931f70b119a8c42b2c4f0a87d2e91d, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8113452121268310570, guid: 5b931f70b119a8c42b2c4f0a87d2e91d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4713,7 +4717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0.17610055, g: 0.17610055, b: 0.17610055, a: 0.8235294}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7575,7 +7579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 3
+  stage: 1
   waveManager: {fileID: 1001306706}
   nextStagePortal: {fileID: 329450197}
   stageMapSwitcher: {fileID: 1353562713}
@@ -8330,6 +8334,10 @@ PrefabInstance:
     - target: {fileID: 1977186657312483781, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3698033936403928363, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12449,6 +12457,10 @@ PrefabInstance:
     - target: {fileID: 5323545061409134028, guid: 5c23269e68b64174a9cec908551f6476, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7735024797380667252, guid: 5c23269e68b64174a9cec908551f6476, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8468281994347219403, guid: 5c23269e68b64174a9cec908551f6476, type: 3}
       propertyPath: m_Name

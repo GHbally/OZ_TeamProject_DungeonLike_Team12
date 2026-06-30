@@ -56,6 +56,9 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     public StageWaveUI stageWaveUI;
 
+    [Header("스테이지 안내 화살표UI")]
+    
+    [SerializeField] private StageGuideController stageGuideController;
 
     [Header("클리어 UI")]
     public WaveClaerUI wavestageClearUI;
@@ -137,9 +140,6 @@ public class WaveManager : MonoBehaviour
     public void StartStage(int chapter, int stage)
     {
         Debug.Log($"[STAGE START] {chapter}-{stage}");
-
-        // 다음 스테이지가 시작될 때 이전 스테이지에 남아 있던 보상 상자를 제거한다.
-        RemoveSpawnedRewardBox();
 
         ////////스테이지 UI추가/////////////
         if (stageWaveUI != null)
@@ -291,21 +291,16 @@ public class WaveManager : MonoBehaviour
 
         // 최종보스를 지정한 위치에 1마리만 생성
         Instantiate(lastBossPrefab, new Vector3(-4.4f, -9.7f, 0f), Quaternion.identity);
-
-        // 콘솔 확인용 로그
-        Debug.Log("최종보스 등장");
     }
 
     Vector3 GetRandomSpawnPosition()
     {
-        Debug.Log("Player Pos : " + player.position);
         Camera cam = Camera.main;
 
         for (int i = 0; i < 100; i++)
         {
             float randomX = Random.Range(spawnMin.x, spawnMax.x);
             float randomY = Random.Range(spawnMin.y, spawnMax.y);
-            Debug.Log($"Spawn Test : {randomX}, {randomY}");
             Vector2 spawnPos = new Vector2(randomX, randomY);
 
             if (cam != null)
@@ -392,7 +387,6 @@ public class WaveManager : MonoBehaviour
             stageWaveUI.UpdateMonsterCount(aliveMonster);
         }
 
-        Debug.Log("몬스터 죽음 / 남은 수: " + aliveMonster);
         // 아직 몬스터 남아있음
         if (aliveMonster > 0)
             return;
@@ -436,7 +430,7 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(StartWave());
     }
 
-    private void RemoveSpawnedRewardBox()
+    public void RemoveSpawnedRewardBox()
     {
         // 저장된 보상 상자가 없으면 제거할 것이 없으므로 종료한다.
         if (spawnedRewardBox == null)
@@ -470,6 +464,12 @@ public class WaveManager : MonoBehaviour
         if (rewardBoxPrefab != null)
         {
             spawnedRewardBox = Instantiate(rewardBoxPrefab, deadPosition, Quaternion.identity);
+
+            // 스테이지 클리어 후에는 안내 화살표가 보상상자를 가리키게 한다.
+            if (stageGuideController != null)
+            {
+                stageGuideController.ShowRewardBox(spawnedRewardBox.transform);
+            }
         }
         else
         {
