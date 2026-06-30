@@ -507,7 +507,7 @@ private IEnumerator BossDieSequence()
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.2f); // 히트 스톱
 
-        Time.timeScale = 2.0f; // 슬로우 모션 시작
+        Time.timeScale = 0.5f; // 슬로우 모션 시작
 
         // --- 카메라 이동 및 줌인 연출 ---
         Vector3 bossPos = transform.position;
@@ -515,7 +515,7 @@ private IEnumerator BossDieSequence()
         camSeq.SetUpdate(true);
         // 카메라를 보스 위치로 이동하며 줌인 (Z값 -10 유지)
         camSeq.Join(Camera.main.transform.DOMove(new Vector3(bossPos.x, bossPos.y, -10f), 1.0f));
-        camSeq.Join(Camera.main.DOOrthoSize(3f, 1.0f));
+        camSeq.Join(Camera.main.DOOrthoSize(3f, 3.0f));
 
         // 슬로우 모션 대기
         yield return new WaitForSecondsRealtime(3.0f);
