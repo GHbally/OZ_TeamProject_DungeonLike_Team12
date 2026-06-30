@@ -501,22 +501,27 @@ public class LastBossMonster : MonsterBase
         StartCoroutine(BossDieSequence());
     }
 
-    private IEnumerator BossDieSequence()
+private IEnumerator BossDieSequence()
     {
-        // --- 1. 타격감 및 슬로우 모션 (시간 제어) ---
+        // --- 1. 타격감 및 슬로우 모션 ---
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(0.05f); // 히트 스톱
+        yield return new WaitForSecondsRealtime(0.2f); // 히트 스톱
 
-        Time.timeScale = 0.2f; // 슬로우 모션 시작
+        Time.timeScale = 2.0f; // 슬로우 모션 시작
 
-        // 카메라 줌인 연출 (SetUpdate(true) 필수!)
-        Camera.main.DOOrthoSize(3f, 1.0f).SetUpdate(true);
+        // --- 카메라 이동 및 줌인 연출 ---
+        Vector3 bossPos = transform.position;
+        Sequence camSeq = DOTween.Sequence();
+        camSeq.SetUpdate(true);
+        // 카메라를 보스 위치로 이동하며 줌인 (Z값 -10 유지)
+        camSeq.Join(Camera.main.transform.DOMove(new Vector3(bossPos.x, bossPos.y, -10f), 1.0f));
+        camSeq.Join(Camera.main.DOOrthoSize(3f, 1.0f));
 
-        // 슬로우 모션 대기 (애니메이션 재생 시간 고려)
-        yield return new WaitForSecondsRealtime(1.0f);
+        // 슬로우 모션 대기
+        yield return new WaitForSecondsRealtime(3.0f);
 
         // --- 2. UI 등장 연출 (Victory UI) ---
-        GameObject uiRoot = GameObject.Find("Victory"); // 캔버스 이름 확인 필요
+        GameObject uiRoot = GameObject.Find("Victory");
         if (uiRoot != null)
         {
             uiRoot.SetActive(true);
@@ -530,22 +535,14 @@ public class LastBossMonster : MonsterBase
 
             // 낙하 및 등장 시퀀스
             Sequence s = DOTween.Sequence();
-            s.SetUpdate(true); // 시간 정지 상태에서도 움직이게 함
+            s.SetUpdate(true);
             s.Join(rect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutBack));
             s.Join(cg.DOFade(1, 0.3f));
-
-            // 안착 시 임팩트
-            s.AppendCallback(() => {
-                // 화면 흔들림 효과가 있다면 추가
-                // Camera.main.DOShakePosition(0.2f, 0.3f); 
-            });
         }
 
         // --- 3. 최종 상태 처리 ---
-        // 연출이 끝난 후 시간 정상화
         Time.timeScale = 1f;
 
-        // 스테이지 및 게임 매니저 알림
         StageManager stageManager = FindFirstObjectByType<StageManager>();
         if (stageManager != null) stageManager.UnregisterEnemy(true);
 
