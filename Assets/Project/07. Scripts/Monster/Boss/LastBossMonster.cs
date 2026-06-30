@@ -1,5 +1,6 @@
-using UnityEngine;
+using DG.Tweening;
 using System.Collections;
+using UnityEngine;
 
 public class LastBossMonster : MonsterBase
 {
@@ -502,22 +503,55 @@ public class LastBossMonster : MonsterBase
 
     private IEnumerator BossDieSequence()
     {
-        // 죽는 애니메이션 재생 시간만큼 대기
-        yield return new WaitForSeconds(1.5f);
+        // --- 1. 타격감 및 슬로우 모션 (시간 제어) ---
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.05f); // 히트 스톱
 
-        // 스테이지 매니저에게 보스 사망 알림
-        StageManager stageManager = FindFirstObjectByType<StageManager>();
+        Time.timeScale = 0.2f; // 슬로우 모션 시작
 
-        if (stageManager != null)
+        // 카메라 줌인 연출 (SetUpdate(true) 필수!)
+        Camera.main.DOOrthoSize(3f, 1.0f).SetUpdate(true);
+
+        // 슬로우 모션 대기 (애니메이션 재생 시간 고려)
+        yield return new WaitForSecondsRealtime(1.0f);
+
+        // --- 2. UI 등장 연출 (Victory UI) ---
+        GameObject uiRoot = GameObject.Find("Victory"); // 캔버스 이름 확인 필요
+        if (uiRoot != null)
         {
-            stageManager.UnregisterEnemy(true);
+            uiRoot.SetActive(true);
+            CanvasGroup cg = uiRoot.GetComponent<CanvasGroup>();
+            if (cg == null) cg = uiRoot.AddComponent<CanvasGroup>();
+
+            // UI 초기화
+            cg.alpha = 0;
+            RectTransform rect = uiRoot.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2(0, 1000); // 화면 위 밖에서 시작
+
+            // 낙하 및 등장 시퀀스
+            Sequence s = DOTween.Sequence();
+            s.SetUpdate(true); // 시간 정지 상태에서도 움직이게 함
+            s.Join(rect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutBack));
+            s.Join(cg.DOFade(1, 0.3f));
+
+            // 안착 시 임팩트
+            s.AppendCallback(() => {
+                // 화면 흔들림 효과가 있다면 추가
+                // Camera.main.DOShakePosition(0.2f, 0.3f); 
+            });
         }
+
+        // --- 3. 최종 상태 처리 ---
+        // 연출이 끝난 후 시간 정상화
+        Time.timeScale = 1f;
+
+        // 스테이지 및 게임 매니저 알림
+        StageManager stageManager = FindFirstObjectByType<StageManager>();
+        if (stageManager != null) stageManager.UnregisterEnemy(true);
 
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.ChangeState(GameManager.GameState.Won);
-        }
-        // 대기 후 보스 삭제
+
         Destroy(gameObject);
     }
 }
