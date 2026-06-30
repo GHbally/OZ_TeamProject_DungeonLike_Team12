@@ -3204,6 +3204,7 @@ MonoBehaviour:
   checkRadius: 0.7
   lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
   stageWaveUI: {fileID: 1280218345}
+  stageGuideController: {fileID: 0}
   wavestageClearUI: {fileID: 1727221042}
   waveClearImageDuration: 3
   nextWaveDelay: 1.5
@@ -3227,6 +3228,8 @@ MonoBehaviour:
   nextStagePortal: {fileID: 389367989}
   stageMapSwitcher: {fileID: 1761309765}
   gameStartManager: {fileID: 715880548}
+  missionStageWaveUI: {fileID: 0}
+  stageGuideController: {fileID: 0}
   player: {fileID: 1928621282}
   stageStartPoints:
   - {fileID: 423710310}
