@@ -1,6 +1,7 @@
 //[몬스터 부모 클래스]
-using UnityEngine;
 using System.Collections.Generic;               //List 사용을 위해 추가
+using UnityEngine;
+using System.Collections;
 
 public abstract class MonsterBase : MonoBehaviour, IDamageable1
 {
@@ -40,6 +41,10 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     [Header("레이캐스트 설정")]
     public float rayDistance = 0.5f;     // 몬스터 크기에 따라 조절
     public LayerMask obstacleLayer;      // 맵 오브젝트 레이어 선택 (인스펙터에서 지정)
+
+    [Header("피격 경직")]
+    [SerializeField] private float hitStunTime = 0.1f; //경직시간
+    private bool isHitStun = false; //현재 경직 중인지
 
     protected Rigidbody2D rb;
     protected bool isDead;                      //몬스터 죽은 상태
@@ -199,6 +204,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         // 몬스터가 죽었으면 더 이상 이동하지 않음
         if (currentState == MonsterState.Dead)return;
 
+        if (isHitStun) return; //경직 상태에서는 몬스터 움직임 멈춤
+
         // 이동 방향을 저장할 변수
         Vector2 moveDir = Vector2.zero;
 
@@ -248,17 +255,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             }
         }
     }
-    //protected virtual void FixedUpdate()
-    //{
-    //    if (currentState == MonsterState.Dead) return; //죽었으면 로직 정지
-
-    //    //추적 상태일 때만 플레이어를 쫓아감
-    //    if (currentState == MonsterState.Chase && player != null)
-    //    {
-    //        MoveTowardsPlayer();
-    //    }
-    //}
-    // 주변 몬스터를 피해가는 방향을 계산하는 함수
+    
     private Vector2 GetSeparationDirection()
     {
         // separationRadius 안에 있는 모든 Collider 검색
@@ -386,14 +383,19 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         }
         currentHp -= damageInfo.Damage;
 
+        StartCoroutine(HitStunCo()); //피격 경직 시작
+
         Debug.Log(
             $"{name} 피해: {damageInfo.Damage}, " +
             $"치명타: {damageInfo.IsCritical}, " +
             $"남은 체력: {currentHp}"
         );
 
+
+
         //피격 시 연출 코루틴 재생(이미 도는 중이면 끄고 새로 시작)
         if (hitCoroutine != null) StopCoroutine(hitCoroutine);
+
         hitCoroutine = StartCoroutine(HitFlashCo());
 
         if (currentHp <= 0f)
@@ -408,6 +410,15 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
 
             Death();
         }
+    }
+
+    private IEnumerator HitStunCo()
+    {
+        isHitStun = true; // 이동 정지
+
+        yield return new WaitForSeconds(hitStunTime);
+
+        isHitStun = false; // 다시 이동
     }
 
     //[피격 연출 코루틴]
