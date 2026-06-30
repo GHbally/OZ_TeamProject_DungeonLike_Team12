@@ -18,6 +18,13 @@ public class FireTrailProjectile : SkillProjectileBase
 
         // 풀에서 다시 꺼낼 때 이전 적 타이머 기록이 남지 않게 초기화 한다.
         damageTimers.Clear();
+
+        Animator anim = GetComponentInChildren<Animator>();
+        if (anim != null)
+        {
+            anim.Rebind();
+            anim.Play("FireTrail", 0, 0f);
+        }
     }
 
     protected override void UpdateMovement()
@@ -125,5 +132,16 @@ public class FireTrailProjectile : SkillProjectileBase
     {
         // 풀로 돌아가기 전에 지속 피해 타이머를 비운다.
         damageTimers.Clear();
+    }
+
+    private void OnEnable()
+    {
+        //오브젝트가 풀에서 켜지는 순간을 정확히 가로챔
+        Animator anim = GetComponent<Animator>(); //이제 단일 오브젝트니 GetComponent로 바로 잡힘
+        if (anim != null)
+        {
+            anim.Rebind(); //애니메이터의 굳어있던 시계태엽을 공장 초기화 상태로 완전히 풀어줌
+            anim.Play("FireTrail", 0, 0f); //첫 프레임(0초)부터 강제로 틀어버림
+        }
     }
 }
