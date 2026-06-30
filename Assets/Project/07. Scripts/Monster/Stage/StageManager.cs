@@ -27,6 +27,12 @@ public class StageManager : MonoBehaviour
     [Header("시작/미션 UI")]
     public GameStartManager gameStartManager;
 
+    [Header("미션 스테이지 UI")]
+    [SerializeField] private StageWaveUI missionStageWaveUI;
+
+    [Header("스테이지 안내 화살표UI")]
+    [SerializeField] private StageGuideController stageGuideController;
+
     [Header("플레이어 위치 이동")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform[] stageStartPoints;
@@ -96,7 +102,20 @@ public class StageManager : MonoBehaviour
 
     private IEnumerator NextStageFlow()
     {
+        // 다음 스테이지로 넘어가기 시작하면 이전 스테이지 안내 화살표를 숨긴다.
+        if (stageGuideController != null)
+        {
+            stageGuideController.Hide();
+        }
+
         nextStagePortal.SetActive(false);
+
+        // 다음 스테이지로 넘어가는 즉시 이전 스테이지 보상상자를 제거한다.
+        // Mission UI가 떠 있는 3초 동안 보상상자가 남아 보이지 않게 하기 위해서다.
+        if (waveManager != null)
+        {
+            waveManager.RemoveSpawnedRewardBox();
+        }
 
         if (PoolManager.Instance != null)
         {
@@ -111,6 +130,11 @@ public class StageManager : MonoBehaviour
 
         stage++;
 
+        if (missionStageWaveUI != null)
+        {
+            missionStageWaveUI.UpdateStage(chapter, stage);
+        }
+
         if (stageMapSwitcher != null)
         {
             stageMapSwitcher.ChangeMap(stage);
@@ -121,7 +145,8 @@ public class StageManager : MonoBehaviour
 
         // 카메라가 플레이어 위치를 따라갈 시간을 조금 준다.
         // 아직 Time.timeScale을 0으로 만들기 전이라 카메라 이동이 가능하다.
-        yield return new WaitForSecondsRealtime(0.1f);
+        //yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSeconds(1.5f);
 
         if (gameStartManager != null)
         {
