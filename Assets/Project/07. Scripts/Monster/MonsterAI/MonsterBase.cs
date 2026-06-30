@@ -37,10 +37,6 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     [SerializeField] private float hitFlashDuration = 0.1f; //깜빡이는 시간
     private Coroutine hitCoroutine; //중복 피격 시 코루틴 제어용 변수
 
-    [Header("레이캐스트 설정")]
-    public float rayDistance = 0.5f;     // 몬스터 크기에 따라 조절
-    public LayerMask obstacleLayer;      // 맵 오브젝트 레이어 선택 (인스펙터에서 지정)
-
     protected Rigidbody2D rb;
     protected bool isDead;                      //몬스터 죽은 상태
     public bool isBossSummonedMonster = false; // 이 몬스터가 최종보스가 소환한 몬스터인지 확인하는 변수
@@ -217,32 +213,11 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         Vector2 finalDir =(moveDir + separationDir * separationForce).normalized;
 
         // 이동할 방향이 존재하면
-        if (finalDir != Vector2.zero)//김영웅 수정
+        if (finalDir != Vector2.zero)
         {
-            // 1. 레이캐스트 시작 위치를 몬스터 중심에서 살짝 앞으로 이동 (자기 자신 감지 방지)
-            Vector2 rayOrigin = rb.position + (finalDir * 0.1f);
-
-            // 2. ContactFilter2D 설정: 설정한 Object 레이어만 감지하도록 함
-            ContactFilter2D filter = new ContactFilter2D();
-            filter.SetLayerMask(obstacleLayer);
-            filter.useLayerMask = true;
-
-            // 3. 레이캐스트 실행
-            RaycastHit2D[] hits = new RaycastHit2D[1];
-            int hitCount = Physics2D.Raycast(rayOrigin, finalDir, filter, hits, rayDistance);
-
-            // 4. 벽에 닿지 않았을 때만 이동
-            if (hitCount == 0)
-            {
-                rb.MovePosition(rb.position + finalDir * moveSpeed * Time.fixedDeltaTime);
-            }
-            else
-            {
-                Debug.Log("벽 감지됨: " + hits[0].collider.name);
-            }
-
-            // 디버그용: 씬 뷰에서 확인
-            Debug.DrawRay(rayOrigin, finalDir * rayDistance, hitCount > 0 ? Color.red : Color.green);
+            // Rigidbody를 이용해 이동
+            // 현재 위치 + 이동방향 × 이동속도 × 프레임 시간
+            rb.MovePosition( rb.position +finalDir * moveSpeed * Time.fixedDeltaTime);
         }
     }
     //protected virtual void FixedUpdate()
