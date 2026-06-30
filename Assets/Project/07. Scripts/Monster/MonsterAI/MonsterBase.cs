@@ -45,6 +45,8 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
     protected bool isDead;                      //몬스터 죽은 상태
     public bool isBossSummonedMonster = false; // 이 몬스터가 최종보스가 소환한 몬스터인지 확인하는 변수
 
+    private bool isStuck = false; // 현재 끼어있는지 상태 변수
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -217,32 +219,33 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         Vector2 finalDir =(moveDir + separationDir * separationForce).normalized;
 
         // 이동할 방향이 존재하면
-        if (finalDir != Vector2.zero)//김영웅 수정
+        if (finalDir != Vector2.zero)
         {
-            // 1. 레이캐스트 시작 위치를 몬스터 중심에서 살짝 앞으로 이동 (자기 자신 감지 방지)
-            Vector2 rayOrigin = rb.position + (finalDir * 0.1f);
+            // --- [끼임 체크 추가] ---
+            // 몬스터 위치에 이미 벽(Object 레이어)이 있는지 확인
+            Collider2D hitCol = Physics2D.OverlapPoint(rb.position, obstacleLayer);
 
-            // 2. ContactFilter2D 설정: 설정한 Object 레이어만 감지하도록 함
-            ContactFilter2D filter = new ContactFilter2D();
-            filter.SetLayerMask(obstacleLayer);
-            filter.useLayerMask = true;
-
-            // 3. 레이캐스트 실행
-            RaycastHit2D[] hits = new RaycastHit2D[1];
-            int hitCount = Physics2D.Raycast(rayOrigin, finalDir, filter, hits, rayDistance);
-
-            // 4. 벽에 닿지 않았을 때만 이동
-            if (hitCount == 0)
+            // 겹쳐 있다면 레이캐스트를 쏘지 않고 이동을 강제로 허용 (탈출)
+            if (hitCol != null)
             {
+                // 끼어있는 상태라면 벽을 뚫고 나올 수 있도록 이동 로직 강제 실행
                 rb.MovePosition(rb.position + finalDir * moveSpeed * Time.fixedDeltaTime);
             }
             else
             {
-                Debug.Log("벽 감지됨: " + hits[0].collider.name);
-            }
+                // 벽이 없을 때만 레이캐스트 정상 동작
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.SetLayerMask(obstacleLayer);
+                filter.useLayerMask = true;
 
-            // 디버그용: 씬 뷰에서 확인
-            Debug.DrawRay(rayOrigin, finalDir * rayDistance, hitCount > 0 ? Color.red : Color.green);
+                RaycastHit2D[] hits = new RaycastHit2D[1];
+                int hitCount = Physics2D.Raycast(rb.position + (finalDir * 0.1f), finalDir, filter, hits, rayDistance);
+
+                if (hitCount == 0)
+                {
+                    rb.MovePosition(rb.position + finalDir * moveSpeed * Time.fixedDeltaTime);
+                }
+            }
         }
     }
     //protected virtual void FixedUpdate()
