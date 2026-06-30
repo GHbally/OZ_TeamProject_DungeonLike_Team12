@@ -491,10 +491,10 @@ public class LastBossMonster : MonsterBase
             animator.ResetTrigger("Cast");
 
             // 이동 애니메이션 끄기
-            animator.SetBool("Move", false);
+            animator.SetBool("1_Move", false);
 
             // 죽는 애니메이션 실행
-            animator.SetTrigger("Death");
+            animator.SetTrigger("4_Death");
         }
 
         // 죽는 연출 후 삭제
