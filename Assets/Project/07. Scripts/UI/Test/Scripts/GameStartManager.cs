@@ -18,6 +18,13 @@ public class GameStartManager : MonoBehaviour
 
     private IEnumerator GameStartSequence()
     {
+        //시간 멈추기 전 카메라 플레이어 위치로 고정^^
+        CameraFollow cam = FindFirstObjectByType<CameraFollow>();
+        if (cam != null)
+        {
+            cam.ResetCameraPosition();
+        }
+
         // 1. 게임 시간 멈춤
         Time.timeScale = 0f;
 
