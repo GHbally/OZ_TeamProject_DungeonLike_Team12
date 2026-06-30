@@ -7555,7 +7555,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   checkRadius: 0.7
-  lastBossPrefab: {fileID: 4216074504907327139, guid: 1482851b7b9196641aaaf88ddfa4dffd, type: 3}
+  lastBossPrefab: {fileID: 860078110621965709, guid: f2c50ec3001a6a54c9e392a4fafde980, type: 3}
   stageWaveUI: {fileID: 1240474635}
   wavestageClearUI: {fileID: 222662222}
   waveClearImageDuration: 3
@@ -7575,7 +7575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 2
+  stage: 3
   waveManager: {fileID: 1001306706}
   nextStagePortal: {fileID: 329450197}
   stageMapSwitcher: {fileID: 1353562713}

@@ -2326,7 +2326,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &400885338
 Transform:
@@ -2730,6 +2730,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef4620fefa42e5479b349f8b55d9b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  spawnWarriorNumber: 65
+  spawnArcherNumber: 15
   waves: []
   spawnMin: {x: -18, y: -24}
   spawnMax: {x: 10, y: 3}
@@ -2761,6 +2763,10 @@ MonoBehaviour:
   stage: 3
   waveManager: {fileID: 503000964}
   nextStagePortal: {fileID: 400885333}
+  stageMapSwitcher: {fileID: 0}
+  gameStartManager: {fileID: 0}
+  player: {fileID: 0}
+  stageStartPoints: []
   portalSpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &507063556
 GameObject:
@@ -5885,6 +5891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage_Pasture
       objectReference: {fileID: 0}
+    - target: {fileID: 6425450362388657743, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.28
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7894,6 +7904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameStartManager
   missionPanel: {fileID: 1913317121}
   startPanel: {fileID: 231671170}
+  nextStageMissionDuration: 3
 --- !u!1 &1597907519
 GameObject:
   m_ObjectHideFlags: 0
@@ -9044,6 +9055,10 @@ MonoBehaviour:
   expSlider: {fileID: 876850986}
   dashSlider: {fileID: 357965455}
   killCountText: {fileID: 224816099}
+  skillSlots: []
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  cyanColor: {r: 0, g: 1, b: 1, a: 1}
+  orangeColor: {r: 1, g: 0.5, b: 0, a: 1}
 --- !u!1 &1711697154
 GameObject:
   m_ObjectHideFlags: 0
