@@ -58,7 +58,7 @@ public class GameStartManager : MonoBehaviour
         }
 
         // ∞‘¿” Ω√∞£¿ª ∏ÿ√·¥Ÿ.
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
 
         if (missionPanel != null)
         {
