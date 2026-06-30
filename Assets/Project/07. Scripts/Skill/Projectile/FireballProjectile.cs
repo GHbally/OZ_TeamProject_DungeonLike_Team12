@@ -34,6 +34,13 @@ public class FireballProjectile : SkillProjectileBase
 
         // 기본 크기로 pool 회수 발사 직후에 현재 레벨 크기로 다시 갱신
         ApplySize();
+
+        //파이어볼 발사 방향
+        if (moveDirection.sqrMagnitude > 0f)
+        {
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
     }
 
     public void SetupFireball(
