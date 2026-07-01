@@ -179,7 +179,7 @@ public class WaveManager : MonoBehaviour
                 stageWaveUI.UpdateMonsterCount(aliveMonster);
                 stageWaveUI.UpdateMonsterCount(aliveMonster);
             }
-            SpawnLastBoss();
+            StartCoroutine(WaitBossInCamera());
             return;
         }
         //웨이브 시작
@@ -459,6 +459,42 @@ public class WaveManager : MonoBehaviour
         if (bossMonster != null)
         {
             bossMonster.StartBossPattern();
+        }
+    }
+
+    // 보스가 카메라에 들어올 때까지 기다리는 코루틴
+    private IEnumerator WaitBossInCamera()
+    {
+        // 보스가 생성될 위치
+        Vector3 bossPos = new Vector3(-7f, -2f, 0f);
+
+        // 메인 카메라 가져오기
+        Camera cam = Camera.main;
+
+        // 계속 검사
+        while (true)
+        {
+            // 월드 좌표를 화면 좌표로 변환
+            Vector3 viewPos = cam.WorldToViewportPoint(bossPos);
+
+            // 화면 안에 있는지 검사
+            bool isVisible =
+                viewPos.z > 0 &&  // 카메라 앞에 있는가
+                viewPos.x >= 0f &&  // 화면 왼쪽보다 오른쪽인가
+                viewPos.x <= 1f &&  // 화면 오른쪽보다 왼쪽인가
+                viewPos.y >= 0f &&  // 화면 아래보다 위인가
+                viewPos.y <= 1f;  // 화면 위보다 아래인가
+
+            // 화면 안에 들어왔다면
+            if (isVisible)
+            {
+                SpawnLastBoss();// 보스 생성
+
+                yield break;// 더 이상 검사하지 않고 종료
+            }
+
+            // 다음 프레임까지 기다림
+            yield return null;
         }
     }
 

@@ -7034,6 +7034,7 @@ MonoBehaviour:
   iconImage: {fileID: 304474662}
   nameText: {fileID: 319081963}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!224 &1116596620
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7810,7 +7811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 3
+  stage: 2
   waveManager: {fileID: 1243918460}
   nextStagePortal: {fileID: 845318161}
   stageMapSwitcher: {fileID: 904362403}
@@ -8525,6 +8526,7 @@ MonoBehaviour:
   iconImage: {fileID: 1454426375}
   nameText: {fileID: 1854797245}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!224 &1376893902
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9419,6 +9421,7 @@ MonoBehaviour:
   iconImage: {fileID: 2056246614}
   nameText: {fileID: 576937182}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!224 &1469237454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9673,63 +9676,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502146520}
   m_CullTransparentMesh: 1
---- !u!1001 &1503804552
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 335289980808327379, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_Name
-      value: BossEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.48417
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.93339
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605050824352830644, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
 --- !u!1 &1513147277
 GameObject:
   m_ObjectHideFlags: 0
@@ -13061,6 +13007,8 @@ MonoBehaviour:
   chaseArrowRange: 7
   damageMultiplier: 1
   fourWayUnlockLevel: 2
+  cooldownReduction: 0.05
+  minCooldownMultiplier: 0.1
 --- !u!114 &2097084832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13166,6 +13114,7 @@ MonoBehaviour:
   projectilePool: {fileID: 922703324}
   firePoint: {fileID: 1570067551}
   skillManager: {fileID: 1835698580}
+  warriorDamageIncreasePerLevel: 5
   swordWavePool: {fileID: 1036415472}
   warriorSlashSkillData: {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   swordWaveUnlockLevel: 5
@@ -13199,7 +13148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
-  dashSound: {fileID: 0}
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
@@ -13398,4 +13346,3 @@ SceneRoots:
   - {fileID: 845318162}
   - {fileID: 151511279}
   - {fileID: 346497713}
-  - {fileID: 1503804552}
