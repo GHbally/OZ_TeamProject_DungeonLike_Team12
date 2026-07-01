@@ -26,6 +26,12 @@ public class LastBossMonster : MonsterBase
 
     private Coroutine patternRoutine;
 
+    // false면 공격, 탄환, 접촉 데미지 전부 막음
+    private bool canAct = false;
+
+    // 보스가 공격을 시작할 수 있는지 여부
+    private bool canStartPattern = false;
+
     // 보스 죽음 연출이 이미 시작됐는지 확인하는 변수
     private bool isBossDeathStarted = false;
 
@@ -62,12 +68,22 @@ public class LastBossMonster : MonsterBase
         // 바로 데미지를 줄 수 있도록 타이머 초기화
         touchDamageTimer = touchDamageInterval;
 
-        StartCoroutine(InitBoss());
+        // 처음에는 공격하지 않음
+        canStartPattern = false;
+
+        canAct = false;
+
 
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        // 등장 연출이 끝나기 전이면 접촉 데미지 금지
+        if (!canAct)
+        {
+            return;
+        }
+
         // 플레이어가 아니면 종료
         if (!other.CompareTag("Player"))
             return;
@@ -110,14 +126,27 @@ public class LastBossMonster : MonsterBase
 
         currentPhase = BossPhase.Phase1;
 
+        while (!canStartPattern)
+        {
+            yield return null;
+        }
+
         if (patternRoutine != null)
+        {
             StopCoroutine(patternRoutine);
+        }
 
         patternRoutine = StartCoroutine(PatternLoop());
     }
 
     protected override void Update()
     {
+        // 등장 연출이 끝나기 전이면 보스 로직 실행 안 함
+        if (!canAct)
+        {
+            return;
+        }
+
         base.Update(); // 부모 Update 실행
 
         CheckPhase(); // 체력에 따라 페이즈 변경
@@ -552,5 +581,25 @@ public class LastBossMonster : MonsterBase
             GameManager.Instance.ChangeState(GameManager.GameState.Won);
 
         Destroy(gameObject);
+    }
+
+    // 보스가 완전히 나타난 뒤 이 함수가 실행됨
+    public void StartBossPattern()
+    {
+        // 이제부터 공격, 접촉 데미지, 패턴 실행 가능
+        canAct = true;
+
+        // 보스 페이즈를 1페이즈로 시작
+        currentPhase = BossPhase.Phase1;
+
+        // 기존 패턴 코루틴이 있으면 중복 방지를 위해 정지
+        if (patternRoutine != null)
+        {
+            StopCoroutine(patternRoutine);
+            patternRoutine = null;
+        }
+
+        // 이제부터 패턴 시작
+        patternRoutine = StartCoroutine(PatternLoop());
     }
 }

@@ -71,6 +71,9 @@ public class WaveManager : MonoBehaviour
     [Header("보상 상자 Prefab")]
     public GameObject rewardBoxPrefab; // 보상 상자 프리팹
 
+    [Header("보스 소환 이펙트")]
+    public GameObject bossSpawnEffectPrefab;
+
     // 현재 스테이지 클리어 후 생성된 보상 상자를 저장한다.
     // 다음 스테이지로 넘어갈 때 이 오브젝트를 제거하기 위해 사용한다.
     private GameObject spawnedRewardBox;
@@ -286,11 +289,177 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        // 최종보스 생성 완료 표시
+        // 보스 중복 생성 방지
         isLastBossSpawned = true;
 
-        // 최종보스를 지정한 위치에 1마리만 생성
-        Instantiate(lastBossPrefab, new Vector3(-4.4f, -9.7f, 0f), Quaternion.identity);
+        // 보스가 생성될 위치 저장
+        Vector3 bossSpawnPos = new Vector3(-7f, -2f, 0f);
+
+        // 이펙트 재생 시작
+        StartCoroutine(BossSpawnEffectCo(bossSpawnPos));
+    }
+    
+
+    /////////////////////////////보스 소환 이펙트//////////////////////////
+    private IEnumerator BossSpawnEffectCo(Vector3 spawnPos)
+    {
+        // 이펙트 프리팹이 연결되어 있으면
+        if (bossSpawnEffectPrefab != null)
+        {
+            // 이펙트 생성
+            GameObject effect = Instantiate(bossSpawnEffectPrefab, spawnPos, Quaternion.identity);
+
+            // 생성된 위치를 보스 위치로 맞춤
+            effect.transform.position = spawnPos;
+
+            // 크기를 2배로 설정
+            effect.transform.localScale = Vector3.one * 5f;
+
+            // 이펙트 안의 모든 SpriteRenderer 가져오기
+            SpriteRenderer[] effectRenderers =  effect.GetComponentsInChildren<SpriteRenderer>();
+
+            // 모든 SpriteRenderer 설정
+            foreach (SpriteRenderer renderer in effectRenderers)
+            {
+                if (renderer != null)
+                {
+                    // 다른 오브젝트보다 앞에 보이게 설정
+                    renderer.sortingOrder = 100;
+
+                    // 투명하지 않게 설정
+                    renderer.color = Color.white;
+                }
+            }
+
+            // 테스트용으로 3초 동안 보이게 함
+            yield return new WaitForSeconds(3f);
+
+            // 이펙트 삭제
+            Destroy(effect);
+        }
+        else
+        {
+            yield return new WaitForSeconds(3f);
+        }
+
+        // 이펙트가 끝난 뒤 보스 생성
+        GameObject boss = Instantiate(lastBossPrefab,spawnPos,Quaternion.identity);
+
+        // 보스가 완전히 나타난 뒤 움직이고 공격하게 함
+        StartCoroutine(FadeInBossCo(boss));
+
+    }
+
+
+    /////////////////보스가 서서히 나타나게 하는 코드///////////////
+    private IEnumerator FadeInBossCo(GameObject boss)
+    {
+        // 보스가 없으면 종료
+        if (boss == null)
+        {
+            yield break;
+        }
+
+        // 보스 스프라이트 전부 가져오기
+        SpriteRenderer[] renderers = boss.GetComponentsInChildren<SpriteRenderer>();
+
+        // 보스 콜라이더 전부 가져오기
+        Collider2D[] colliders = boss.GetComponentsInChildren<Collider2D>();
+
+        // 보스 Rigidbody 가져오기
+        Rigidbody2D rb = boss.GetComponent<Rigidbody2D>();
+
+        // 원래 Rigidbody 제약 저장
+        RigidbodyConstraints2D originalConstraints = RigidbodyConstraints2D.None;
+
+        // Rigidbody가 있으면 등장 중 움직임 고정
+        if (rb != null)
+        {
+            originalConstraints = rb.constraints;
+            rb.linearVelocity = Vector2.zero;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        // 등장 중에는 충돌/접촉 데미지 방지
+        foreach (Collider2D col in colliders)
+        {
+            if (col != null)
+            {
+                col.enabled = false;
+            }
+        }
+
+        // 처음에는 완전히 투명하게 설정
+        foreach (SpriteRenderer sr in renderers)
+        {
+            if (sr != null)
+            {
+                Color color = sr.color;
+                color.a = 0f;
+                sr.color = color;
+            }
+        }
+
+        // 페이드 인 시간
+        float fadeTime = 1.5f;
+
+        // 흐른 시간
+        float elapsed = 0f;
+
+        // 1.5초 동안 서서히 나타나기
+        while (elapsed < fadeTime)
+        {
+            elapsed += Time.deltaTime;
+
+            float alpha = elapsed / fadeTime;
+
+            foreach (SpriteRenderer sr in renderers)
+            {
+                if (sr != null)
+                {
+                    Color color = sr.color;
+                    color.a = alpha;
+                    sr.color = color;
+                }
+            }
+
+            yield return null;
+        }
+
+        // 완전히 보이게 고정
+        foreach (SpriteRenderer sr in renderers)
+        {
+            if (sr != null)
+            {
+                Color color = sr.color;
+                color.a = 1f;
+                sr.color = color;
+            }
+        }
+
+        // Rigidbody 원래대로 복구
+        if (rb != null)
+        {
+            rb.constraints = originalConstraints;
+        }
+
+        // 콜라이더 다시 켜기
+        foreach (Collider2D col in colliders)
+        {
+            if (col != null)
+            {
+                col.enabled = true;
+            }
+        }
+
+        // LastBossMonster 가져오기
+        LastBossMonster bossMonster = boss.GetComponent<LastBossMonster>();
+
+        // 페이드가 끝난 뒤에만 보스 패턴 시작
+        if (bossMonster != null)
+        {
+            bossMonster.StartBossPattern();
+        }
     }
 
     Vector3 GetRandomSpawnPosition()
@@ -333,43 +502,7 @@ public class WaveManager : MonoBehaviour
         return player.position + Vector3.right * 10f;
     }
 
-    // 플레이어 주변 랜덤 위치 생성
-    //Vector3 GetRandomSpawnPosition()
-    //{
-    //    // 최대 20번 시도
-    //    for (int i = 0; i < 20; i++)
-    //    {
-    //        // 랜덤 방향
-    //        Vector2 randomDir = Random.insideUnitCircle.normalized;
-
-    //        // 랜덤 거리
-    //        float distance =
-    //            Random.Range(minSpawnRadius,maxSpawnRadius);
-
-    //        // 최종 생성 위치
-    //        Vector2 spawnPos =(Vector2)player.position +randomDir * distance;
-
-    //        // 장애물 또는 몬스터 검사
-    //        bool blocked =Physics2D.OverlapCircle(
-    //                spawnPos,
-    //                checkRadius,
-    //                spawnBlockLayer
-    //            );
-
-    //        // 비어있는 위치 발견
-    //        if (!blocked)
-    //        {
-    //            return spawnPos;
-    //        }
-    //    }
-
-    //    // 실패 시 플레이어 근처 반환
-    //    return player.position;
-    //}
-
-
-
-
+    
 
     /******************
     몬스터 사망 -> aliveMonster 감소
