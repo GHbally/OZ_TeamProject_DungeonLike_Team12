@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 11077827148274846}
   - component: {fileID: 470779760534534820}
   - component: {fileID: 1179593791647417972}
+  - component: {fileID: 8042422561309090632}
   m_Layer: 0
   m_Name: BounceBullet
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 69.73835, y: 111.62048, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,8 +85,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0.10866976, b: 1, a: 1}
+  m_Sprite: {fileID: 6928125340954367920, guid: f8462ef8cdc35e6489fb3c2ee355eb81, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -156,7 +157,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.49999997
+  m_Radius: 0.18
 --- !u!114 &1179593791647417972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,3 +173,16 @@ MonoBehaviour:
   speed: 6
   maxBounce: 3
   damage: 15
+--- !u!114 &8042422561309090632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757875339719539717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112fe0df9944fc042a8796c5f09a204e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectGlow
+  glowColor: {r: 0.62523776, g: 0.52132595, b: 1.2703575, a: 1}
