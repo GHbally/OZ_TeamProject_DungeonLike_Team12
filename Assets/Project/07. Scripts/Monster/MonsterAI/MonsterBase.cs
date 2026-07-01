@@ -248,9 +248,58 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
                 RaycastHit2D[] hits = new RaycastHit2D[1];
                 int hitCount = Physics2D.Raycast(rb.position + (finalDir * 0.1f), finalDir, filter, hits, rayDistance);
 
+                // 앞에 장애물이 없으면
                 if (hitCount == 0)
                 {
+                    // 플레이어 방향으로 그대로 이동
                     rb.MovePosition(rb.position + finalDir * moveSpeed * Time.fixedDeltaTime);
+                }
+                else // 앞에 장애물이 있으면
+                {
+                    // 현재 이동 방향 기준 왼쪽 방향 계산
+                    Vector2 leftDir = new Vector2(-finalDir.y, finalDir.x).normalized;
+
+                    // 현재 이동 방향 기준 오른쪽 방향 계산
+                    Vector2 rightDir = new Vector2(finalDir.y, -finalDir.x).normalized;
+
+                    // 왼쪽 방향에 장애물이 있는지 검사
+                    bool leftBlocked = Physics2D.Raycast(
+                        rb.position + leftDir * 0.1f, // 몸 안쪽에서 쏘지 않도록 살짝 앞으로 이동
+                        leftDir,  // 왼쪽 방향으로 검사
+                        rayDistance,  // 검사 거리
+                        obstacleLayer // 장애물 레이어만 검사
+                    );
+
+                    // 오른쪽 방향에 장애물이 있는지 검사
+                    bool rightBlocked = Physics2D.Raycast(
+                        rb.position + rightDir * 0.1f, // 몸 안쪽에서 쏘지 않도록 살짝 앞으로 이동
+                        rightDir, // 오른쪽 방향으로 검사
+                        rayDistance,  // 검사 거리
+                        obstacleLayer // 장애물 레이어만 검사
+                    );
+
+                    // 실제로 우회할 방향을 저장할 변수
+                    Vector2 avoidDir = Vector2.zero;
+
+                    // 왼쪽이 안 막혀 있으면
+                    if (!leftBlocked)
+                    {
+                        // 왼쪽으로 돌아가기
+                        avoidDir = leftDir;
+                    }
+                    // 왼쪽은 막혔고 오른쪽이 안 막혀 있으면
+                    else if (!rightBlocked)
+                    {
+                        // 오른쪽으로 돌아가기
+                        avoidDir = rightDir;
+                    }
+
+                    // 우회할 방향이 정해졌다면
+                    if (avoidDir != Vector2.zero)
+                    {
+                        // 그 방향으로 이동
+                        rb.MovePosition(rb.position + avoidDir * moveSpeed * Time.fixedDeltaTime);
+                    }
                 }
             }
         }
