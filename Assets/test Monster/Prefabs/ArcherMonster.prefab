@@ -62,6 +62,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 4096
+  hitStunTime: 0.1
   isBossSummonedMonster: 0
   attackRange: 7
   attackCooldown: 2
@@ -188,7 +189,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1001 &6174248827327559540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -197,6 +198,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6308483266393077850}
     m_Modifications:
+    - target: {fileID: 1791736539540771469, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
+      propertyPath: m_SortAtRoot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1791736539540771469, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6834091615294400264, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -276,6 +285,14 @@ PrefabInstance:
     - target: {fileID: 6834091615294400264, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880640817037880909, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
+      propertyPath: m_SortAtRoot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880640817037880909, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8195751686329284100, guid: 9aef931c33a0f3b44a5884fd2b9bc8d6, type: 3}
       propertyPath: m_Name

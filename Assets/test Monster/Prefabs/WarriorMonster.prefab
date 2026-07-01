@@ -158,7 +158,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &1551547544791858265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +185,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 4096
+  hitStunTime: 0.1
   isBossSummonedMonster: 0
   damage: 10
   damageInterval: 1
@@ -200,6 +201,14 @@ PrefabInstance:
     - target: {fileID: 433551749201036327, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
       propertyPath: m_Name
       value: Visual
+      objectReference: {fileID: 0}
+    - target: {fileID: 4382999902177504334, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
+      propertyPath: m_SortAtRoot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4382999902177504334, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5533457021136325197, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
       propertyPath: m_Pivot.x
@@ -280,6 +289,14 @@ PrefabInstance:
     - target: {fileID: 5533457021136325197, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691224100409924367, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
+      propertyPath: m_SortAtRoot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691224100409924367, guid: f9e047e69fa31ec40a0711f99f29a1eb, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
