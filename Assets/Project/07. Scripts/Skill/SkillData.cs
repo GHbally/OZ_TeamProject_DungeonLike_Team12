@@ -29,9 +29,11 @@ public class SkillData : ScriptableObject
     [Header("기본 정보")]
     // [SerializeField]를 사용하여 인스펙터에서 수정 가능하게 함
     [SerializeField] private string skillName;
+    [TextArea(2, 5)]
     [SerializeField] private string description;
     [SerializeField] private Sprite icon; // 아이콘 변수 추가
     [SerializeField] private int maxLevel = 5;
+    [TextArea(2, 5)]
     [SerializeField] private string[] levelUpDescriptions;
 
     [Header("실제 적용 효과")]

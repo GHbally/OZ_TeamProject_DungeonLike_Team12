@@ -18,6 +18,10 @@ public class ChaseArrowController : MonoBehaviour
     [Header("레벨 설정")]
     [SerializeField] private int fourWayUnlockLevel = 2;
 
+    [Header("레벨 쿨타임 감소 설정")]
+    [SerializeField] private float cooldownReduction = 0.05f;
+    [SerializeField] private float minCooldownMultiplier = 0.1f;
+
     private float cooldownTimer;
     private void Awake()
     {
@@ -140,7 +144,7 @@ public class ChaseArrowController : MonoBehaviour
                 chaseArrowLevel
             );
         }
-        cooldownTimer = GetFinalCooldown();
+        cooldownTimer = GetFinalCooldown(chaseArrowLevel);
     }
     private void FireSingleArrow(
        Vector2 direction,
@@ -202,11 +206,25 @@ public class ChaseArrowController : MonoBehaviour
             );
     }
 
-    private float GetFinalCooldown()
+    private float GetFinalCooldown(int chaseArrowLevel)
     {
-        if(attackStats == null)
+        // 1레벨은 기본 쿨타임을 그대로 사용하고,
+        // 2레벨부터 레벨당 5%씩 쿨타임을 감소시킨다.
+        int bonusLevel = Mathf.Max(0, chaseArrowLevel - 1);
+
+        float cooldownMultiplier = 1f - (bonusLevel * cooldownReduction);
+
+        // 레벨이 높아져도 쿨타임이 너무 낮아지지 않도록 최소 배율을 보장한다.
+        cooldownMultiplier = Mathf.Max(
+            cooldownMultiplier,
+            minCooldownMultiplier
+        );
+
+        float finalBaseCooldown = baseCooldown * cooldownMultiplier;
+
+        if (attackStats == null)
         {
-            return baseCooldown;
+            return finalBaseCooldown;
         }
 
         // 파이어볼처럼 AttackStats의 전체 스킬 쿨타임 감소 효과를 적용한다.
