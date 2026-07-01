@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager instance { get; private set; }
+    public static SoundManager Instance { get; private set; }
 
     [Header("오디오 소스 설정")]
     [SerializeField] private AudioSource bgmSource;     //배경음 소스
@@ -21,9 +21,9 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         //싱글톤 세팅
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);  //씬이 바뀌어도 음악이 끊기지 않게 보존
         }
         else

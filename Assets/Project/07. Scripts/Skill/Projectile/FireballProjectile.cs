@@ -41,6 +41,12 @@ public class FireballProjectile : SkillProjectileBase
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
+
+        //SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_Spell01Layer01");
+        }
     }
 
     public void SetupFireball(
