@@ -18,9 +18,11 @@ MonoBehaviour:
   maxLevel: 5
   levelUpDescriptions:
   - "\uC804\uC0AC \uBCA0\uAE30 \uD68D\uB4DD"
-  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5 \uBC94\uC704 +0.5"
-  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5 \uBC94\uC704 +0.5"
-  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5 \uBC94\uC704 +0.5"
+  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5"
+  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5"
+  - "\uBCA0\uAE30 \uACF5\uACA9\uB825 +5"
   - "\uAC80\uC5D0\uC11C \uAC80\uAE30\uAC00 \uB098\uAC11\uB2C8\uB2E4"
   effectType: 0
   effectValuePerLevel: 0
+  isActiveSkill: 0
+  SkillID: 0

@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fda1bc85454a09479b17b082a0e88ff, type: 3}
   m_Name: ChaseArrow
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillName: "\uCD94\uC801 \uD654\uC0B4"
+  skillName: "\uB098\uC120 \uD654\uC0B4"
   description: "\uCD94\uC801 \uD654\uC0B4 \uC2A4\uD0AC\uC744 \uD68D\uB4DD\uD569\uB2C8\uB2E4."
   icon: {fileID: 21300000, guid: 9ef71e342246e4c35962b08bfa9f02a5, type: 3}
   maxLevel: 5
   levelUpDescriptions:
-  - "\uCD94\uC801 \uD654\uC0B4 \uD68D\uB4DD"
-  - "\uC804 \uBC29\uD5A5 \uD654\uC0B4"
-  - 
-  - "\uC801 \uAD00\uD1B5 +2"
-  - "\uC720\uB3C4 \uAE30\uB2A5\uC744 \uD68D\uB4DD"
+  - "\uC804\uBC29\uC73C\uB85C \uD654\uC0B4\uC744 \n\uBC1C\uC0AC\uD569\uB2C8\uB2E4."
+  - "\uC804 \uBC29\uD5A5\uC73C\uB85C \n\uD654\uC0B4\uC744 \uB0A0\uB9BD\uB2C8\uB2E4.\n\uD654\uC0B4
+    \uCFE8\uD0C0\uC784 -5%"
+  - "\uD654\uC0B4 \uCFE8\uD0C0\uC784 -5%"
+  - "\uC801 \uAD00\uD1B5 +2\n\uD654\uC0B4 \uCFE8\uD0C0\uC784 -5%"
+  - "\uD654\uC0B4\uC774 \uC801\uC744 \n\uCD94\uC801\uD569\uB2C8\uB2E4.\n\uD654\uC0B4
+    \uCFE8\uD0C0\uC784 -5%"
   effectType: 0
   effectValuePerLevel: 0
+  isActiveSkill: 0
+  SkillID: 0

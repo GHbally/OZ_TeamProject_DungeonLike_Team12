@@ -1,14 +1,18 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillButtonUI : MonoBehaviour
+public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI")]
     [SerializeField]public Image iconImage;
     [SerializeField] public TMP_Text nameText;
     [SerializeField] public TMP_Text descText;
+
+    [Header("마우스 오버 표시 UI")]
+    [SerializeField] private GameObject hoverFrame;
 
     private Button button;
     private SkillCardInfo currentCardInfo;
@@ -36,6 +40,9 @@ public class SkillButtonUI : MonoBehaviour
         {
             descText.raycastTarget = false;
         }
+
+        // 시작할 때 마우스 오버 표시 UI는 꺼둔다.
+        HideHoverFrame();
     }
 
     // LevelUpManager가 리롤할 때 카드 정보를 넣어준다.
@@ -45,6 +52,9 @@ public class SkillButtonUI : MonoBehaviour
     {
         currentCardInfo = cardInfo;
         onClicked = clickCallback;
+
+        // 카드가 재사용될 수 있으므로 Setup할 때마다 Hover 표시를 꺼준다.
+        HideHoverFrame();
 
         if (cardInfo == null)
         {
@@ -84,9 +94,38 @@ public class SkillButtonUI : MonoBehaviour
             return;
         }
 
-        Debug.Log($"카드 버튼 클릭됨: {currentCardInfo.Name}");
-
         // 선택된 카드 정보를 LevelUpManager에게 전달한다.
         onClicked?.Invoke(currentCardInfo);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // 마우스가 카드 위에 올라오면 모서리 UI를 켠다.
+        ShowHoverFrame();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        HideHoverFrame();
+    }
+
+    private void ShowHoverFrame()
+    {
+        if (hoverFrame == null)
+        {
+            return;
+        }
+
+        hoverFrame.SetActive(true);
+    }
+
+    private void HideHoverFrame()
+    {
+        if (hoverFrame == null)
+        {
+            return;
+        }
+
+        hoverFrame.SetActive(false);
     }
 }

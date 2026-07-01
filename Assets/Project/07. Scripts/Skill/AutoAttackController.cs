@@ -9,6 +9,9 @@ public class AutoAttackController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private SkillManager skillManager;
 
+    [Header("전사 스킬 설정")]
+    // 전사 스킬 레벨마다 증가할 공격력
+    [SerializeField] private float warriorDamageIncreasePerLevel = 5f;
     [Header("전사 5레벨 검기")]
     [SerializeField] private SkillProjectilePool swordWavePool;
     // 문자열 ID 대신 WarriorSlash SkillData 에셋을 직접 연결한다.
@@ -117,7 +120,7 @@ public class AutoAttackController : MonoBehaviour
         // 전사 검기를 위한 위치
         Vector2 normalizedDirection = direction.normalized;
 
-        DamageInfo1 damageInfo = attackStats.CreateDamageInfo(gameObject);
+        DamageInfo1 damageInfo = CreateWarriorDamageInfo();
 
         // 기본 전사 공격 : 근접 베기
         projectilePool.Spawn(
@@ -132,6 +135,40 @@ public class AutoAttackController : MonoBehaviour
             damageInfo
         );
     }
+    private DamageInfo1 CreateWarriorDamageInfo()
+    {
+        // AttackStats에서 기본 데미지 정보를 만든다.
+        DamageInfo1 baseDamageInfo = attackStats.CreateDamageInfo(gameObject);
+
+        int warriorSlashLevel = GetWarriorSlashLevel();
+
+        // 전사 스킬 레벨마다 공격력을 5씩 증가시킨다.
+        // 예: Lv.1 = +5, Lv.2 = +10, Lv.5 = +25
+        float bonusDamage = warriorSlashLevel * warriorDamageIncreasePerLevel;
+
+        float finalDamage = baseDamageInfo.Damage + bonusDamage;
+
+        return new DamageInfo1(
+            finalDamage,
+            baseDamageInfo.IsCritical,
+            baseDamageInfo.Attacker
+        );
+    }
+    private int GetWarriorSlashLevel()
+    {
+        if (skillManager == null)
+        {
+            return 0;
+        }
+
+        if (warriorSlashSkillData == null)
+        {
+            return 0;
+        }
+
+        return skillManager.GetCurrentLevel(warriorSlashSkillData);
+    }
+
     public void SetAttackEnabled(bool enabled)
     {
         isAttackEnabled = enabled;
@@ -177,7 +214,7 @@ public class AutoAttackController : MonoBehaviour
             return;
         }
 
-        int warriorSlashLevel = skillManager.GetCurrentLevel(warriorSlashSkillData);
+        int warriorSlashLevel = GetWarriorSlashLevel();
 
         if (warriorSlashLevel < swordWaveUnlockLevel)
         {
