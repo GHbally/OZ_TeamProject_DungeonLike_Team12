@@ -1667,7 +1667,8 @@ MonoBehaviour:
   sfxSource: {fileID: 281089566}
   bgmClips:
   - {fileID: 0}
-  sfxClips: []
+  sfxClips:
+  - {fileID: 0}
 --- !u!1 &298863088
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,7 +3469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 1
+  stage: 3
   waveManager: {fileID: 487721975}
   nextStagePortal: {fileID: 389367989}
   stageMapSwitcher: {fileID: 1761309765}
