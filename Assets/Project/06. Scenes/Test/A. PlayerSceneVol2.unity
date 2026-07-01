@@ -1450,7 +1450,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281089564}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1470,7 +1470,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1666,8 +1666,23 @@ MonoBehaviour:
   bgmSource: {fileID: 281089567}
   sfxSource: {fileID: 281089566}
   bgmClips:
+  - {fileID: 8300000, guid: cdb9579d85b4d4baaa28805e4a02b9a4, type: 3}
+  - {fileID: 8300000, guid: f042bd451f48441e19db367bc0063f53, type: 3}
+  - {fileID: 8300000, guid: 761503047d6a84e6a8801a25d1adf02c, type: 3}
+  - {fileID: 8300000, guid: 01f5c344c6f5044778980143a0fc1eb1, type: 3}
   - {fileID: 0}
+  - {fileID: 8300000, guid: 5ac6fc4003415436bb278aafd51b6878, type: 3}
+  - {fileID: 8300000, guid: 03fc1782d3b8b41edb7206193da9ac38, type: 3}
   sfxClips:
+  - {fileID: 8300000, guid: f9516ad7fab1bc94f80b71d3ff76c390, type: 3}
+  - {fileID: 8300000, guid: e847cb5b95cdade4a8304bdeab67f422, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 50763776c7d32594d8b167995ca76626, type: 3}
+  - {fileID: 8300000, guid: e4d8f2077d45a7f459fe7c96050a999d, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!1 &298863088
 GameObject:
@@ -3469,7 +3484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 3
+  stage: 1
   waveManager: {fileID: 487721975}
   nextStagePortal: {fileID: 389367989}
   stageMapSwitcher: {fileID: 1761309765}
@@ -12163,7 +12178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
-  dashSound: {fileID: 0}
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1

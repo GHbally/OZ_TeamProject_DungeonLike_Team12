@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager instance { get; private set; }
+    public static SoundManager Instance { get; private set; }
 
     [Header("오디오 소스 설정")]
     [SerializeField] private AudioSource bgmSource;     //배경음 소스
@@ -21,9 +21,9 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         //싱글톤 세팅
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);  //씬이 바뀌어도 음악이 끊기지 않게 보존
         }
         else
@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //BGM(배경음) 재생 시스템
-    public void PlayBGM(string bgmName, float volum = 1.0f)
+    public void PlayBGM(string bgmName, float volum = 1.0f, bool loop = true)
     {
         //BGM없으면 리턴
         if (!bgmDictionary.TryGetValue(bgmName, out AudioClip clip))
@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour
 
         bgmSource.clip = clip;
         bgmSource.volume = volum;
-        bgmSource.loop = true;      //배경음은 항상 무한 루프
+        bgmSource.loop = loop;      //루프 설정
         bgmSource.Play();           //재생
     }
 

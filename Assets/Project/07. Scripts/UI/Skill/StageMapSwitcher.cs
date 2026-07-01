@@ -44,5 +44,28 @@ public class StageMapSwitcher : MonoBehaviour
         }
 
         Debug.Log($"현재 맵 변경 완료: Stage {stage}", gameObject);
+
+        //BGM
+        if (SoundManager.Instance != null)
+        {
+            switch (stage)
+            {
+                case 1: //1 스테이지일 때
+                    SoundManager.Instance.PlayBGM("A Great Journey - Overworld", 0.5f);
+                    break;
+
+                case 2: //2 스테이지일 때
+                    SoundManager.Instance.PlayBGM("Gearing Up - Battle", 0.5f);
+                    break;
+
+                case 3: //3 스테이지(예: 보스 방)일 때
+                    SoundManager.Instance.PlayBGM("The Beast's Lair - Boss Fight", 0.6f);
+                    break;
+
+                default: //지정되지 않은 번호는 안전하게 기본 맵 음악으로 연주
+                    SoundManager.Instance.PlayBGM("A Great Journey - Overworld", 0.5f);
+                    break;
+            }
+        }
     }
 }

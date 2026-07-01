@@ -20,6 +20,12 @@ public class WarriorProjectile : SkillProjectileBase
         }
 
         //RotateSlashToDirection();
+
+        //SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_SwordSlidev2wav");
+        }
     }
 
     protected override void UpdateMovement()

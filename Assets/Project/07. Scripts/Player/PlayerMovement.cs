@@ -6,12 +6,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("이동속도")]
     [SerializeField] private float moveSpeed = 5.0f;    //이동 속도
 
-    private AudioSource audioSource;                    //소리 재생해 줄 컴포넌트
-
-    [Header("사운드 설정")]
-    [SerializeField] private AudioClip dashSound;       //인스펙터에서 넣을 대쉬 오디오
-
-
     //[읽기, 쓰기] 외부에서 내 MoveSpeed를 수정할 수 있게 열기
     //이동 속도는 외부적인 스펙업을 통해 바뀔 여지가 있으므로 읽기+쓰기
     public float MoveSpeed
@@ -53,9 +47,6 @@ public class PlayerMovement : MonoBehaviour
             animator = visualTransform.GetComponentInChildren<Animator>();
         }
         playerBase = GetComponent<PlayerBase>();
-
-        //플레이어 본체에 붙어있는 AudioSource 컴포넌트 가져오기
-        audioSource = GetComponent<AudioSource>();
 
         if (HUDController.Instance != null)
         {
@@ -145,10 +136,10 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;    //대쉬 썼으니 쿨타임 상태로
         isDashing = true;   //대쉬 중 켜기
 
-        //대쉬 효과음
-        if (audioSource != null && dashSound != null)
+        //SFX
+        if (SoundManager.Instance != null)
         {
-            audioSource.PlayOneShot(dashSound);
+            SoundManager.Instance.PlaySFX("SFX_UIBuySellStoreInteraction03");
         }
 
         //대쉬 도중 방향 고정

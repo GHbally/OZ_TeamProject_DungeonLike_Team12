@@ -48,6 +48,13 @@ public class GameManager : MonoBehaviour
                 if (deathMenuUI) deathMenuUI.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+
+                //BGM변경
+                if (SoundManager.Instance != null)
+                {
+                    //루프는 1번만 재생 되도록 패배 Lose BGM 재생
+                    SoundManager.Instance.PlayBGM("Lose vol. 1", 0.5f, false);
+                }
                 break;
 
             case GameState.Won: // 승리 상태 로직 추가
@@ -55,6 +62,12 @@ public class GameManager : MonoBehaviour
                 if (winMenuUI) winMenuUI.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+
+                //BGM변경
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayBGM("Win vol. 1", 0.8f, false);
+                }
                 break;
         }
     }
