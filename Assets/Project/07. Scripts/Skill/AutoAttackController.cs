@@ -22,6 +22,9 @@ public class AutoAttackController : MonoBehaviour
     private bool isDead;
     private bool isAttackEnabled = true;
 
+    [Header("공격 탐색 설정")]
+    [SerializeField] private float noTargetRetryDelay = 0.1f;
+
     private void Awake()
     {
         CacheReferences();
@@ -86,6 +89,8 @@ public class AutoAttackController : MonoBehaviour
 
         if (target == null)
         {
+            // 적이 없을 때 매 프레임 공격 시도하지 않도록 짧게 대기한다.
+            attackTimer = noTargetRetryDelay;
             return;
         }
 
@@ -93,6 +98,7 @@ public class AutoAttackController : MonoBehaviour
 
         if (!isTargetInRange)
         {
+            attackTimer = noTargetRetryDelay;
             return;
         }
 
