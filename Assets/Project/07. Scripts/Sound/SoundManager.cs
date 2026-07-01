@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //BGM(배경음) 재생 시스템
-    public void PlayBGM(string bgmName, float volum = 1.0f)
+    public void PlayBGM(string bgmName, float volum = 1.0f, bool loop = true)
     {
         //BGM없으면 리턴
         if (!bgmDictionary.TryGetValue(bgmName, out AudioClip clip))
@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour
 
         bgmSource.clip = clip;
         bgmSource.volume = volum;
-        bgmSource.loop = true;      //배경음은 항상 무한 루프
+        bgmSource.loop = loop;      //루프 설정
         bgmSource.Play();           //재생
     }
 
