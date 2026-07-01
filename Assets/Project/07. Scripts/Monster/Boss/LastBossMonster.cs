@@ -501,7 +501,7 @@ public class LastBossMonster : MonsterBase
         StartCoroutine(BossDieSequence());
     }
 
-private IEnumerator BossDieSequence()
+    private IEnumerator BossDieSequence()
     {
         // --- 1. 타격감 및 슬로우 모션 ---
         Time.timeScale = 0f;
@@ -509,33 +509,34 @@ private IEnumerator BossDieSequence()
 
         Time.timeScale = 0.5f; // 슬로우 모션 시작
 
-        // --- 카메라 이동 및 줌인 연출 ---
-        Vector3 bossPos = transform.position;
-        Sequence camSeq = DOTween.Sequence();
-        camSeq.SetUpdate(true);
-        // 카메라를 보스 위치로 이동하며 줌인 (Z값 -10 유지)
-        camSeq.Join(Camera.main.transform.DOMove(new Vector3(bossPos.x, bossPos.y, -10f), 1.0f));
+        // 카메라 연출 (DOTween)
+        Sequence camSeq = DOTween.Sequence().SetUpdate(true);
+        camSeq.Join(Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y, -10f), 1.0f));
         camSeq.Join(Camera.main.DOOrthoSize(3f, 3.0f));
 
-        // 슬로우 모션 대기
         yield return new WaitForSecondsRealtime(3.0f);
 
-        // --- 2. UI 등장 연출 (Victory UI) ---
+        // --- 2. UI 등장 연출 ---
         GameObject uiRoot = GameObject.Find("Victory");
         if (uiRoot != null)
         {
             uiRoot.SetActive(true);
-            CanvasGroup cg = uiRoot.GetComponent<CanvasGroup>();
-            if (cg == null) cg = uiRoot.AddComponent<CanvasGroup>();
 
-            // UI 초기화
+            // UI 애니메이터 실행 (트리거 이름이 "Play"라고 가정)
+            Animator uiAnim = uiRoot.GetComponent<Animator>();
+            if (uiAnim != null)
+            {
+                uiAnim.updateMode = AnimatorUpdateMode.UnscaledTime; // 게임 일시정지 무시하고 재생
+                uiAnim.SetTrigger("Play");
+            }
+
+            // CanvasGroup 설정 및 애니메이션
+            CanvasGroup cg = uiRoot.GetComponent<CanvasGroup>() ?? uiRoot.AddComponent<CanvasGroup>();
             cg.alpha = 0;
             RectTransform rect = uiRoot.GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(0, 1000); // 화면 위 밖에서 시작
+            rect.anchoredPosition = new Vector2(0, 1000);
 
-            // 낙하 및 등장 시퀀스
-            Sequence s = DOTween.Sequence();
-            s.SetUpdate(true);
+            Sequence s = DOTween.Sequence().SetUpdate(true);
             s.Join(rect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutBack));
             s.Join(cg.DOFade(1, 0.3f));
         }
@@ -543,6 +544,7 @@ private IEnumerator BossDieSequence()
         // --- 3. 최종 상태 처리 ---
         Time.timeScale = 1f;
 
+        // 게임 상태 변경 및 보스 삭제
         StageManager stageManager = FindFirstObjectByType<StageManager>();
         if (stageManager != null) stageManager.UnregisterEnemy(true);
 
