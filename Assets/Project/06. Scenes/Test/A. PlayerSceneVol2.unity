@@ -1567,7 +1567,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1676,11 +1676,11 @@ MonoBehaviour:
   sfxClips:
   - {fileID: 8300000, guid: f9516ad7fab1bc94f80b71d3ff76c390, type: 3}
   - {fileID: 8300000, guid: e847cb5b95cdade4a8304bdeab67f422, type: 3}
-  - {fileID: 0}
-  - {fileID: 8300000, guid: 50763776c7d32594d8b167995ca76626, type: 3}
+  - {fileID: 8300000, guid: bdc7655060154974690e95bd7026c7df, type: 3}
+  - {fileID: 8300000, guid: 16d61a7a9a032a84d87ec298d283e2b9, type: 3}
+  - {fileID: 8300000, guid: 1b3717c68983e994e8eb7d483fb42be7, type: 3}
+  - {fileID: 8300000, guid: ae26f2e1a95518d499700e383e311401, type: 3}
   - {fileID: 8300000, guid: e4d8f2077d45a7f459fe7c96050a999d, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -3305,6 +3305,7 @@ MonoBehaviour:
   iconImage: {fileID: 1942580643}
   nameText: {fileID: 2065188257}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!224 &446020562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3471,6 +3472,7 @@ MonoBehaviour:
   nextWaveDelay: 1.5
   stageClearImageDuration: 3
   rewardBoxPrefab: {fileID: 9118674948096215837, guid: 9c20240539f5c604aa82e9aaba97740d, type: 3}
+  bossSpawnEffectPrefab: {fileID: 0}
 --- !u!114 &487721976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5762,6 +5764,7 @@ MonoBehaviour:
   iconImage: {fileID: 1434527941}
   nameText: {fileID: 526310774}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!1 &709141428
 GameObject:
   m_ObjectHideFlags: 0
@@ -11382,6 +11385,7 @@ MonoBehaviour:
   iconImage: {fileID: 1518473983}
   nameText: {fileID: 58109257}
   descText: {fileID: 0}
+  hoverFrame: {fileID: 0}
 --- !u!1 &1827526751
 GameObject:
   m_ObjectHideFlags: 0
@@ -12040,6 +12044,8 @@ MonoBehaviour:
   chaseArrowRange: 7
   damageMultiplier: 1
   fourWayUnlockLevel: 2
+  cooldownReduction: 0.05
+  minCooldownMultiplier: 0.1
 --- !u!114 &1928621284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12145,6 +12151,7 @@ MonoBehaviour:
   projectilePool: {fileID: 934227685}
   firePoint: {fileID: 507614375}
   skillManager: {fileID: 1895034099}
+  warriorDamageIncreasePerLevel: 5
   swordWavePool: {fileID: 1718470061}
   warriorSlashSkillData: {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   swordWaveUnlockLevel: 5

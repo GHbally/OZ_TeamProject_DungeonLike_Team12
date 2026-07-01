@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //BGM(배경음) 재생 시스템
-    public void PlayBGM(string bgmName, float volum = 1.0f, bool loop = true)
+    public void PlayBGM(string bgmName, float volum = 0.15f, bool loop = true)
     {
         //BGM없으면 리턴
         if (!bgmDictionary.TryGetValue(bgmName, out AudioClip clip))
@@ -68,7 +68,7 @@ public class SoundManager : MonoBehaviour
     }
 
     //SFX(효과음) 재생 시스템
-    public void PlaySFX(string sfxName, float volum = 1.0f)
+    public void PlaySFX(string sfxName, float volum = 0.4f)
     {
         //SFX없으면 리턴
         if (!sfxDictionary.TryGetValue(sfxName, out AudioClip clip))

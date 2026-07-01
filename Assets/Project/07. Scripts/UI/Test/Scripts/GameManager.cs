@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
                 if (SoundManager.Instance != null)
                 {
                     //루프는 1번만 재생 되도록 패배 Lose BGM 재생
-                    SoundManager.Instance.PlayBGM("Lose vol. 1", 0.5f, false);
+                    SoundManager.Instance.PlayBGM("Lose vol. 1", 0.15f, false);
                 }
                 break;
 
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
                 //BGM변경
                 if (SoundManager.Instance != null)
                 {
-                    SoundManager.Instance.PlayBGM("Win vol. 1", 0.8f, false);
+                    SoundManager.Instance.PlayBGM("Win vol. 1", 0.15f, false);
                 }
                 break;
         }
