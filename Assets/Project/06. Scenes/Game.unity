@@ -4603,7 +4603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   deathMenuUI: {fileID: 745973665}
-  winMenuUI: {fileID: 0}
+  winMenuUI: {fileID: 1030578905}
   currentState: 0
 --- !u!1 &452388121
 GameObject:
@@ -7958,6 +7958,7 @@ MonoBehaviour:
   swordWavePool: {fileID: 130511991}
   warriorSlashSkillData: {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   swordWaveUnlockLevel: 5
+  noTargetRetryDelay: 0.1
 --- !u!114 &857179970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9001,7 +9002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   spawnWarriorNumber: 1
-  spawnArcherNumber: 5
+  spawnArcherNumber: 20
   waves: []
   spawnMin: {x: -18, y: -24}
   spawnMax: {x: 10, y: 3}
@@ -9018,7 +9019,7 @@ MonoBehaviour:
   nextWaveDelay: 1.5
   stageClearImageDuration: 3
   rewardBoxPrefab: {fileID: 9118674948096215837, guid: 9c20240539f5c604aa82e9aaba97740d, type: 3}
-  bossSpawnEffectPrefab: {fileID: 0}
+  bossSpawnEffectPrefab: {fileID: 335289980808327379, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
 --- !u!114 &1001306707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9032,7 +9033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 3
+  stage: 1
   waveManager: {fileID: 1001306706}
   nextStagePortal: {fileID: 329450197}
   stageMapSwitcher: {fileID: 1353562713}
@@ -9138,7 +9139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1030578906
 RectTransform:
   m_ObjectHideFlags: 0

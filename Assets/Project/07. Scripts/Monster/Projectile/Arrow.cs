@@ -3,7 +3,7 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     [Header("화살 설정")]
-    public float speed = 8f; // 화살속도
+    public float speed = 6f; // 화살속도
     public int damage = 10; // 공격력
     public float lifeTime = 3f; //제거 시간
     private Vector2 direction; //이동방향
