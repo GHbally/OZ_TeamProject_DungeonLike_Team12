@@ -43,6 +43,12 @@ public class ChaseArrowProjectile : SkillProjectileBase
         // pool 에서 처음 꺼내졌을 때 기본 설정을 적용
         // 실제 레벨은 AutoAttackController에서 SetupAcherArrow()로 전달
         ApplyLevelSetting();
+
+        //SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_CoinBagv2wav");
+        }
     }
 
     // AutoAttackController가 화살을 발사한 직후 호출

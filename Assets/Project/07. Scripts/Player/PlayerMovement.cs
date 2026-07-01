@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
         //SFX
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySFX("SFX_UIBuySellStoreInteraction03");
+            SoundManager.Instance.PlaySFX("SFX_ArcaneSpellFasterv6");
         }
 
         //대쉬 도중 방향 고정

@@ -55,6 +55,11 @@ public class ArcherMonster : MonsterBase
 
     void StartAttackMotion()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_StoneThrowerv1releasewav");
+        }
+
         if (animator != null)
         {
             animator.SetTrigger("6_Other");
