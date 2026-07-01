@@ -18,6 +18,13 @@ public class SoundManager : MonoBehaviour
     private readonly Dictionary<string, AudioClip> bgmDictionary = new();
     private readonly Dictionary<string, AudioClip> sfxDictionary = new();
 
+    //각 SFX가 마지막으로 재생된 시간 기록(중복 효과음 방지)
+    private readonly Dictionary<string, float> sfxLastPlayTimes = new();
+
+    //최소 재생 간격 설정
+    [Header("오디오 최적화")]
+    [SerializeField] private float minPlayInterval = 0.08f;
+
     private void Awake()
     {
         //싱글톤 세팅
@@ -75,6 +82,18 @@ public class SoundManager : MonoBehaviour
         {
             return;
         }
+
+        if (sfxLastPlayTimes.TryGetValue(sfxName, out float lastTime))
+        {
+            //마지막으로 이 소리가 나고 지정한 시간이 안 지났다면 재생하지 않고 리턴
+            if (Time.time - lastTime < minPlayInterval)
+            {
+                return;
+            }
+        }
+
+        //재생이 통과 됐으면 현재 시간 최신화
+        sfxLastPlayTimes[sfxName] = Time.time;
 
         //PlayOneShot: 하나의 오디오 소스에서 여러 효과음이 겹쳐서 나게 해줌
         sfxSource.PlayOneShot(clip, volum);
