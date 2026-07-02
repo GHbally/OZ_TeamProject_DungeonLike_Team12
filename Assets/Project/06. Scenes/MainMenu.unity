@@ -758,6 +758,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439218071}
   m_CullTransparentMesh: 1
+--- !u!1 &1567009633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1567009634}
+  m_Layer: 0
+  m_Name: BGM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567009634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567009633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.94299, y: -4.76657, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1672376504
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +872,7 @@ MonoBehaviour:
   m_text: Press To Start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 93d8a0f418ccd904ab0180e49efc1c9c, type: 2}
-  m_sharedMaterial: {fileID: -9020699438731748757, guid: 93d8a0f418ccd904ab0180e49efc1c9c, type: 2}
+  m_sharedMaterial: {fileID: -5999036738766846254, guid: 93d8a0f418ccd904ab0180e49efc1c9c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -926,3 +957,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 760620889}
   - {fileID: 737198176}
+  - {fileID: 1567009634}

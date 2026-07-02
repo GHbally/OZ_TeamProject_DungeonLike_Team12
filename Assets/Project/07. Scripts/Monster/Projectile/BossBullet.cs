@@ -25,7 +25,13 @@ public class BossBullet : MonoBehaviour
         
         CancelInvoke(); // 이전 자동 반환 예약 취소
 
-       
+        //SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_FireSpellv3");
+        }
+
+
         Invoke(nameof(ReturnToPool), lifeTime); // lifeTime 후 풀로 반환
     }
 
