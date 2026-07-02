@@ -22,8 +22,8 @@ MonoBehaviour:
   - "\uD06C\uAE30 +20%"
   - "\uD06C\uAE30 +20%"
   - "\uD06C\uAE30 +20%"
-  - "\uD30C\uC774\uC5B4 \uBCFC\uC774 \n\uC9C0\uB098\uAC04 \uC790\uB9AC\uC5D0 \n\uBD88\uAE38\uC774
-    \uC0DD\uC131\uB429\uB2C8\uB2E4.\n\uD06C\uAE30 +20%"
+  - "\uC9C0\uB098\uAC04 \uC790\uB9AC\uC5D0 \n\uBD88\uAE38\uC774 \uC0DD\uC131\uB429\uB2C8\uB2E4.\n\uD06C\uAE30
+    +20%"
   effectType: 0
   effectValuePerLevel: 0
   isActiveSkill: 0
