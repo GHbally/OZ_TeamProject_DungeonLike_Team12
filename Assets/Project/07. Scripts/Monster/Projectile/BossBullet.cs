@@ -44,6 +44,15 @@ public class BossBullet : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
+        //플레이어 컴포넌트 줍줍
+        PlayerMovement movement = other.GetComponent<PlayerMovement>();
+
+        //만약 플레이어가 대쉬 중(무적 상태)이라면 데미지를 주지 않고 그냥 통과
+        if (movement != null && movement.IsInvincible)
+        {
+            return; //무적이면 데미지 처리를 하지 않고 리턴
+        }
+
         PlayerBase player = other.GetComponent<PlayerBase>();
 
         if (player != null)

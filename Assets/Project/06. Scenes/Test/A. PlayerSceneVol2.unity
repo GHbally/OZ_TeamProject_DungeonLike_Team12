@@ -3799,7 +3799,6 @@ RectTransform:
   m_Children:
   - {fileID: 133826256}
   - {fileID: 1611718307}
-  - {fileID: 1966751496}
   - {fileID: 1553584424}
   - {fileID: 114583080}
   - {fileID: 1817833123}
@@ -4391,7 +4390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -0.5142822, y: 0.11220169}
+  m_AnchoredPosition: {x: -0.5142822, y: 0.112197876}
   m_SizeDelta: {x: -11.0287, y: -12.4858}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &592222228
@@ -6332,6 +6331,7 @@ RectTransform:
   - {fileID: 1479241837}
   - {fileID: 785782226}
   - {fileID: 505351307}
+  - {fileID: 1966751496}
   - {fileID: 446366935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7480,6 +7480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   stageManager: {fileID: 1143491835}
   spawnPosition: {x: -4.4, y: -9.7, z: 0}
+  pressEUI: {fileID: 0}
+  interactKey: 101
 --- !u!61 &1029766529
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15594,11 +15596,11 @@ RectTransform:
   m_Children:
   - {fileID: 1731775023}
   - {fileID: 570924039}
-  m_Father: {fileID: 446366935}
+  m_Father: {fileID: 825601154}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 910, y: 62}
+  m_AnchoredPosition: {x: 0, y: 22}
   m_SizeDelta: {x: 1920, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1966751497
