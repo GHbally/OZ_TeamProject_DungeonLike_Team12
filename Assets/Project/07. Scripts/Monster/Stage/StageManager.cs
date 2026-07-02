@@ -184,5 +184,6 @@ public class StageManager : MonoBehaviour
 
         // 플레이어를 현재 스테이지 시작 위치로 이동시킨다.
         player.position = stageStartPoints[targetIndex].position;
+        ///스테이지 별 포탈을 타고 이동할시 위치 저장
     }
 }
