@@ -1126,7 +1126,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1433,7 +1433,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b68c4f98247dae4e81817a1294cfc30, type: 3}
   - {fileID: 8300000, guid: 00647df9b15c94c4b8d49eeafe8254bf, type: 3}
   - {fileID: 8300000, guid: d54a1019e24cf2d4dbf69106fb8dd871, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 002dbd3e274a5ea43b33818e88dc2eaf, type: 3}
   - {fileID: 0}
   minPlayInterval: 0.08
 --- !u!1 &121877087
@@ -4184,6 +4184,7 @@ GameObject:
   - component: {fileID: 379907140}
   - component: {fileID: 379907139}
   - component: {fileID: 379907138}
+  - component: {fileID: 379907142}
   m_Layer: 5
   m_Name: SkillCardButton_2
   m_TagString: Untagged
@@ -4316,6 +4317,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379907136}
   m_CullTransparentMesh: 1
+--- !u!225 &379907142
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379907136}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &381322494
 GameObject:
   m_ObjectHideFlags: 0
@@ -4887,6 +4900,7 @@ GameObject:
   - component: {fileID: 452388125}
   - component: {fileID: 452388124}
   - component: {fileID: 452388123}
+  - component: {fileID: 452388127}
   m_Layer: 5
   m_Name: SkillCardButton_1
   m_TagString: Untagged
@@ -5019,6 +5033,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 452388121}
   m_CullTransparentMesh: 1
+--- !u!225 &452388127
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452388121}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &474809689
 GameObject:
   m_ObjectHideFlags: 0
@@ -6496,8 +6522,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.054798126, y: 0.08069992}
+  m_SizeDelta: {x: -7.5541, y: -4.7272}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &644085968
 GameObject:
@@ -7913,6 +7939,7 @@ GameObject:
   - component: {fileID: 841994468}
   - component: {fileID: 841994467}
   - component: {fileID: 841994466}
+  - component: {fileID: 841994470}
   m_Layer: 5
   m_Name: SkillCardButton_0
   m_TagString: Untagged
@@ -8045,6 +8072,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841994464}
   m_CullTransparentMesh: 1
+--- !u!225 &841994470
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841994464}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &851243762
 GameObject:
   m_ObjectHideFlags: 0
@@ -8929,8 +8968,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.5, y: 2.1539993}
-  m_SizeDelta: {x: -13, y: 72.044}
+  m_AnchoredPosition: {x: 0.029174805, y: 3.130001}
+  m_SizeDelta: {x: -11.9415, y: 73.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &954812637
 GameObject:
@@ -15064,12 +15103,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpManager
   levelUpPanel: {fileID: 493120447}
+  panelRect: {fileID: 493120448}
   skillButtons:
   - {fileID: 841994466}
   - {fileID: 452388123}
   - {fileID: 379907138}
   skillManager: {fileID: 1227015021}
   displayCardCount: 3
+  panelOpenDuration: 0.4
+  cardOpenDuration: 0.35
+  delayBetweenCards: 0.12
   rerollButton: {fileID: 1934967975}
   rerollButtonText: {fileID: 515838619}
   rerollButtonCanvasGroup: {fileID: 0}

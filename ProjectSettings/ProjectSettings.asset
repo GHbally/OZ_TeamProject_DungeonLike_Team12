@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: DungeonLike_OZ
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 5494d3598f5734ff6b1a679bf1f0c13c, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1

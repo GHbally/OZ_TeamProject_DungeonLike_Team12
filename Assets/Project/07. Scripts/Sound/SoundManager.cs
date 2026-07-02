@@ -85,15 +85,14 @@ public class SoundManager : MonoBehaviour
 
         if (sfxLastPlayTimes.TryGetValue(sfxName, out float lastTime))
         {
-            //마지막으로 이 소리가 나고 지정한 시간이 안 지났다면 재생하지 않고 리턴
-            if (Time.time - lastTime < minPlayInterval)
+            if (Time.unscaledTime - lastTime < minPlayInterval)
             {
                 return;
             }
         }
 
         //재생이 통과 됐으면 현재 시간 최신화
-        sfxLastPlayTimes[sfxName] = Time.time;
+        sfxLastPlayTimes[sfxName] = Time.unscaledTime;
 
         //PlayOneShot: 하나의 오디오 소스에서 여러 효과음이 겹쳐서 나게 해줌
         sfxSource.PlayOneShot(clip, volum);
