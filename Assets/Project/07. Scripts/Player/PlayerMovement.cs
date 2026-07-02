@@ -80,19 +80,22 @@ public class PlayerMovement : MonoBehaviour
 
         float characterScale = 1.5f;                //캐릭터 크기
 
-        //D 누를때
-        if (x > 0)
+        // Visual이 연결되어 있을 때만 방향 전환을 처리한다.
+        if (visualTransform != null)
         {
-            //오른쪽 보게 만들기
-            visualTransform.localScale = new Vector3(-characterScale, characterScale, 1);
+            //D 누를때
+            if (x > 0)
+            {
+                //오른쪽 보게 만들기
+                visualTransform.localScale = new Vector3(-characterScale, characterScale, 1);
+            }
+            //A 누를때
+            else if (x < 0)
+            {
+                //왼쪽 보게 만들기
+                visualTransform.localScale = new Vector3(characterScale, characterScale, 1);
+            }
         }
-        //A 누를때
-        else if (x < 0)
-        {
-            //왼쪽 보게 만들기
-            visualTransform.localScale = new Vector3(characterScale, characterScale, 1);
-        }
-
         //애니메이터 컴포넌트가 잘 있다면
         if (animator != null)
         {
