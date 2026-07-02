@@ -1,12 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI; // TMP를 사용하므로 필수!
+using DG.Tweening;    //두트윈재밌겠당히히
 
 public class LevelUpManager : MonoBehaviour
 {
     [Header("UI 구성요소")]
     [SerializeField] private GameObject levelUpPanel;
+    //두트윈 패널 크기 조절용
+    [SerializeField] private RectTransform panelRect;
 
     // 카드 버튼 UI들.
     // Button 컴포넌트가 아니라 TestSkillButtonUI 컴포넌트를 넣어야 한다.
@@ -17,6 +21,9 @@ public class LevelUpManager : MonoBehaviour
 
     [Header("설정")]
     [SerializeField, Min(1)] private int displayCardCount = 3;
+    [SerializeField] private float panelOpenDuration = 0.4f;    //패널이 열리는 시간
+    [SerializeField] private float cardOpenDuration = 0.35f;    //카드가 커지는 시간
+    [SerializeField] private float delayBetweenCards = 0.12f;   //카드 간 등장 간격
 
     private readonly List<SkillCardInfo> currentDisplayedCards = new();
 
@@ -33,6 +40,10 @@ public class LevelUpManager : MonoBehaviour
     [Header("스테이지 클리어 보상")]
     [SerializeField] private GameObject nextStagePortal; // 스킬 선택 후 나타날 포털
 
+    private List<CanvasGroup> buttonCanvasGroups = new List<CanvasGroup>();
+
+    private Coroutine showCardsCoroutine;
+
     private void Start()
     {
         // 시작할 때 패널이 켜져 있다면 꺼줌
@@ -45,21 +56,33 @@ public class LevelUpManager : MonoBehaviour
         currentRerollCount = maxRerollCount;
         UpdateRerollButtonUI();
 
+        //두트윈 페이드 효과용
+        UpdateCanvasGroupCache();
+
+    }
+
+    private void UpdateCanvasGroupCache()
+    {
+        buttonCanvasGroups.Clear();
+        foreach (var btn in skillButtons)
+        {
+            if (btn != null)
+            {
+                CanvasGroup cg = btn.GetComponent<CanvasGroup>() ?? btn.gameObject.AddComponent<CanvasGroup>();
+                buttonCanvasGroups.Add(cg);
+            }
+        }
     }
 
     public void OpenLevelUpUI()
     {
-        if (levelUpPanel == null)
-        {
-            Debug.LogError("LevelUpPanel이 연결되지 않았습니다.", gameObject);
-            return;
-        }
+        if (levelUpPanel == null || panelRect == null) return;
 
         levelUpPanel.SetActive(true);
 
         GameManager.Instance.ChangeState(GameManager.GameState.Menu);
 
-        // 카드 선택 중에는 게임을 멈춘다.
+        // 카드 선택 중에는 게임을 멈춘다. 두트윈은 돌아가게 할거
         Time.timeScale = 0f;
 
         // 스킬 선택창이 새로 열릴 때마다 리롤 횟수를 초기화한다.
@@ -70,7 +93,64 @@ public class LevelUpManager : MonoBehaviour
 
         // 처음 스킬 선택창이 열릴 때 카드들을 뽑는다.
         GenerateSkillCards();
+        UpdateCanvasGroupCache();   //혹시 모를 리스트 바뀔시에 갱신
+
+        //기존 트윈청소
+        panelRect.localScale = Vector3.zero;
+        for (int i = 0; i < skillButtons.Count; i++)
+        {
+            if (skillButtons[i] != null)
+            {
+                skillButtons[i].transform.localScale = Vector3.zero;
+                if (i < buttonCanvasGroups.Count) buttonCanvasGroups[i].alpha = 0f;
+            }
+        }
+
+        panelRect.DOKill();
+        foreach (var btn in skillButtons) { if (btn != null) btn.transform.DOKill(); }
+        foreach (var cg in buttonCanvasGroups) { if (cg != null) cg.DOKill(); }
+
+        //배경 패널 꿀렁 연출 (시퀀스)
+        Sequence slimeSeq = DOTween.Sequence();
+        slimeSeq.Append(panelRect.DOScale(new Vector3(1.2f, 0.75f, 1f), panelOpenDuration * 0.4f).SetEase(Ease.OutQuad))
+                .Append(panelRect.DOScale(new Vector3(0.9f, 1.1f, 1f), panelOpenDuration * 0.3f).SetEase(Ease.InOutQuad))
+                .Append(panelRect.DOScale(Vector3.one, panelOpenDuration * 0.3f).SetEase(Ease.OutQuad))
+                .SetUpdate(true); //시간 정지 무시 옵션
+
+        //꿀렁임이 끝나면 카드들이 순서대로 뿅뿅 등장
+        slimeSeq.OnComplete(() =>
+        {
+            showCardsCoroutine = StartCoroutine(ShowCardsCoroutine());
+        });
     }
+
+    private IEnumerator ShowCardsCoroutine()
+    {
+        for (int i = 0; i < skillButtons.Count; i++)
+        {
+            if (skillButtons[i] == null || !skillButtons[i].gameObject.activeSelf) continue;
+
+            //페이드 인
+            if (i < buttonCanvasGroups.Count)
+            {
+                buttonCanvasGroups[i].DOFade(1f, cardOpenDuration).SetUpdate(true);
+            }
+
+            if (i < buttonCanvasGroups.Count) buttonCanvasGroups[i].DOFade(1f, cardOpenDuration).SetUpdate(true);
+            skillButtons[i].transform.DOScale(Vector3.one, cardOpenDuration).SetEase(Ease.OutBack).SetUpdate(true);
+
+            //카드 등장할 때 사운드 매니저가 있다면 효과음 재생
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_UIHoverPaperDash01");
+            }
+
+            //실시간 정지 상태이므로 WaitForSeconds 대신 WaitForSecondsRealtime을 써야 대기 창이 먹힙니다!
+            yield return new WaitForSecondsRealtime(delayBetweenCards);
+        }
+        showCardsCoroutine = null;
+    }
+
 
     public void RerollSkills()
     {
@@ -79,6 +159,15 @@ public class LevelUpManager : MonoBehaviour
             UpdateRerollButtonUI();
             return;
         }
+
+        //리롤에도 SFX적용
+        if (showCardsCoroutine != null)
+        {
+            StopCoroutine(showCardsCoroutine);
+            showCardsCoroutine = null;
+        }
+        foreach (var btn in skillButtons) { if (btn != null) btn.transform.DOKill(); }
+        foreach (var cg in buttonCanvasGroups) { if (cg != null) cg.DOKill(); }
 
         // 리롤 횟수를 1 줄인다.
         currentRerollCount--;
@@ -156,6 +245,23 @@ public class LevelUpManager : MonoBehaviour
 
         // 실제로 스킬 카드들을 랜덤으로 뽑아서 UI에 표시하는 함수.
         // 기존 RerollSkills 안에 있던 카드 뽑기 코드를 이 함수로 옮겼다.
+
+        //리롤 후에도 뿅뿅 연출하려면 코루틴 재실행
+        for (int i = 0; i < skillButtons.Count; i++)
+        {
+            if (skillButtons[i] != null)
+            {
+                skillButtons[i].transform.localScale = Vector3.zero;
+                if (i < buttonCanvasGroups.Count) buttonCanvasGroups[i].alpha = 0f;
+            }
+        }
+        StartCoroutine(RerollAnimationDelayCo());
+    }
+
+    private IEnumerator RerollAnimationDelayCo()
+    {
+        yield return new WaitForEndOfFrame(); //한 프레임 대기
+        showCardsCoroutine = StartCoroutine(ShowCardsCoroutine()); //연출 및 사운드
     }
 
     private void GenerateSkillCards()
@@ -267,6 +373,9 @@ public class LevelUpManager : MonoBehaviour
 
     public void CloseLevelUpUI()
     {
+        //닫힐 때 잔여 트윈 정지
+        panelRect.DOKill();
+
         if (levelUpPanel != null)
         {
             levelUpPanel.SetActive(false);
