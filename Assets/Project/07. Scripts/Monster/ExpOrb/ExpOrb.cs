@@ -79,11 +79,10 @@ public class ExpOrb : MonoBehaviour
         if (playerLevelSystem != null)
         {
             playerLevelSystem.EarnExp(expAmount);
-            Debug.Log($"경험치 {expAmount} 획득 (자석 흡수)");
         }
         else
         {
-            Debug.LogError("경험치 못먹음");
+            
         }
         ReturnPool();
     }
