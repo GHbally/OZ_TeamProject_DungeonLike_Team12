@@ -45,7 +45,7 @@ public class FireballProjectile : SkillProjectileBase
         //SFX
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySFX("SFX_Spell01Layer01");
+            SoundManager.Instance.PlaySFX("SFX_Spell01Layer01", 2.0f);
         }
     }
 

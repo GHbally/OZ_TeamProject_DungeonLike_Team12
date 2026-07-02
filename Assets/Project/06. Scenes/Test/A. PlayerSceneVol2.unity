@@ -13026,11 +13026,11 @@ MonoBehaviour:
   bgmSource: {fileID: 1644995713}
   sfxSource: {fileID: 1644995712}
   bgmClips:
+  - {fileID: 8300000, guid: 3667e07cc61d04147b318134599a34a7, type: 3}
   - {fileID: 8300000, guid: cdb9579d85b4d4baaa28805e4a02b9a4, type: 3}
   - {fileID: 8300000, guid: f042bd451f48441e19db367bc0063f53, type: 3}
   - {fileID: 8300000, guid: 761503047d6a84e6a8801a25d1adf02c, type: 3}
   - {fileID: 8300000, guid: 01f5c344c6f5044778980143a0fc1eb1, type: 3}
-  - {fileID: 0}
   - {fileID: 8300000, guid: 5ac6fc4003415436bb278aafd51b6878, type: 3}
   - {fileID: 8300000, guid: 03fc1782d3b8b41edb7206193da9ac38, type: 3}
   sfxClips:
@@ -13041,7 +13041,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1b3717c68983e994e8eb7d483fb42be7, type: 3}
   - {fileID: 8300000, guid: ae26f2e1a95518d499700e383e311401, type: 3}
   - {fileID: 8300000, guid: e4d8f2077d45a7f459fe7c96050a999d, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 92253bab41bbc5f44acd8a853c611bcb, type: 3}
+  - {fileID: 8300000, guid: 8b68c4f98247dae4e81817a1294cfc30, type: 3}
+  - {fileID: 8300000, guid: 00647df9b15c94c4b8d49eeafe8254bf, type: 3}
+  - {fileID: 8300000, guid: d54a1019e24cf2d4dbf69106fb8dd871, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   minPlayInterval: 0.08
@@ -17931,7 +17934,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
