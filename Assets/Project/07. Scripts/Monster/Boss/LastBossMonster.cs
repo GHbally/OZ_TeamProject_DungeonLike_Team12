@@ -41,9 +41,21 @@ public class LastBossMonster : MonsterBase
     // 보스가 죽었을 때 폭발 이펙트도 같이 정리하기 위해 사용
     private GameObject currentMapExplosion;
 
+
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        monsterRenderers.Clear(); //혹시 모를 찌꺼기 청소
+
+        SpriteRenderer bossRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        if (bossRenderer != null)
+        {
+            monsterRenderers.Add(bossRenderer);
+            mainSpriteRenderer = bossRenderer; //사망 페이드아웃 때 사용할 메인 렌더러 지정
+        }
+
         /////////////보스 애니메이터 수안 추가 
         animator = GetComponentInChildren<Animator>();
 

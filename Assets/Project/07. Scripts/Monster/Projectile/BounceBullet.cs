@@ -30,6 +30,12 @@ public class BounceBullet : MonoBehaviour
     {
         dir = direction.normalized; // 보스가 넘겨준 방향 저장
         bounceCount = 0; //튕김 횟수 초기화
+
+        //SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ArcaneSpellNoVocalsv2");
+        }
     }
 
     
@@ -125,6 +131,15 @@ public class BounceBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return; // 플레이어가 아니면 무시
+
+        //플레이어 컴포넌트 줍줍
+        PlayerMovement movement = other.GetComponent<PlayerMovement>();
+
+        //만약 플레이어가 대쉬 중(무적 상태)이라면 데미지를 주지 않고 그냥 통과
+        if (movement != null && movement.IsInvincible)
+        {
+            return; //무적이면 데미지 처리를 하지 않고 리턴
+        }
 
         PlayerBase player = other.GetComponent<PlayerBase>(); // PlayerBase 가져오기
 
