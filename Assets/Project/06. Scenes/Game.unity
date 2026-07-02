@@ -6826,11 +6826,11 @@ MonoBehaviour:
   healOrbPrefab: {fileID: 3080511462412774030, guid: 41d400ceaf0c49c47a1377c85126e5cd, type: 3}
   warriorMonsterPrefab: {fileID: 1324394498758035481, guid: d4cc7c61b6ea410429a110673ce2ddc9, type: 3}
   archerMonsterPrefab: {fileID: 865639307355208688, guid: d88f7d686ba189f4f9e8d56e838d02fc, type: 3}
-  arrowPoolSize: 70
+  arrowPoolSize: 100
   expPoolSize: 100
   healOrbPoolSize: 20
-  warriorPoolSize: 100
-  archerPoolSize: 80
+  warriorPoolSize: 300
+  archerPoolSize: 100
   bossBulletPrefab: {fileID: 9211397875618147529, guid: e569304225699c84089d81c97c42ffce, type: 3}
   bossBulletPoolSize: 40
   bounceBulletPrefab: {fileID: 1757875339719539717, guid: 722b14fe09372bb45b080ce9227dbf33, type: 3}
@@ -8166,7 +8166,7 @@ MonoBehaviour:
   visualBase: {fileID: 766106834}
   visualLv5: {fileID: 1924278182}
   visualLv10: {fileID: 1485401893}
-  maxHp: 10000
+  maxHp: 100
 --- !u!114 &857179962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9344,8 +9344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef4620fefa42e5479b349f8b55d9b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  spawnWarriorNumber: 15
-  spawnArcherNumber: 15
+  spawnWarriorNumber: 100
+  spawnArcherNumber: 50
   waves: []
   spawnMin: {x: -18, y: -24}
   spawnMax: {x: 10, y: 3}
@@ -9363,6 +9363,7 @@ MonoBehaviour:
   stageClearImageDuration: 3
   rewardBoxPrefab: {fileID: 9118674948096215837, guid: 9c20240539f5c604aa82e9aaba97740d, type: 3}
   bossSpawnEffectPrefab: {fileID: 335289980808327379, guid: 302fd7f0386061f46b4fc1b49cd7507f, type: 3}
+  spawnDelay: 0.05
 --- !u!114 &1001306707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10177,6 +10178,14 @@ PrefabInstance:
     - target: {fileID: 3698033936403928363, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5923407588102516435, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_CellSize.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5923407588102516435, guid: 8fc02554cf72ad1449bbb496c8ab0012, type: 3}
+      propertyPath: m_CellSize.y
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
