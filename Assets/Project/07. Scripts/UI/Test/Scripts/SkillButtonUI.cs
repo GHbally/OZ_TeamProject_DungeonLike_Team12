@@ -14,6 +14,10 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [Header("마우스 오버 표시 UI")]
     [SerializeField] private GameObject hoverFrame;
 
+    [Header("카드 사운드")]
+    [SerializeField] private AudioClip hoverSound;
+    [SerializeField] private AudioClip selectSound;
+
     private Button button;
     private SkillCardInfo currentCardInfo;
     private Action<SkillCardInfo> onClicked;
@@ -94,6 +98,14 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             return;
         }
 
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(selectSound);
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager.Instance가 없습니다.");
+        }
         // 선택된 카드 정보를 LevelUpManager에게 전달한다.
         onClicked?.Invoke(currentCardInfo);
     }
@@ -102,6 +114,16 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         // 마우스가 카드 위에 올라오면 모서리 UI를 켠다.
         ShowHoverFrame();
+
+        // 카드에 마우스를 올렸을 때 Hover 사운드를 1번 재생한다.
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(hoverSound);
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager.Instance가 없습니다.");
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)

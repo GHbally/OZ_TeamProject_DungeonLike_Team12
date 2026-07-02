@@ -97,4 +97,33 @@ public class SoundManager : MonoBehaviour
         //PlayOneShot: 하나의 오디오 소스에서 여러 효과음이 겹쳐서 나게 해줌
         sfxSource.PlayOneShot(clip, volum);
     }
+
+    // AudioClip을 직접 받아서 SFX를 재생하는 함수
+    public void PlaySFX(AudioClip clip, float volum = 0.4f)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        if (sfxSource == null)
+        {
+            Debug.LogWarning("SoundManager: SFX AudioSource가 연결되지 않았습니다.", gameObject);
+            return;
+        }
+
+        string clipName = clip.name;
+
+        if (sfxLastPlayTimes.TryGetValue(clipName, out float lastTime))
+        {
+            if (Time.unscaledTime - lastTime < minPlayInterval)
+            {
+                return;
+            }
+        }
+
+        sfxLastPlayTimes[clipName] = Time.unscaledTime;
+
+        sfxSource.PlayOneShot(clip, volum);
+    }
 }

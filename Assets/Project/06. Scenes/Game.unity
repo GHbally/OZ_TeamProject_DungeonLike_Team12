@@ -4235,6 +4235,9 @@ MonoBehaviour:
   nameText: {fileID: 573688236}
   descText: {fileID: 988190990}
   hoverFrame: {fileID: 1485188981}
+  audioSource: {fileID: 117124689}
+  hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
+  selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &379907139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4951,6 +4954,9 @@ MonoBehaviour:
   nameText: {fileID: 38039928}
   descText: {fileID: 1752630451}
   hoverFrame: {fileID: 1777918585}
+  audioSource: {fileID: 117124689}
+  hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
+  selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &452388124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7990,6 +7996,9 @@ MonoBehaviour:
   nameText: {fileID: 441073762}
   descText: {fileID: 1191716578}
   hoverFrame: {fileID: 238874179}
+  audioSource: {fileID: 117124689}
+  hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
+  selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &841994467
 MonoBehaviour:
   m_ObjectHideFlags: 0
