@@ -22,8 +22,6 @@ public class HealOrb : MonoBehaviour
         if (player != null)
         {
             player.Heal(healAmount);
-
-            Debug.Log($"체력 {healAmount} 회복");
         }
 
         // 회복 구슬 풀로 반환

@@ -24,6 +24,13 @@ public class LastBossMonster : MonsterBase
 
     private BossPhase currentPhase;     // 현재 보스 페이즈 저장
 
+    [Header("페이즈 시각 효과")]
+    [SerializeField] private Color phase1Color = Color.white;
+    [SerializeField] private Color phase2Color = Color.yellow;
+    [SerializeField] private Color phase3Color = Color.red;
+
+   
+
     private Coroutine patternRoutine;
 
     // false면 공격, 탄환, 접촉 데미지 전부 막음
@@ -46,14 +53,22 @@ public class LastBossMonster : MonsterBase
     {
         base.OnEnable();
 
-        monsterRenderers.Clear(); //혹시 모를 찌꺼기 청소
+        // 보스 안에 있는 모든 SpriteRenderer를 다시 찾는다
+        monsterRenderers.Clear();
 
-        SpriteRenderer bossRenderer = GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
 
-        if (bossRenderer != null)
+        foreach (SpriteRenderer sr in renderers)
         {
-            monsterRenderers.Add(bossRenderer);
-            mainSpriteRenderer = bossRenderer; //사망 페이드아웃 때 사용할 메인 렌더러 지정
+            if (sr == null) continue;
+
+            monsterRenderers.Add(sr);
+        }
+
+        // 메인 SpriteRenderer 지정
+        if (monsterRenderers.Count > 0)
+        {
+            mainSpriteRenderer = monsterRenderers[0];
         }
 
         /////////////보스 애니메이터 수안 추가 
@@ -85,6 +100,11 @@ public class LastBossMonster : MonsterBase
 
         canAct = false;
 
+        // 시작은 1페이즈
+        currentPhase = BossPhase.Phase1;
+
+        // 1페이즈 색상 적용
+        ApplyPhaseColor(currentPhase);
 
     }
 
@@ -159,9 +179,14 @@ public class LastBossMonster : MonsterBase
             return;
         }
 
-        base.Update(); // 부모 Update 실행
+        // 부모 Update 실행
+        base.Update();
 
-        CheckPhase(); // 체력에 따라 페이즈 변경
+        // 체력에 따라 페이즈 변경
+        CheckPhase();
+
+        // 현재 페이즈 색상을 계속 유지
+        ApplyPhaseColor(currentPhase);
     }
 
     // 최종보스는 움직이지 않게 FixedUpdate를 막음
@@ -175,19 +200,60 @@ public class LastBossMonster : MonsterBase
 
     private void CheckPhase()
     {
-        float hpPercent = currentHp / maxHp; // 현재 체력 비율 계산
+        // 현재 체력 비율 계산
+        float hpPercent = currentHp / maxHp;
 
-        if (hpPercent <= 0.4f) // 체력 40% 이하
+        // 변경될 페이즈 저장
+        BossPhase newPhase;
+
+        // 체력 40% 이하 → 3페이즈
+        if (hpPercent <= 0.4f)
         {
-            currentPhase = BossPhase.Phase3; // Phase3 진입
+            newPhase = BossPhase.Phase3;
         }
-        else if (hpPercent <= 0.7f) // 체력 70% 이하
+        // 체력 70% 이하 → 2페이즈
+        else if (hpPercent <= 0.7f)
         {
-            currentPhase = BossPhase.Phase2; // Phase2 진입
+            newPhase = BossPhase.Phase2;
         }
+        // 그 외 → 1페이즈
         else
         {
-            currentPhase = BossPhase.Phase1; // 그 외는 Phase1
+            newPhase = BossPhase.Phase1;
+        }
+
+        // 페이즈가 바뀌었을 때만 실행
+        if (newPhase != currentPhase)
+        {
+            currentPhase = newPhase;
+            Debug.Log("현재 페이즈 : " + currentPhase);
+            // 페이즈에 맞는 색상 적용
+            ApplyPhaseColor(currentPhase);
+        }
+    }
+
+    /// ////////////////보스 페이즈 별 색상 변경 함수///////////////////////////
+    private void ApplyPhaseColor(BossPhase phase)
+    {
+        Color targetColor = phase1Color;
+
+        if (phase == BossPhase.Phase2)
+        {
+            targetColor = phase2Color;
+        }
+        else if (phase == BossPhase.Phase3)
+        {
+            targetColor = phase3Color;
+        }
+
+        // SpriteRenderer 전부 다시 찾기
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+
+        foreach (SpriteRenderer sr in renderers)
+        {
+            if (sr == null) continue;
+
+            sr.color = targetColor;
         }
     }
 

@@ -114,12 +114,9 @@ public class BounceBullet : MonoBehaviour
         {
             bounceCount++; // 튕긴 횟수 증가
             
-            Debug.Log("현재 반사 횟수 : " + bounceCount);
-
             if (bounceCount >= maxBounce) // 최대 튕김 횟수 이상이면
             {
                 ReturnToPool(); // 풀로 반환
-                Debug.Log("반사탄 제거");
             }
         }
 
