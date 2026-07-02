@@ -498,6 +498,13 @@ public class LastBossMonster : MonsterBase
         // 현재 상태를 Dead로 변경
         currentState = MonsterState.Dead;
 
+        GameObject hpUI = GameObject.Find("Canvas/HpUI");
+
+        if (hpUI != null)
+        {
+            hpUI.SetActive(false);
+        }
+
         // 보스 패턴 코루틴 정지
         if (patternRoutine != null)
         {
