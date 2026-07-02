@@ -4651,6 +4651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   stageManager: {fileID: 1243918461}
   spawnPosition: {x: -4.4, y: -9.7, z: 0}
+  pressEUI: {fileID: 0}
+  interactKey: 101
 --- !u!61 &845318165
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7779,8 +7781,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef4620fefa42e5479b349f8b55d9b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  spawnWarriorNumber: 1
-  spawnArcherNumber: 5
+  spawnWarriorNumber: 200
+  spawnArcherNumber: 100
   waves: []
   spawnMin: {x: -18, y: -24}
   spawnMax: {x: 10, y: 3}
@@ -7811,7 +7813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 2
+  stage: 1
   waveManager: {fileID: 1243918460}
   nextStagePortal: {fileID: 845318161}
   stageMapSwitcher: {fileID: 904362403}
@@ -11162,8 +11164,8 @@ MonoBehaviour:
   arrowPoolSize: 70
   expPoolSize: 100
   healOrbPoolSize: 20
-  warriorPoolSize: 100
-  archerPoolSize: 80
+  warriorPoolSize: 500
+  archerPoolSize: 300
   bossBulletPrefab: {fileID: 9211397875618147529, guid: e569304225699c84089d81c97c42ffce, type: 3}
   bossBulletPoolSize: 40
   bounceBulletPrefab: {fileID: 1757875339719539717, guid: 722b14fe09372bb45b080ce9227dbf33, type: 3}
@@ -13118,6 +13120,7 @@ MonoBehaviour:
   swordWavePool: {fileID: 1036415472}
   warriorSlashSkillData: {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   swordWaveUnlockLevel: 5
+  noTargetRetryDelay: 0.1
 --- !u!114 &2097084838
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,9 +8,9 @@ using UnityEngine;
 public class ArcherMonster : MonsterBase
 {
     [Header("원거리 몬스터 설정")]
-    public float attackRange = 7f;      //사거리
+    public float attackRange = 7f; //사거리
     public float attackCooldown = 2f;   //공격주기
-    private float attackTimer;          //연사 속도 타이머
+    private float attackTimer;  //연사 속도 타이머
 
     public float attackPreDelay = 0.5f; //선공격 딜레이
 
@@ -24,20 +24,47 @@ public class ArcherMonster : MonsterBase
     //사거리별 상태변화 로직
     protected override void UpdateState()
     {
+        // 플레이어가 없으면 종료
         if (player == null) return;
-        //현재 아처 위치와 플레이어 위치 사이의 거리 계산
-        float distance = Vector2.Distance(transform.position, player.position);
 
-        //사거리 안이면
-        if (distance <= attackRange)
+        // 메인 카메라 가져오기
+        Camera cam = Camera.main;
+
+        // 카메라가 없으면 추적 상태
+        if (cam == null)
         {
-            currentState = MonsterState.Attack; //공격상태로
+            currentState = MonsterState.Chase;
+            return;
         }
-        //아니면
+
+        // 플레이어와 몬스터를 화면 좌표(Viewport)로 변환
+        Vector3 playerViewportPos = cam.WorldToViewportPoint(player.position);
+        Vector3 monsterViewportPos = cam.WorldToViewportPoint(transform.position);
+
+        // 플레이어 판정
+        // X는 화면 안(0~1)
+        // Y는 화면 아래(-)만 막고 위쪽은 제한하지 않는다.
+        bool isPlayerInRange =
+            playerViewportPos.x >= 0f && playerViewportPos.x <= 1f &&
+            playerViewportPos.y >= 0f &&
+            playerViewportPos.z > 0f;
+
+        // 몬스터는 반드시 화면 안에 있어야 함
+        bool isMonsterInCamera =
+            monsterViewportPos.x >= 0f && monsterViewportPos.x <= 1f &&
+            monsterViewportPos.y >= 0f && monsterViewportPos.y <= 1f &&
+            monsterViewportPos.z > 0f;
+
+        // 몬스터가 화면 안에 있고,
+        // 플레이어가 화면 위쪽이나 화면 안에 있으면 공격
+        if (isMonsterInCamera && isPlayerInRange)
+        {
+            currentState = MonsterState.Attack;
+        }
         else
         {
-            currentState = MonsterState.Chase;  //추적상태로
-        }     
+            currentState = MonsterState.Chase;
+        }
     }
 
     //원거리 공격

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -73,6 +74,9 @@ public class WaveManager : MonoBehaviour
 
     [Header("보스 소환 이펙트")]
     public GameObject bossSpawnEffectPrefab;
+
+    [Header("몬스터 스폰 시간")]
+    [SerializeField] private float spawnDelay = 0.05f;
 
     // 현재 스테이지 클리어 후 생성된 보상 상자를 저장한다.
     // 다음 스테이지로 넘어갈 때 이 오브젝트를 제거하기 위해 사용한다.
@@ -208,21 +212,44 @@ public class WaveManager : MonoBehaviour
             stageWaveUI.UpdateMonsterCount(aliveMonster);
         }
 
-        //전사 몬스터 생성
+        // 스폰할 몬스터 목록 생성
+        List<MonsterType> spawnList = new List<MonsterType>();
+
+        // 전사 몬스터 추가
         for (int i = 0; i < data.warriorCount; i++)
         {
-            SpawnWarrior(data);
-
-            yield return new WaitForSeconds(0.2f);
+            spawnList.Add(MonsterType.Warrior);
         }
 
-
-        // 궁수 몬스터 생성
+        // 궁수 몬스터 추가
         for (int i = 0; i < data.archerCount; i++)
         {
-            SpawnArcher(data);
+            spawnList.Add(MonsterType.Archer);
+        }
 
-            yield return new WaitForSeconds(0.2f);
+        // 랜덤 섞기
+        for (int i = 0; i < spawnList.Count; i++)
+        {
+            int randomIndex = Random.Range(i, spawnList.Count);
+
+            MonsterType temp = spawnList[i];
+            spawnList[i] = spawnList[randomIndex];
+            spawnList[randomIndex] = temp;
+        }
+
+        // 랜덤 순서대로 생성
+        foreach (MonsterType monsterType in spawnList)
+        {
+            if (monsterType == MonsterType.Warrior)
+            {
+                SpawnWarrior(data);
+            }
+            else
+            {
+                SpawnArcher(data);
+            }
+
+            yield return new WaitForSeconds(spawnDelay);
         }
     }
 
