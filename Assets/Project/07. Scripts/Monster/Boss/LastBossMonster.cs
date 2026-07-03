@@ -660,7 +660,7 @@ public class LastBossMonster : MonsterBase
 
         // 카메라 연출 (DOTween)
         Sequence camSeq = DOTween.Sequence().SetUpdate(true);
-        camSeq.Join(Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y, -10f), 3.0f));
+        camSeq.Join(Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y, -10f), 5.0f));
         camSeq.Join(Camera.main.DOOrthoSize(3f, 3.0f));
 
         yield return new WaitForSecondsRealtime(3.0f);
