@@ -15,6 +15,9 @@ public class SkillManager : MonoBehaviour
     // Player 오브젝트에 AttackStats가 붙어 있으면 자동 찾기용
     private AttackStats attackStats;
 
+    // Player 체력 스탯 적용용
+    private PlayerBase playerBase;
+
     // 스킬별 현재 레벨을 저장하는 Dictionary
     private readonly Dictionary<SkillData, SkillRuntime> skillRuntimes = new();
 
@@ -61,6 +64,18 @@ public class SkillManager : MonoBehaviour
         if (attackStats == null)
         {
             attackStats = FindFirstObjectByType<AttackStats>();
+        }
+
+        // SkillManager가 Player에 붙어 있으면 GetComponent로 찾을 수 있다.
+        if (playerBase == null)
+        {
+            playerBase = GetComponent<PlayerBase>();
+        }
+
+        // SkillManager가 다른 오브젝트에 있으면 씬에서 PlayerBase를 찾아준다.
+        if (playerBase == null)
+        {
+            playerBase = FindFirstObjectByType<PlayerBase>();
         }
     }
 
@@ -237,45 +252,70 @@ public class SkillManager : MonoBehaviour
         switch (effectType)
         {
             case SkillEffectType.AttackDamageFlat:
-                // 공격력을 고정 수치만큼 증가시킨다.
-                attackStats.IncreaseAttackDamage(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseAttackDamage(value);
+                }
                 break;
 
             case SkillEffectType.AttackDamagePercent:
-                // 공격력을 퍼센트로 증가시킨다.
-                // 예: value가 10이면 공격력 10% 증가.
-                attackStats.IncreaseAttackDamagePercent(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseAttackDamagePercent(value);
+                }
                 break;
 
             case SkillEffectType.AttackSpeedFlat:
-                // 공격속도를 고정 수치만큼 증가시킨다.
-                attackStats.IncreaseAttackSpeed(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseAttackSpeed(value);
+                }
                 break;
 
             case SkillEffectType.AttackRangeFlat:
-                // 공격 사거리를 고정 수치만큼 증가시킨다.
-                attackStats.IncreaseAttackRange(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseAttackRange(value);
+                }
                 break;
 
             case SkillEffectType.CriticalChanceFlat:
-                // 치명타 확률을 증가시킨다.
-                // AttackStats 내부에서 0~1 사이로 제한한다.
-                attackStats.IncreaseCriticalChance(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseCriticalChance(value);
+                }
                 break;
 
             case SkillEffectType.CriticalMultiplierFlat:
-                // 치명타 배율을 증가시킨다.
-                attackStats.IncreaseCriticalMultiplier(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseCriticalMultiplier(value);
+                }
+                break;
+
+            case SkillEffectType.MaxHpFlat:
+                if (playerBase != null)
+                {
+                    playerBase.IncreaseMaxHpAndHeal(value);
+                }
+                else
+                {
+                    Debug.LogWarning("SkillManager: PlayerBase를 찾지 못해서 최대 체력 증가를 적용하지 못했습니다.", this);
+                }
                 break;
 
             case SkillEffectType.SkillCooldownReductionPercent:
-                // 전체 스킬 쿨타임 감소 패시브.
-                // 파이어볼 같은 액티브 스킬의 최종 쿨타임 계산에 사용된다.
-                attackStats.ReduceSkillCooldownPercent(value);
+                if (attackStats != null)
+                {
+                    attackStats.ReduceSkillCooldownPercent(value);
+                }
                 break;
+
             case SkillEffectType.MovingSpeedFlat:
-                // 이동속도 증가
-                attackStats.IncreaseMovingSpeed(value);
+                if (attackStats != null)
+                {
+                    attackStats.IncreaseMovingSpeed(value);
+                }
                 break;
         }
 

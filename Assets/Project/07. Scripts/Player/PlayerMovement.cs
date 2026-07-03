@@ -19,6 +19,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f; //대쉬 지속 시간
     [SerializeField] private float dashCooldown = 1.0f; //대쉬 쿨
 
+    [Header("무적")]
+    [SerializeField] private float dashInvincibleDuration = 0.4f;
+
+    private bool isInvincible = false;
+    private Coroutine invincibleCoroutine;
+
     [HideInInspector] public Transform visualTransform;      //캐릭터 스프라이트를 담고 있는 자식 위치 저장용 변수
 
     private Rigidbody2D rb;                         //리지드바디
@@ -34,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     //멈추면 0, 움직이면 0보다 큼
     public float CurrentSpeed => moveVec.sqrMagnitude;
 
-    public bool IsInvincible => isDashing;  //대쉬중 무적 판정 해줄 프로퍼티
+    public bool IsInvincible => isInvincible;  //대쉬중 무적 판정 해줄 프로퍼티
 
     void Start()
     {
@@ -139,6 +145,14 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;    //대쉬 썼으니 쿨타임 상태로
         isDashing = true;   //대쉬 중 켜기
 
+        // 무적 코루틴을 따로 실행한다.
+        if (invincibleCoroutine != null)
+        {
+            StopCoroutine(invincibleCoroutine);
+        }
+
+        invincibleCoroutine = StartCoroutine(InvincibleCo());
+
         //SFX
         if (SoundManager.Instance != null)
         {
@@ -160,7 +174,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //대쉬 도중 이미 사망했으면 애니메이션 건드리지 않고 종료
-        if (playerBase != null && playerBase.IsDead) yield break;
+        if (playerBase != null && playerBase.IsDead)
+        {
+            isInvincible = false;
+            yield break;
+        }
 
         //대쉬가 끝난 순간 키보드 뗐을 경우를 대비해 애니메이션도 Idle(0)상태로 강제 전환
         if (animator != null)
@@ -190,5 +208,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         canDash = true;     //대쉬 사용 가능
+    }
+
+    private System.Collections.IEnumerator InvincibleCo()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(dashInvincibleDuration);
+
+        isInvincible = false;
     }
 }

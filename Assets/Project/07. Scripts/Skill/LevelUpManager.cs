@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI; // TMP를 사용하므로 필수!
 using DG.Tweening;    //두트윈재밌겠당히히
+using UnityEngine.EventSystems;
 
 public class LevelUpManager : MonoBehaviour
 {
@@ -59,6 +60,21 @@ public class LevelUpManager : MonoBehaviour
         //두트윈 페이드 효과용
         UpdateCanvasGroupCache();
 
+    }
+
+    private void Update()
+    {
+        // 레벨업 패널이 꺼져 있으면 입력을 받지 않는다.
+        if (levelUpPanel == null || !levelUpPanel.activeSelf)
+        {
+            return;
+        }
+
+        // 스페이스 바를 누르면 현재 선택된 UI를 클릭한다.
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SelectCurrentCard();
+        }
     }
 
     private void UpdateCanvasGroupCache()
@@ -327,6 +343,9 @@ public class LevelUpManager : MonoBehaviour
                 OnSkillCardSelected
             );
         }
+
+        // 카드 생성 후 첫 번째 카드를 키보드 선택 상태로 만든다.
+        StartCoroutine(DelaySelectFirstSkillCard());
     }
     private void UpdateRerollButtonUI()
     {
@@ -382,5 +401,70 @@ public class LevelUpManager : MonoBehaviour
         }
         GameManager.Instance.ChangeState(GameManager.GameState.Playing);
         Time.timeScale = 1f;
+    }
+
+    private void SelectSecondSkillCard()
+    {
+        if (EventSystem.current == null)
+        {
+            Debug.LogWarning("EventSystem이 씬에 없습니다.");
+            return;
+        }
+
+        if (skillButtons.Count <= 1)
+        {
+            return;
+        }
+
+        if (skillButtons[1] == null)
+        {
+            return;
+        }
+
+        if (!skillButtons[1].gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(skillButtons[1].gameObject);
+    }
+    
+
+    private void SelectCurrentCard()
+    {
+        if (EventSystem.current == null)
+        {
+            Debug.LogWarning("EventSystem이 없습니다.");
+            return;
+        }
+
+        GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+
+        if (selectedObject == null)
+        {
+            return;
+        }
+
+        Button selectedButton = selectedObject.GetComponent<Button>();
+
+        if (selectedButton == null)
+        {
+            return;
+        }
+
+        if (!selectedButton.interactable)
+        {
+            return;
+        }
+
+        selectedButton.onClick.Invoke();
+    }
+
+    private IEnumerator DelaySelectFirstSkillCard()
+    {
+        yield return new WaitForSecondsRealtime(0.7f);
+
+        SelectSecondSkillCard();
     }
 }

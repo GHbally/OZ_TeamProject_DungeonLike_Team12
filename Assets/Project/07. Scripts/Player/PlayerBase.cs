@@ -75,13 +75,14 @@ public class PlayerBase : MonoBehaviour
             return; //데미지 계산X -> 무적
         }
 
-        Debug.Log("플레이어 피격됨");
         //위가 아니면 데미지만큼 현재 체력 감소
         currentHp -= damage;
 
         //체력 계산 도중 현재HP 범위 제한(0 ~ maxHp)
         //Clamp(현재 HP, 최소값0, 최대값 최대HP)
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+
+        Debug.Log($"플레이어 피격됨 [현재 체력: {currentHp}/{maxHp}");
 
         // [추가] 슬라이더 값 갱신(김영웅 수정)
         if (hpSlider != null)
@@ -335,6 +336,42 @@ public class PlayerBase : MonoBehaviour
             movement.visualTransform = newVisual;   //기존에 넣었던 위치 전송
 
             movement.animator = animator;           //애니메이터 새 스프라이트로 교체
+        }
+    }
+
+    public void IncreaseMaxHpAndHeal(float amount)
+    {
+        // 죽은 상태면 적용하지 않는다.
+        if (IsDead)
+        {
+            return;
+        }
+
+        if (amount <= 0f)
+        {
+            return;
+        }
+
+        // 최대 체력 증가
+        maxHp += amount;
+
+        // 증가한 최대 체력만큼 현재 체력도 회복
+        currentHp += amount;
+
+        // 혹시 최대 체력을 넘지 않도록 제한
+        currentHp = Mathf.Clamp(currentHp, 0f, maxHp);
+
+        // HP 슬라이더 최대값과 현재값 갱신
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = maxHp;
+            hpSlider.value = currentHp;
+        }
+
+        // HUD 갱신
+        if (HUDController.Instance != null)
+        {
+            HUDController.Instance.UpdateHP(currentHp, maxHp);
         }
     }
 }

@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SkillButtonUI : MonoBehaviour,
+    IPointerEnterHandler,
+    IPointerExitHandler,
+    ISelectHandler,
+    IDeselectHandler
 {
     [Header("UI")]
-    [SerializeField]public Image iconImage;
+    [SerializeField] public Image iconImage;
     [SerializeField] public TMP_Text nameText;
     [SerializeField] public TMP_Text descText;
 
@@ -22,19 +26,19 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private SkillCardInfo currentCardInfo;
     private Action<SkillCardInfo> onClicked;
 
-    //[SerializeField] private int buttonIndex;
-    //[SerializeField] private LevelUpManager manager;
-    //private SkillData mySkill;
-
     private void Awake()
     {
         button = GetComponent<Button>();
 
-        // 버튼 클릭은 Inspector가 아니라 이 스크립트에서 관리한다.
+        if (button == null)
+        {
+            Debug.LogError($"{name}: Button 컴포넌트가 없습니다.", gameObject);
+            return;
+        }
+
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClickButton);
 
-        // 텍스트가 버튼 클릭을 막지 않게 한다.
         if (nameText != null)
         {
             nameText.raycastTarget = false;
@@ -45,11 +49,14 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             descText.raycastTarget = false;
         }
 
-        // 시작할 때 마우스 오버 표시 UI는 꺼둔다.
+        if (iconImage != null)
+        {
+            iconImage.raycastTarget = false;
+        }
+
         HideHoverFrame();
     }
 
-    // LevelUpManager가 리롤할 때 카드 정보를 넣어준다.
     public void Setup(
         SkillCardInfo cardInfo,
         Action<SkillCardInfo> clickCallback)
@@ -57,7 +64,6 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         currentCardInfo = cardInfo;
         onClicked = clickCallback;
 
-        // 카드가 재사용될 수 있으므로 Setup할 때마다 Hover 표시를 꺼준다.
         HideHoverFrame();
 
         if (cardInfo == null)
@@ -72,8 +78,6 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             iconImage.sprite = cardInfo.Icon;
             iconImage.enabled = cardInfo.Icon != null;
-
-            // 아이콘 이미지가 클릭을 막지 않게 한다.
             iconImage.raycastTarget = false;
         }
 
@@ -102,33 +106,55 @@ public class SkillButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             SoundManager.Instance.PlaySFX(selectSound);
         }
-        else
-        {
-            Debug.LogWarning("SoundManager.Instance가 없습니다.");
-        }
-        // 선택된 카드 정보를 LevelUpManager에게 전달한다.
+
         onClicked?.Invoke(currentCardInfo);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // 마우스가 카드 위에 올라오면 모서리 UI를 켠다.
-        ShowHoverFrame();
-
-        // 카드에 마우스를 올렸을 때 Hover 사운드를 1번 재생한다.
-        if (SoundManager.Instance != null)
+        // 마우스로 올린 카드도 현재 선택된 카드로 만든다.
+        // 이렇게 해야 마우스와 키보드 선택 위치가 서로 맞는다.
+        if (EventSystem.current != null)
         {
-            SoundManager.Instance.PlaySFX(hoverSound);
+            EventSystem.current.SetSelectedGameObject(gameObject);
         }
         else
         {
-            Debug.LogWarning("SoundManager.Instance가 없습니다.");
+            ShowHoverFrame();
+            PlayHoverSound();
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        // 마우스가 나가도 키보드 선택 상태라면 Hover UI를 유지한다.
+        if (EventSystem.current != null &&
+            EventSystem.current.currentSelectedGameObject == gameObject)
+        {
+            return;
+        }
+
         HideHoverFrame();
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        // 키보드 방향키/WASD로 선택됐을 때 Hover UI 표시
+        ShowHoverFrame();
+        PlayHoverSound();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        HideHoverFrame();
+    }
+
+    private void PlayHoverSound()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(hoverSound);
+        }
     }
 
     private void ShowHoverFrame()
