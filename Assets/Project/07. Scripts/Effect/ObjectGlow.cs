@@ -27,6 +27,6 @@ public class ObjectGlow : MonoBehaviour
         }
 
         //게임이 시작되면 내 스프라이트의 색상을 인스펙터에서 고른 HDR 색으로 덮어씀
-        spriteRenderer.material.SetColor("_Color", glowColor);
+        GetComponent<SpriteRenderer>().material.SetColor("_Color", glowColor);
     }
 }
