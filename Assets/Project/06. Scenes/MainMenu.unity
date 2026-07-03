@@ -367,6 +367,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 00647df9b15c94c4b8d49eeafe8254bf, type: 3}
   - {fileID: 8300000, guid: d54a1019e24cf2d4dbf69106fb8dd871, type: 3}
   - {fileID: 8300000, guid: 002dbd3e274a5ea43b33818e88dc2eaf, type: 3}
+  - {fileID: 8300000, guid: 8c6cbeaba5ccc944abdbb6605e90ba87, type: 3}
   - {fileID: 0}
   minPlayInterval: 0.08
 --- !u!4 &87128243

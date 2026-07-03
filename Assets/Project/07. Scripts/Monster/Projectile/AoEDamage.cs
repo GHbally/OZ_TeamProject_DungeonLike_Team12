@@ -17,6 +17,15 @@ public class AoEDamage : MonoBehaviour
             return; // 안전지대 안이면 데미지 안 받음
         }
 
+        //맵익스플로전에만 효과음 사용
+        if (gameObject.name.Contains("MapExplosion"))
+        {
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_SummonThunderCreatureTwov1");
+            }
+        }
+
         PlayerBase player = other.GetComponent<PlayerBase>();
         if (player != null)
         {

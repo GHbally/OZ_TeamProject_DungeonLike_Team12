@@ -267,6 +267,15 @@ public class LastBossMonster : MonsterBase
         // 피격 효과가 끝난 뒤 보스 페이즈 색을 다시 적용
     }
 
+    //피격 SFX
+    protected override void PlayHitSound()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_Monsterunworldlyv3");
+        }
+    }
+
     private IEnumerator ResetBossPhaseColorAfterHit()
     {
         yield return new WaitForSeconds(0.12f);

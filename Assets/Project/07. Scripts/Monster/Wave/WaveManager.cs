@@ -330,6 +330,12 @@ public class WaveManager : MonoBehaviour
     /////////////////////////////보스 소환 이펙트//////////////////////////
     private IEnumerator BossSpawnEffectCo(Vector3 spawnPos)
     {
+        //보스소환 SFX
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_Monsterunworldlyv2");
+        }
+
         // 이펙트 프리팹이 연결되어 있으면
         if (bossSpawnEffectPrefab != null)
         {
