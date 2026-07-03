@@ -9349,11 +9349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef4620fefa42e5479b349f8b55d9b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  spawnWarriorNumber: 100
-  spawnArcherNumber: 50
+  spawnWarriorNumber: 120
+  spawnArcherNumber: 30
   waves: []
-  spawnMin: {x: -18, y: -24}
-  spawnMax: {x: 10, y: 3}
+  spawnMin: {x: -12, y: -22}
+  spawnMax: {x: 7.7, y: -1.7}
   player: {fileID: 857179965}
   spawnBlockLayer:
     serializedVersion: 2
@@ -9382,7 +9382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 1
+  stage: 3
   waveManager: {fileID: 1001306706}
   nextStagePortal: {fileID: 329450197}
   stageMapSwitcher: {fileID: 1353562713}
