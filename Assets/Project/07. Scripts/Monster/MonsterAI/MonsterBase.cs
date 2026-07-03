@@ -432,11 +432,7 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
         }
         currentHp -= damageInfo.Damage;
 
-        //SFX
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlaySFX("SFX_GoblinAttackv1");
-        }
+        PlayHitSound();
 
         StartCoroutine(HitStunCo()); //피격 경직 시작
 
@@ -464,6 +460,15 @@ public abstract class MonsterBase : MonoBehaviour, IDamageable1
             }
 
             Death();
+        }
+    }
+
+    //기본 피격 SFX
+    protected virtual void PlayHitSound()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_GoblinAttackv1");
         }
     }
 
