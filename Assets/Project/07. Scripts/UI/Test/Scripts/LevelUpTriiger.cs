@@ -9,12 +9,12 @@ public class LevelUpTrigger : MonoBehaviour
         // 테스트용: 키보드 'L'키를 누르면 레벨업 창이 뜨게 함
         if (Input.GetKeyDown(KeyCode.L))
         {
-            levelUpManager.OpenLevelUpUI();
+            //levelUpManager.OpenLevelUpUI();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            levelUpManager.CloseLevelUpUI();
+            //levelUpManager.CloseLevelUpUI();
         }
     }
 }
