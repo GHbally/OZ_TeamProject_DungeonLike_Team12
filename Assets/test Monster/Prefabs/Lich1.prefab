@@ -227,6 +227,10 @@ MonoBehaviour:
   ultimateCastTime: 5
   touchDamage: 20
   touchDamageInterval: 1
+  phase1Color: {r: 1, g: 1, b: 1, a: 1}
+  phase2Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  phase3Color: {r: 1, g: 0, b: 0, a: 1}
+  bossTransform: {fileID: 448602166062516441}
 --- !u!1 &7223853729890923072
 GameObject:
   m_ObjectHideFlags: 0
