@@ -4235,7 +4235,6 @@ MonoBehaviour:
   nameText: {fileID: 573688236}
   descText: {fileID: 988190990}
   hoverFrame: {fileID: 1485188981}
-  audioSource: {fileID: 117124689}
   hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
   selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &379907139
@@ -4954,7 +4953,6 @@ MonoBehaviour:
   nameText: {fileID: 38039928}
   descText: {fileID: 1752630451}
   hoverFrame: {fileID: 1777918585}
-  audioSource: {fileID: 117124689}
   hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
   selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &452388124
@@ -7996,7 +7994,6 @@ MonoBehaviour:
   nameText: {fileID: 441073762}
   descText: {fileID: 1191716578}
   hoverFrame: {fileID: 238874179}
-  audioSource: {fileID: 117124689}
   hoverSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
   selectSound: {fileID: 8300000, guid: 9d6d4ddb05f474146b9bdfb0ffe4d4b1, type: 3}
 --- !u!114 &841994467
@@ -8173,7 +8170,7 @@ MonoBehaviour:
   visualBase: {fileID: 766106834}
   visualLv5: {fileID: 1924278182}
   visualLv10: {fileID: 1485401893}
-  maxHp: 100
+  maxHp: 150
 --- !u!114 &857179962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8190,6 +8187,7 @@ MonoBehaviour:
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
+  dashInvincibleDuration: 0.4
   visualTransform: {fileID: 0}
   animator: {fileID: 0}
 --- !u!50 &857179964
@@ -11290,6 +11288,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 75d2b4cc4f3f6464c948cf2f66ced448, type: 2}
   - {fileID: 11400000, guid: 7807054e2a35b9d4594e435c86b6187c, type: 2}
   - {fileID: 11400000, guid: c4aaf281a7a456e429fd1e32baeb9f8d, type: 2}
+  - {fileID: 11400000, guid: bebfcd9af1d0dc54996cb1a4c647b9b6, type: 2}
 --- !u!4 &1227015022
 Transform:
   m_ObjectHideFlags: 0
@@ -15124,7 +15123,7 @@ MonoBehaviour:
   delayBetweenCards: 0.12
   rerollButton: {fileID: 1934967975}
   rerollButtonText: {fileID: 515838619}
-  rerollButtonCanvasGroup: {fileID: 0}
+  rerollButtonCanvasGroup: {fileID: 1934967976}
   maxRerollCount: 2
   nextStagePortal: {fileID: 1083368626}
 --- !u!4 &1816111447
@@ -15727,6 +15726,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!225 &1934967976 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8179420215055436827, guid: 9d11c075b63d49f479a8d3e45f43cc1c, type: 3}
+  m_PrefabInstance: {fileID: 745693419}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1939991556
 GameObject:
   m_ObjectHideFlags: 0
