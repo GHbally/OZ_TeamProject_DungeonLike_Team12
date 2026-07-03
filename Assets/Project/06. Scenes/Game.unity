@@ -962,7 +962,7 @@ Transform:
   m_GameObject: {fileID: 97987336}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.98, y: -23.13, z: 0}
+  m_LocalPosition: {x: -7, y: -17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -990,11 +990,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8113452121268310570, guid: 5b931f70b119a8c42b2c4f0a87d2e91d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8113452121268310570, guid: 5b931f70b119a8c42b2c4f0a87d2e91d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 8113452121268310570, guid: 5b931f70b119a8c42b2c4f0a87d2e91d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3802,7 +3802,7 @@ Transform:
   m_GameObject: {fileID: 329450197}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: -9.5, z: 0}
+  m_LocalPosition: {x: -3, y: -21, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6868,7 +6868,7 @@ MonoBehaviour:
   warriorMonsterPrefab: {fileID: 1324394498758035481, guid: d4cc7c61b6ea410429a110673ce2ddc9, type: 3}
   archerMonsterPrefab: {fileID: 865639307355208688, guid: d88f7d686ba189f4f9e8d56e838d02fc, type: 3}
   arrowPoolSize: 100
-  expPoolSize: 100
+  expPoolSize: 300
   healOrbPoolSize: 20
   warriorPoolSize: 300
   archerPoolSize: 100
@@ -8321,7 +8321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelSystem
   currentLevel: 1
   currentExp: 0
-  maxExp: 100
+  maxExp: 150
 --- !u!70 &857179971
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -9382,7 +9382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 3
+  stage: 1
   waveManager: {fileID: 1001306706}
   nextStagePortal: {fileID: 329450197}
   stageMapSwitcher: {fileID: 1353562713}
@@ -15236,7 +15236,7 @@ Transform:
   m_GameObject: {fileID: 1847978477}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3, y: -10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

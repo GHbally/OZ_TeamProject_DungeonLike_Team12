@@ -19,6 +19,18 @@ public class UIManager : MonoBehaviour
     //순서대로 나올 스킬 목록들
     [SerializeField] private List<RectTransform> skillRows = new List<RectTransform>();
 
+    [Header("Manual UI 구성요소")]
+    public GameObject ManualUI; // 조작법 UI 전체 오브젝트
+
+    // 조작법 UI에서 두트윈으로 커질 전체 배경 패널
+    [SerializeField] private GameObject manualPanelRect;
+
+    // 조작법 UI에서 닫기 버튼으로 사용할 버튼 RectTransform
+    [SerializeField] private RectTransform manualExitButtonRect;
+
+    // 조작법 UI 안에서 순서대로 등장할 조작법 줄들
+    [SerializeField] private List<RectTransform> manualRows = new List<RectTransform>();
+
 
     [Header("두트윈 시간 설정")]
     [SerializeField] private float panelOpenDuration = 0.4f;    //메인패널 열리는데 걸리는 시간
@@ -35,6 +47,18 @@ public class UIManager : MonoBehaviour
 
     private bool isPositionCached = false;
 
+    // 조작법 항목들의 원래 위치를 기억해둘 리스트
+    private List<Vector3> originalManualLocalPositions = new List<Vector3>();
+
+    // 조작법 항목들의 페이드인을 위한 CanvasGroup 리스트
+    private List<CanvasGroup> manualRowCanvasGroups = new List<CanvasGroup>();
+
+    // 조작법 UI가 순서대로 나오는 코루틴 제어용
+    private Coroutine manualOpenRoutine;
+
+    // 조작법 항목들의 위치를 이미 저장했는지 확인하는 스위치
+    private bool isManualPositionCached = false;
+
     private void Start()
     {
         rowCanvasGroups.Clear();
@@ -48,6 +72,25 @@ public class UIManager : MonoBehaviour
                 CanvasGroup cg = row.GetComponent<CanvasGroup>() ?? row.gameObject.AddComponent<CanvasGroup>();
                 rowCanvasGroups.Add(cg);    //캐싱 전용 리스트에 보관
             }
+        }
+
+        // 조작법 목록들의 페이드 인을 위해 CanvasGroup 세팅
+        manualRowCanvasGroups.Clear();
+
+        foreach (var row in manualRows)
+        {
+            if (row != null)
+            {
+                // 조작법 줄 오브젝트에 CanvasGroup이 있으면 가져오고, 없으면 새로 붙인다.
+                CanvasGroup cg = row.GetComponent<CanvasGroup>() ?? row.gameObject.AddComponent<CanvasGroup>();
+                manualRowCanvasGroups.Add(cg); // 조작법 전용 리스트에 보관
+            }
+        }
+
+        // 시작할 때 조작법 UI가 켜져 있다면 꺼준다.
+        if (ManualUI != null)
+        {
+            ManualUI.SetActive(false);
         }
     }
 
@@ -158,6 +201,168 @@ public class UIManager : MonoBehaviour
         panelRect.transform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InQuad).OnComplete(() =>
         {
             SkillUI.SetActive(false); //크기가 0이 되어서 완전히 사라진 순간, 실제 게임 오브젝트도 SetActive(false)로 완전히 꺼줌
+        });
+    }
+    // "Manual" 버튼을 누르면 실행될 메서드
+    public void OpenManualInfo()
+    {
+        // 연결된 조작법 UI가 없으면 리턴
+        if (ManualUI == null || manualPanelRect == null)
+        {
+            return;
+        }
+
+        // 조작법 UI 오브젝트를 활성화해서 눈에 보이게 함
+        ManualUI.SetActive(true);
+
+        // 조작법 항목들의 원래 위치를 한 번만 저장
+        if (!isManualPositionCached)
+        {
+            originalManualLocalPositions.Clear();
+
+            foreach (var row in manualRows)
+            {
+                if (row != null)
+                {
+                    originalManualLocalPositions.Add(row.transform.localPosition);
+                }
+            }
+
+            // 위치를 다시 갱신하지 않고 고정
+            isManualPositionCached = true;
+        }
+
+        // 이전 연출 초기화 및 청소
+        if (manualOpenRoutine != null)
+        {
+            StopCoroutine(manualOpenRoutine);
+        }
+
+        manualPanelRect.transform.DOKill();
+
+        if (manualExitButtonRect != null)
+        {
+            manualExitButtonRect.DOKill();
+        }
+
+        // 조작법 패널과 닫기 버튼 크기를 0으로 만들어서 닫힌 상태에서 시작
+        manualPanelRect.transform.localScale = Vector3.zero;
+
+        if (manualExitButtonRect != null)
+        {
+            manualExitButtonRect.localScale = Vector3.zero;
+        }
+
+        // 조작법 항목들을 전부 숨긴 상태로 초기화
+        for (int i = 0; i < manualRows.Count; i++)
+        {
+            if (manualRows[i] != null)
+            {
+                manualRows[i].DOKill();
+
+                if (i < manualRowCanvasGroups.Count && manualRowCanvasGroups[i] != null)
+                {
+                    manualRowCanvasGroups[i].DOKill();
+                }
+
+                // 기억해둔 원래 위치로 강제 복구
+                if (i < originalManualLocalPositions.Count)
+                {
+                    manualRows[i].transform.localPosition = originalManualLocalPositions[i];
+                }
+
+                // 크기와 투명도를 0으로 만들어 숨김
+                manualRows[i].localScale = Vector3.zero;
+
+                if (i < manualRowCanvasGroups.Count && manualRowCanvasGroups[i] != null)
+                {
+                    manualRowCanvasGroups[i].alpha = 0f;
+                }
+            }
+        }
+
+        // 배경 창 + 닫기 버튼이 통통 열리는 연출
+        Sequence slimeSeq = DOTween.Sequence();
+
+        // 조작법 배경 패널 통통 열림
+        slimeSeq.Append(manualPanelRect.transform.DOScale(new Vector3(1.15f, 0.85f, 1f), panelOpenDuration * 0.4f).SetEase(Ease.OutQuad));
+        slimeSeq.Append(manualPanelRect.transform.DOScale(new Vector3(0.95f, 1.05f, 1f), panelOpenDuration * 0.3f).SetEase(Ease.InOutQuad));
+        slimeSeq.Append(manualPanelRect.transform.DOScale(Vector3.one, panelOpenDuration * 0.3f).SetEase(Ease.OutQuad));
+
+        // 닫기 버튼도 통통거리면서 같이 등장
+        if (manualExitButtonRect != null)
+        {
+            Sequence exitSeq = DOTween.Sequence();
+            exitSeq.Append(manualExitButtonRect.DOScale(new Vector3(1.2f, 0.8f, 1f), panelOpenDuration * 0.4f).SetEase(Ease.OutQuad));
+            exitSeq.Append(manualExitButtonRect.DOScale(new Vector3(0.9f, 1.1f, 1f), panelOpenDuration * 0.3f).SetEase(Ease.InOutQuad));
+            exitSeq.Append(manualExitButtonRect.DOScale(Vector3.one, panelOpenDuration * 0.3f).SetEase(Ease.OutQuad));
+        }
+
+        // 배경 패널이 열린 뒤 조작법 목록들을 순서대로 보여준다.
+        slimeSeq.OnComplete(() =>
+        {
+            manualOpenRoutine = StartCoroutine(ShowManualSequentiallyCo());
+        });
+    }
+    // 조작법 항목들을 위에서부터 아래로 순서대로 보여주는 코루틴
+    private IEnumerator ShowManualSequentiallyCo()
+    {
+        // ManualRows 리스트에 들어있는 조작법 항목 개수만큼 반복
+        for (int i = 0; i < manualRows.Count; i++)
+        {
+            // 중간에 비어있는 칸이 있으면 건너뜀
+            if (manualRows[i] == null)
+            {
+                continue;
+            }
+
+            // CanvasGroup이 연결되어 있다면 투명도를 1로 올려서 보이게 함
+            if (i < manualRowCanvasGroups.Count && manualRowCanvasGroups[i] != null)
+            {
+                manualRowCanvasGroups[i].DOFade(1f, rowOpenDuration);
+            }
+
+            // 크기를 0에서 0.9로 키우면서 살짝 튀어나오는 느낌을 줌
+            Vector3 targetScale = new Vector3(0.9f, 0.9f, 1f);
+            manualRows[i].DOScale(targetScale, rowOpenDuration).SetEase(Ease.OutBack);
+
+            // 조작법 줄이 하나씩 나올 때 효과음 재생
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_UIHoverPaperDash01");
+            }
+
+            // 다음 줄이 나오기 전까지 잠깐 대기
+            yield return new WaitForSeconds(delayBetweenRows);
+        }
+
+        // 조작법 목록 출력이 끝났으므로 코루틴 변수 비우기
+        manualOpenRoutine = null;
+    }
+
+    // "Manual 닫기" 버튼에 연결할 함수
+    public void CloseManualInfo()
+    {
+        // 닫을 조작법 UI가 없으면 리턴
+        if (ManualUI == null || manualPanelRect == null)
+        {
+            return;
+        }
+
+        // 조작법 줄들이 순서대로 나오는 도중 닫았다면 코루틴 즉시 정지
+        if (manualOpenRoutine != null)
+        {
+            StopCoroutine(manualOpenRoutine);
+        }
+
+        // 이전에 진행 중이던 패널 애니메이션이 있다면 정지
+        manualPanelRect.transform.DOKill();
+
+        // 조작법 패널 크기를 0으로 줄이면서 닫힘
+        manualPanelRect.transform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InQuad).OnComplete(() =>
+        {
+            // 크기가 0이 된 뒤 조작법 UI 전체 오브젝트를 꺼준다.
+            ManualUI.SetActive(false);
         });
     }
 }

@@ -93,7 +93,7 @@ public class PlayerLevelSystem : MonoBehaviour
         else
         {
             //경험치 요구량을 1.2배로 늘린후 Mathf.Round로 반올림 처리
-            maxExp = Mathf.Round(maxExp * 1.2f);
+            maxExp = Mathf.Round(maxExp * 1.4f);
         }
     }
 
