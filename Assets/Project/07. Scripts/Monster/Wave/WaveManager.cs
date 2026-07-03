@@ -102,7 +102,7 @@ public class WaveManager : MonoBehaviour
                 },
                 new WaveData()
                 {
-                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
+                    warriorCount = spawnWarriorNumber + 25, archerCount = spawnArcherNumber + 10,
                     hpMultiplier = 1.3f, speedMultiplier= 1.1f
                 }
             };
@@ -113,19 +113,19 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
+                    warriorCount = spawnWarriorNumber + 50, archerCount = spawnArcherNumber + 15,
                     hpMultiplier = 1.5f, speedMultiplier = 1.1f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = spawnWarriorNumber + 10,archerCount = spawnArcherNumber + 10,
+                    warriorCount = spawnWarriorNumber + 75,archerCount = spawnArcherNumber + 20,
                     hpMultiplier = 1.7f,speedMultiplier = 1.15f
                 },
 
                 new WaveData()
                 {
-                    warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
+                    warriorCount = spawnWarriorNumber + 100, archerCount = spawnArcherNumber + 25,
                     hpMultiplier = 1.9f, speedMultiplier = 1.2f
                 }
             };

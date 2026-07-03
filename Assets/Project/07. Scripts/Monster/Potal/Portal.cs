@@ -5,7 +5,9 @@ public class Portal : MonoBehaviour
 {
     public StageManager stageManager; // 다음 스테이지를 시작할 StageManager 연결
 
-    public Vector3 spawnPosition = new Vector3(-4.4f, -9.7f, 0f); // 포탈 이동 후 플레이어가 도착할 위치
+    public Vector3 spawnPosition = new Vector3(-2.5f, -12f, 0f); // 포탈 이동 후 플레이어가 도착할 위치
+
+
 
     [Header("상호작용 UI")]
     [SerializeField] private GameObject pressEUI; // 포탈 근처에 있을 때 보여줄 Press E UI

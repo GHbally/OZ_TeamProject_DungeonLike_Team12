@@ -36,6 +36,11 @@ public class PlayerLevelSystem : MonoBehaviour
     //경험치 구슬 먹었을 때
     public void EarnExp(float amount)
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_Spell01Impact01", 0.4f);
+        }
+
         //플레이어가 이미 죽은 상태면 리턴
         if (playerBase != null && playerBase.IsDead) return;
 
@@ -93,7 +98,7 @@ public class PlayerLevelSystem : MonoBehaviour
         else
         {
             //경험치 요구량을 1.2배로 늘린후 Mathf.Round로 반올림 처리
-            maxExp = Mathf.Round(maxExp * 1.4f);
+            maxExp = Mathf.Round(maxExp * 1.3f);
         }
     }
 

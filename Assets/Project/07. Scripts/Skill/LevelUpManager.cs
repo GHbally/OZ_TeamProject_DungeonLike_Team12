@@ -92,6 +92,11 @@ public class LevelUpManager : MonoBehaviour
 
     public void OpenLevelUpUI()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
+
         if (levelUpPanel == null || panelRect == null) return;
 
         levelUpPanel.SetActive(true);
@@ -392,6 +397,7 @@ public class LevelUpManager : MonoBehaviour
 
     public void CloseLevelUpUI()
     {
+        
         //´ÝÈú ¶§ ÀÜ¿© Æ®À© Á¤Áö
         panelRect.DOKill();
 

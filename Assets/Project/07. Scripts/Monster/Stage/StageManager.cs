@@ -54,11 +54,11 @@ public class StageManager : MonoBehaviour
     }
 
     [Header("포탈 생성 위치")]
-    public Vector3 portalSpawnPosition = new Vector3(-4.5f, -9.5f, 0f); // 포탈이 생성될 위치
+    public Vector3 portalSpawnPosition = new Vector3(-2.5f, -11.54f, 0f); // 포탈이 생성될 위치
     // 모든 웨이브를 클리어했을 때 호출
     public void ClearStage()
     {
-        nextStagePortal.transform.position = new Vector3(-4.5f, -9.5f, 0f); // 포탈 위치를 0,0,0으로 이동
+        nextStagePortal.transform.position = new Vector3(-2.5f, -11.54f, 0f); // 포탈 위치를 0,0,0으로 이동
 
         nextStagePortal.SetActive(true); // 포탈 오브젝트 활성화
 

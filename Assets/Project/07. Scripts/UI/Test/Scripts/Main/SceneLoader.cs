@@ -25,11 +25,17 @@ public class SceneLoader : MonoBehaviour
     // 통합 함수: 이 함수 하나만 사용하세요!
     public void LoadScene(string sceneName)
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
+
         StartCoroutine(FadeAndLoad(sceneName));
     }
 
     IEnumerator FadeAndLoad(string sceneName)
     {
+        Time.timeScale = 1f;
         float timer = 0f;
         while (timer < fadeDuration)
         {

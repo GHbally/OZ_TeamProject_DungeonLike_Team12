@@ -296,7 +296,7 @@ public class PlayerBase : MonoBehaviour
     public void Transformation(int currentLevel)
     {
         //레벨 10 변신 조건
-        if (currentLevel >= 10)
+        if (currentLevel >= 13)
         {
             if (visualLv10 != null && !visualLv10.activeSelf)
             {
