@@ -11,6 +11,8 @@ public class LastBossMonster : MonsterBase
     public GameObject warningPrefab;    // 경고 원 프리팹
     public GameObject explosionPrefab;  // 폭발 이펙트 프리팹
 
+    public GameObject aoeEffectPrefab; // 장판 이펙트 프리팹
+
     [Header("궁극기")]
     public GameObject safeZonePrefab;       // 안전지대 프리팹
     public GameObject mapExplosionPrefab;   // 맵 전체 폭발 프리팹
@@ -185,8 +187,7 @@ public class LastBossMonster : MonsterBase
         // 체력에 따라 페이즈 변경
         CheckPhase();
 
-        // 현재 페이즈 색상을 계속 유지
-        ApplyPhaseColor(currentPhase);
+        
     }
 
     // 최종보스는 움직이지 않게 FixedUpdate를 막음
@@ -340,8 +341,12 @@ public class LastBossMonster : MonsterBase
 
         yield return new WaitForSeconds(2f); // 피할 시간 제공
         
+        Destroy(warning); // 경고 삭제
 
-        Instantiate(explosionPrefab, targetPos, Quaternion.identity); // 폭발
+        GameObject aoe = 
+            Instantiate(aoeEffectPrefab, targetPos, Quaternion.identity); // 장판 생성
+
+        Destroy(aoe, 1.5f); // 장판 1.5초 후 삭제
     }
 
 
@@ -625,7 +630,7 @@ public class LastBossMonster : MonsterBase
 
         // 카메라 연출 (DOTween)
         Sequence camSeq = DOTween.Sequence().SetUpdate(true);
-        camSeq.Join(Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y, -10f), 1.0f));
+        camSeq.Join(Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y, -10f), 3.0f));
         camSeq.Join(Camera.main.DOOrthoSize(3f, 3.0f));
 
         yield return new WaitForSecondsRealtime(3.0f);
