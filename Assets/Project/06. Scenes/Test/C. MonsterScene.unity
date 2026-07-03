@@ -1555,8 +1555,6 @@ MonoBehaviour:
   nameText: {fileID: 1294115226}
   descText: {fileID: 1656868369}
   hoverFrame: {fileID: 1248205943}
-  hoverSound: {fileID: 0}
-  selectSound: {fileID: 0}
 --- !u!1 &247369996
 GameObject:
   m_ObjectHideFlags: 0
@@ -6110,8 +6108,6 @@ MonoBehaviour:
   nameText: {fileID: 1350466074}
   descText: {fileID: 1003921706}
   hoverFrame: {fileID: 1836605914}
-  hoverSound: {fileID: 0}
-  selectSound: {fileID: 0}
 --- !u!1 &724919003
 GameObject:
   m_ObjectHideFlags: 0
@@ -7598,8 +7594,6 @@ MonoBehaviour:
   nameText: {fileID: 492778477}
   descText: {fileID: 799850563}
   hoverFrame: {fileID: 1913111430}
-  hoverSound: {fileID: 0}
-  selectSound: {fileID: 0}
 --- !u!224 &865853298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15055,16 +15049,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelUpManager
   levelUpPanel: {fileID: 1135500588}
-  panelRect: {fileID: 0}
   skillButtons:
   - {fileID: 716429101}
   - {fileID: 233223652}
   - {fileID: 865853297}
   skillManager: {fileID: 1739200603}
   displayCardCount: 3
-  panelOpenDuration: 0.4
-  cardOpenDuration: 0.35
-  delayBetweenCards: 0.12
   rerollButton: {fileID: 63098715}
   rerollButtonText: {fileID: 1515999404}
   rerollButtonCanvasGroup: {fileID: 0}
