@@ -97,6 +97,10 @@ public class UIManager : MonoBehaviour
     //"스킬" 버튼 누르면 실행될 메서드
     public void OpenUserInfo()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
         if (SkillUI == null || panelRect == null) return;    //연결된 스킬 UI가 없으면 리턴
 
         SkillUI.SetActive(true);        //껍데기 오브젝트를 활성화 해서 눈에 보이게 함
@@ -193,6 +197,11 @@ public class UIManager : MonoBehaviour
     //"닫기" 버튼에 연결할 함수
     public void CloseUserInfo()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
+
         if (SkillUI == null) return; //닫을 창이 없으면 리턴
 
         if (openRoutine != null) StopCoroutine(openRoutine); //혹시 리스트가 주르륵 나오는 도중에 닫았으면 코루틴 즉시 강제 정지
@@ -206,6 +215,11 @@ public class UIManager : MonoBehaviour
     // "Manual" 버튼을 누르면 실행될 메서드
     public void OpenManualInfo()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
+
         // 연결된 조작법 UI가 없으면 리턴
         if (ManualUI == null || manualPanelRect == null)
         {
@@ -343,6 +357,11 @@ public class UIManager : MonoBehaviour
     // "Manual 닫기" 버튼에 연결할 함수
     public void CloseManualInfo()
     {
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("SFX_ChangeOptionClothsFlag01");
+        }
         // 닫을 조작법 UI가 없으면 리턴
         if (ManualUI == null || manualPanelRect == null)
         {
