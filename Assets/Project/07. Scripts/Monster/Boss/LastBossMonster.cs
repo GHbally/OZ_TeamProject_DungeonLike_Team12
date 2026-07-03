@@ -258,27 +258,6 @@ public class LastBossMonster : MonsterBase
         }
     }
 
-    public override void TakeDamage(DamageInfo1 damageInfo)
-    {
-        base.TakeDamage(damageInfo);
-        // 부모 MonsterBase의 데미지 처리 실행
-
-        StartCoroutine(ResetBossPhaseColorAfterHit());
-        // 피격 효과가 끝난 뒤 보스 페이즈 색을 다시 적용
-    }
-
-    private IEnumerator ResetBossPhaseColorAfterHit()
-    {
-        yield return new WaitForSeconds(0.12f);
-        // 살짝 더 기다린 뒤 색을 다시 적용
-
-        if (!isDead)
-        {
-            ApplyPhaseColor(currentPhase);
-            // 현재 페이즈 색을 다시 적용
-        }
-    }
-
     //현재 페이즈 확인 -> 패턴 실행 -> 2초 휴식 -> 반복
     IEnumerator PatternLoop()
     {

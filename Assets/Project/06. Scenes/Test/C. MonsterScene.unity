@@ -4030,7 +4030,6 @@ MonoBehaviour:
   dashSpeed: 15
   dashDuration: 0.2
   dashCooldown: 1
-  dashInvincibleDuration: 0.4
   visualTransform: {fileID: 0}
   animator: {fileID: 0}
 --- !u!70 &522754041
@@ -6191,7 +6190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   chapter: 1
-  stage: 1
+  stage: 3
   waveManager: {fileID: 724919005}
   nextStagePortal: {fileID: 1856677517}
   stageMapSwitcher: {fileID: 259778164}
