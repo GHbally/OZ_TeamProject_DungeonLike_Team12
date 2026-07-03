@@ -29,14 +29,14 @@ public class WaveManager : MonoBehaviour
     private int aliveMonster; //살아있는 몬스터 수
     private bool isLastBossSpawned = false; // true면 보스를 다시 생성하지 않음
 
-    [SerializeField] private int spawnWarriorNumber = 65;
-    [SerializeField] private int spawnArcherNumber = 15;
+    [SerializeField] private int spawnWarriorNumber = 120;
+    [SerializeField] private int spawnArcherNumber = 30;
 
     public WaveData[] waves; //웨이브 데이터 배열
 
     [Header("맵 안 스폰 범위")]
-    public Vector2 spawnMin = new Vector2(-18f, -24f); // 잔디 영역 왼쪽 아래
-    public Vector2 spawnMax = new Vector2(10f, 3f);   // 잔디 영역 오른쪽 위
+    public Vector2 spawnMin = new Vector2(-12f, -22f); // 잔디 영역 왼쪽 아래
+    public Vector2 spawnMax = new Vector2(7.7f, -1.7f);   // 잔디 영역 오른쪽 위
     public Transform player;        // 플레이어 위치
 
     //[Header("랜덤 스폰")]
@@ -92,18 +92,18 @@ public class WaveManager : MonoBehaviour
             {
                 new WaveData()
                 {
-                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
+                    warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber - 30,
                     hpMultiplier = 1f, speedMultiplier = 1f
                 },
                 new WaveData()
                 {
                     warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
-                    hpMultiplier= 1.1f, speedMultiplier = 1.05f
+                    hpMultiplier= 1.2f, speedMultiplier = 1.05f
                 },
                 new WaveData()
                 {
                     warriorCount = spawnWarriorNumber, archerCount = spawnArcherNumber,
-                    hpMultiplier = 1.2f, speedMultiplier= 1.1f
+                    hpMultiplier = 1.3f, speedMultiplier= 1.1f
                 }
             };
         }
@@ -114,19 +114,19 @@ public class WaveManager : MonoBehaviour
                 new WaveData()
                 {
                     warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
-                    hpMultiplier = 1.2f, speedMultiplier = 1.1f
+                    hpMultiplier = 1.5f, speedMultiplier = 1.1f
                 },
 
                 new WaveData()
                 {
                     warriorCount = spawnWarriorNumber + 10,archerCount = spawnArcherNumber + 10,
-                    hpMultiplier = 1.3f,speedMultiplier = 1.15f
+                    hpMultiplier = 1.7f,speedMultiplier = 1.15f
                 },
 
                 new WaveData()
                 {
                     warriorCount = spawnWarriorNumber + 10, archerCount = spawnArcherNumber + 10,
-                    hpMultiplier = 1.4f, speedMultiplier = 1.2f
+                    hpMultiplier = 1.9f, speedMultiplier = 1.2f
                 }
             };
         }
