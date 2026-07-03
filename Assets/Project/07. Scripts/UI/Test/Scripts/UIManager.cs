@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     private List<Vector2> originalAnchoredPositions = new List<Vector2>();
 
     //스킬 항목들 페이드인 위해 컴포넌트 보관해줄 리스트
+    private List<Vector3> originalLocalPositions = new List<Vector3>();
     private List<CanvasGroup> rowCanvasGroups = new List<CanvasGroup>();
     private Coroutine openRoutine;  //순서대로 나오는 코루틴 제어 및 중복 실행 방지
 
@@ -64,7 +65,7 @@ public class UIManager : MonoBehaviour
             {
                 if (row != null)
                 {
-                    originalAnchoredPositions.Add(row.anchoredPosition);
+                    originalLocalPositions.Add(row.transform.localPosition);
                 }
             }
             isPositionCached = true; //좌표를 갱신하지 않고 고정
@@ -88,7 +89,7 @@ public class UIManager : MonoBehaviour
                 rowCanvasGroups[i].DOKill();
 
                 //위치가 밀리지 않게 아까 기억해둔 "원래 위치"로 강제 리셋
-                skillRows[i].anchoredPosition = originalAnchoredPositions[i];
+                skillRows[i].transform.localPosition = originalLocalPositions[i];
 
                 skillRows[i].localScale = Vector3.zero;
                 rowCanvasGroups[i].alpha = 0f;
@@ -130,8 +131,9 @@ public class UIManager : MonoBehaviour
             //알파값을 1로 만들어서 투명했던 글자들을 부드럽게 노출
             rowCanvasGroups[i].DOFade(1f, rowOpenDuration);
 
-            //크기를 0에서 1로 키우되, Ease.OutBack을 써서 살짝 과장되게 커졌다가 원상복구 시키는 탄성 연출
-            skillRows[i].DOScale(Vector3.one, rowOpenDuration).SetEase(Ease.OutBack);
+            //크기를 0에서 0.9로 키우되, Ease.OutBack을 써서 살짝 과장되게 커졌다가 원상복구 시키는 탄성 연출
+            Vector3 targetScale = new Vector3(0.9f, 0.9f, 1f);
+            skillRows[i].DOScale(targetScale, rowOpenDuration).SetEase(Ease.OutBack);
 
             //한 줄이 튀어나올 때마다 사운드 매니저를 통해 효과음 재생
             if (SoundManager.Instance != null)
