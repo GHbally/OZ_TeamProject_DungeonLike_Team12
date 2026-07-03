@@ -20,7 +20,7 @@ public class DropManager : MonoBehaviour
         // 몬스터가 죽은 위치에 생성
         expOrb.transform.position = position;
 
-        Debug.Log("경험치 드랍");
+        //Debug.Log("경험치 드랍");
     }
     public void DropHealOrb(Vector2 position)
     {
@@ -30,6 +30,6 @@ public class DropManager : MonoBehaviour
 
         healOrb.transform.position = position;
 
-        Debug.Log("체력 구슬 드랍");
+        //Debug.Log("체력 구슬 드랍");
     }
 }
